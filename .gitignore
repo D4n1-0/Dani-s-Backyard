@@ -1,0 +1,15 @@
+# Raw Obsidian vault
+The Stories/
+
+# Web App build/dependency files
+web-app/node_modules/
+web-app/dist/
+web-app/.astro/
+web-app/.next/
+web-app/npm-debug.log*
+web-app/yarn-debug.log*
+web-app/yarn-error.log*
+web-app/.env*
+
+# OS files
+.DS_Store

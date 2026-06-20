@@ -1,0 +1,197 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const almanac = await getCollection('almanac');
+  const paths: any[] = [];
+  
+  // 1. Dynamic route for every Almanac entry (both full id and flat basename id)
+  almanac.forEach(entry => {
+    // Full id: "genesis/characters/emily-cartwright" (Astro uses id instead of slug)
+    paths.push({
+      params: { slug: entry.id },
+      props: { entry, type: 'entry' }
+    });
+    
+    // Flat slug: "emily-cartwright"
+    const parts = entry.id.split('/');
+    const flatSlug = parts[parts.length - 1];
+    if (flatSlug && flatSlug !== entry.id) {
+      paths.push({
+        params: { slug: flatSlug },
+        props: { entry, type: 'entry' }
+      });
+    }
+  });
+  
+  // 2. Dynamic route for categories
+  const categories = ['characters', 'factions', 'locations', 'concepts', 'items', 'base', 'timeline'];
+  categories.forEach(cat => {
+    paths.push({
+      params: { slug: cat },
+      props: { categoryName: cat, type: 'category' }
+    });
+  });
+  
+  return paths;
+}
+
+const { slug } = Astro.params;
+const { entry, categoryName, type } = Astro.props;
+
+// Fetch all entries for sidebars and indexes
+const allEntries = await getCollection('almanac');
+
+// Define sidebar items based on what we are viewing
+let sidebarTitle = "Almanac Directory";
+let sidebarItems = [
+  { label: "Overview", href: "/almanac" },
+  { label: "Characters", href: "/almanac/characters", active: categoryName === 'characters' },
+  { label: "Factions", href: "/almanac/factions", active: categoryName === 'factions' },
+  { label: "Locations", href: "/almanac/locations", active: categoryName === 'locations' },
+  { label: "Concepts & Lore", href: "/almanac/concepts", active: categoryName === 'concepts' },
+  { label: "Items", href: "/almanac/items", active: categoryName === 'items' }
+];
+
+// If we are viewing a specific entry, update sidebar to list entries in the same category
+let currentCategory = '';
+let RenderedContent: any = null;
+
+if (type === 'entry' && entry) {
+  currentCategory = entry.data.category;
+  const sameCategoryEntries = allEntries.filter(
+    e => e.data.category.toLowerCase() === currentCategory.toLowerCase() && e.data.scenario === entry.data.scenario
+  );
+  
+  sidebarTitle = `${currentCategory} Index`;
+  sidebarItems = sameCategoryEntries.map(e => {
+    const parts = e.id.split('/');
+    const flat = parts[parts.length - 1];
+    return {
+      label: e.data.title,
+      href: `/almanac/${flat}`,
+      active: e.id === entry.id
+    };
+  });
+  
+  const rendered = await render(entry);
+  RenderedContent = rendered.Content;
+}
+
+// If we are viewing a category, get all entries in that category
+let categoryEntries: typeof allEntries = [];
+if (type === 'category' && categoryName) {
+  categoryEntries = allEntries.filter(
+    e => e.data.category.toLowerCase() === categoryName.toLowerCase()
+  );
+}
+
+// Set visual cards colors
+const getCardColorClass = (cat: string) => {
+  switch (cat.toLowerCase()) {
+    case 'characters': return 'card-teal';
+    case 'factions': return 'card-red';
+    case 'locations': return 'card-green';
+    default: return 'card-blue';
+  }
+};
+---
+
+<MainLayout 
+  title={type === 'entry' && entry ? entry.data.title : (categoryName ? categoryName.toUpperCase() : "Almanac")} 
+  activeTab="almanac"
+  sidebarTitle={sidebarTitle}
+  sidebarItems={sidebarItems}
+>
+  <a href="/almanac" class="back-link">Almanac Directory</a>
+
+  {type === 'entry' && entry && RenderedContent && (
+    <article>
+      <header style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 30px;">
+        <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 8px;">
+          Almanac • {entry.data.category} • Scenario: {entry.data.scenario}
+        </span>
+        <h1 style="border-bottom: none; padding-bottom: 0; margin: 0; color: var(--accent); font-family: var(--font-heading); font-size: 2.2rem;">
+          {entry.data.title}
+        </h1>
+      </header>
+      
+      <!-- Info Sheet (Metadata) -->
+      <div class="info-sheet">
+        <div class="info-row-label">Category</div>
+        <div class="info-row-value" style="text-transform: uppercase; font-family: var(--font-mono);">{entry.data.category}</div>
+        
+        <div class="info-row-label">Scenario</div>
+        <div class="info-row-value">{entry.data.scenario}</div>
+        
+        {entry.data.aliases && entry.data.aliases.length > 0 && (
+          <div class="info-row-label">Aliases</div>
+          <div class="info-row-value">
+            {entry.data.aliases.map(alias => (
+              <span class="badge">{alias}</span>
+            ))}
+          </div>
+        )}
+        
+        {entry.data.tags && entry.data.tags.length > 0 && (
+          <div class="info-row-label">Tags</div>
+          <div class="info-row-value">
+            {entry.data.tags.map(tag => (
+              <span class="badge" style="color: var(--text-secondary);">#{tag}</span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <!-- Core Entry Body -->
+      <div class="story-reader">
+        <RenderedContent />
+      </div>
+    </article>
+  )}
+
+  {type === 'category' && categoryName && (
+    <div>
+      <header style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 30px;">
+        <h1 style="border-bottom: none; padding-bottom: 0; margin: 0; text-transform: uppercase; color: var(--accent);">
+          Category: {categoryName}
+        </h1>
+        <p style="color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 5px;">
+          Records associated with the {categoryName} of the story universe.
+        </p>
+      </header>
+
+      {categoryEntries.length === 0 ? (
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 20px;">No entries found in this category.</p>
+      ) : (
+        <div class="cards-grid">
+          {categoryEntries.map(e => {
+            const parts = e.id.split('/');
+            const flat = parts[parts.length - 1];
+            return (
+              <div class={`nous-card ${getCardColorClass(e.data.category)}`}>
+                <div class="card-canvas"></div>
+                <div class="card-content">
+                  <div class="card-meta">
+                    <span>{e.data.scenario.toUpperCase()}</span>
+                    <span>{e.data.category.toUpperCase()}</span>
+                  </div>
+                  <div>
+                    <h3 class="card-title">{e.data.title}</h3>
+                    {e.data.description && (
+                      <p class="card-description">{e.data.description}</p>
+                    )}
+                  </div>
+                  <div class="card-footer">
+                    <a href={`/almanac/${flat}`} class="card-action">Read Entry</a>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  )}
+</MainLayout>

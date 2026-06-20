@@ -1,0 +1,95 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  activeTab?: 'home' | 'chapters' | 'almanac';
+  showSidebar?: boolean;
+  sidebarTitle?: string;
+  sidebarItems?: Array<{ label: string; href: string; active?: boolean }>;
+}
+
+const { 
+  title, 
+  activeTab = 'home', 
+  showSidebar = true, 
+  sidebarTitle = "Setting Almanac", 
+  sidebarItems = [
+    { label: "Overview", href: "/almanac" },
+    { label: "Characters", href: "/almanac/characters" },
+    { label: "Factions", href: "/almanac/factions" },
+    { label: "Locations", href: "/almanac/locations" },
+    { label: "Concepts", href: "/almanac/concepts" },
+    { label: "Items", href: "/almanac/items" }
+  ]
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO Meta Tags -->
+    <title>{title} | Story Companion</title>
+    <meta name="description" content="A serialized story narrative and worldbuilding codex wiki companion." />
+  </head>
+  <body>
+    <div class="nous-grid-container">
+      <!-- HEADER -->
+      <header>
+        <div class="logo-section">
+          <a href="/">STORY COMPANION</a>
+        </div>
+        <nav>
+          <a href="/" class={`nav-link ${activeTab === 'home' ? 'active' : ''}`}>Home</a>
+          <a href="/chapters" class={`nav-link ${activeTab === 'chapters' ? 'active' : ''}`}>Chapters</a>
+          <a href="/almanac" class={`nav-link ${activeTab === 'almanac' ? 'active' : ''}`}>Almanac</a>
+        </nav>
+        <div class="theme-toggle">
+          DARK MODE ONLY
+        </div>
+      </header>
+
+      <!-- WRAPPER -->
+      <div class="main-wrapper" style={!showSidebar ? "grid-template-columns: 1fr;" : ""}>
+        <!-- SIDEBAR -->
+        {showSidebar && (
+          <aside class="sidebar">
+            <h3>{sidebarTitle}</h3>
+            <ul class="sidebar-list">
+              {sidebarItems.map(item => (
+                <li>
+                  <a href={item.href} class={item.active ? 'active' : ''}>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )}
+
+        <!-- MAIN SLOT -->
+        <main>
+          <slot />
+        </main>
+      </div>
+
+      <!-- FOOTER -->
+      <footer>
+        <div class="footer-section">
+          TRENCH CRUSADE LORE
+        </div>
+        <div class="footer-section" style="text-align: center;">
+          COMPANION v1.0.0
+        </div>
+        <div class="footer-section" style="text-align: right;">
+          MIT LICENSE • 2026
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

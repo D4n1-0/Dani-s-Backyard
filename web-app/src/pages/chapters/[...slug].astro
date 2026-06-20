@@ -1,0 +1,109 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const chapters = await getCollection('chapters');
+  const paths: any[] = [];
+  
+  chapters.forEach(chapter => {
+    // Full path: "genesis/chapter-01"
+    paths.push({
+      params: { slug: chapter.id },
+      props: { chapter }
+    });
+    
+    // Flat slug: "chapter-01"
+    const parts = chapter.id.split('/');
+    const flatSlug = parts[parts.length - 1];
+    if (flatSlug && flatSlug !== chapter.id) {
+      paths.push({
+        params: { slug: flatSlug },
+        props: { chapter }
+      });
+    }
+  });
+  
+  return paths;
+}
+
+const { chapter } = Astro.props;
+const { Content } = await render(chapter);
+
+// Fetch all chapters to generate the sidebar index and navigation
+const allChapters = await getCollection('chapters');
+const sortedChapters = allChapters.sort((a, b) => {
+  const aNum = a.data.chapterNumber ?? 0;
+  const bNum = b.data.chapterNumber ?? 0;
+  return aNum - bNum; // Ascending order
+});
+
+// Generate sidebar items
+const sidebarItems = sortedChapters.map(ch => {
+  const parts = ch.id.split('/');
+  const flat = parts[parts.length - 1];
+  return {
+    label: `CH ${ch.data.chapterNumber ?? '??'}: ${ch.data.title}`,
+    href: `/chapters/${flat}`,
+    active: ch.id === chapter.id
+  };
+});
+
+// Find next and previous chapters
+const currentIndex = sortedChapters.findIndex(ch => ch.id === chapter.id);
+const prevChapter = currentIndex > 0 ? sortedChapters[currentIndex - 1] : null;
+const nextChapter = currentIndex < sortedChapters.length - 1 ? sortedChapters[currentIndex + 1] : null;
+
+const prevFlat = prevChapter ? prevChapter.id.split('/').pop() : null;
+const nextFlat = nextChapter ? nextChapter.id.split('/').pop() : null;
+---
+
+<MainLayout 
+  title={chapter.data.title} 
+  activeTab="chapters"
+  sidebarTitle="Chapters Index"
+  sidebarItems={sidebarItems}
+>
+  <a href="/chapters" class="back-link">All Chapters</a>
+  
+  <article>
+    <header style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 30px; display: block;">
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+        Scenario: {chapter.data.scenario} {chapter.data.chapterNumber && `• Chapter ${chapter.data.chapterNumber}`}
+      </div>
+      <h1 style="border-bottom: none; padding-bottom: 0; margin: 0; font-size: 2.2rem; font-family: var(--font-heading); color: var(--accent);">
+        {chapter.data.title}
+      </h1>
+      {chapter.data.releaseDate && (
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">
+          DATE IN WORLD: {chapter.data.releaseDate}
+        </div>
+      )}
+    </header>
+
+    <div class="story-reader">
+      <Content />
+    </div>
+
+    <!-- Chapter Navigation -->
+    <nav style="display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); margin-top: 50px; padding-top: 25px;">
+      {prevChapter && prevFlat ? (
+        <a href={`/chapters/${prevFlat}`} style="text-decoration: none; display: flex; flex-direction: column; align-items: flex-start;">
+          <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">← Previous</span>
+          <span style="font-family: var(--font-heading); font-size: 0.95rem; color: var(--accent); font-weight: bold;">{prevChapter.data.title}</span>
+        </a>
+      ) : (
+        <div></div>
+      )}
+      
+      {nextChapter && nextFlat ? (
+        <a href={`/chapters/${nextFlat}`} style="text-decoration: none; display: flex; flex-direction: column; align-items: flex-end;">
+          <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Next →</span>
+          <span style="font-family: var(--font-heading); font-size: 0.95rem; color: var(--accent); font-weight: bold;">{nextChapter.data.title}</span>
+        </a>
+      ) : (
+        <div></div>
+      )}
+    </nav>
+  </article>
+</MainLayout>

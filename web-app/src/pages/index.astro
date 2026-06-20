@@ -1,0 +1,182 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Fetch all chapters and almanac entries to show stats/recent entries
+const chapters = await getCollection('chapters');
+const almanac = await getCollection('almanac');
+
+// Sort chapters by chapter number
+const sortedChapters = chapters.sort((a, b) => {
+  const aNum = a.data.chapterNumber ?? 0;
+  const bNum = b.data.chapterNumber ?? 0;
+  return bNum - aNum; // Descending
+});
+
+const recentChapters = sortedChapters.slice(0, 3);
+
+// Group Almanac entries by category to display counts
+const categories = ['Characters', 'Factions', 'Locations', 'Concepts', 'Items'];
+const categoryCounts = categories.reduce((acc, cat) => {
+  acc[cat] = almanac.filter(entry => entry.data.category === cat).length;
+  return acc;
+}, {} as Record<string, number>);
+---
+
+<MainLayout title="Dashboard" activeTab="home">
+  <div style="margin-bottom: 40px;">
+    <h1 style="border-bottom: none; margin-bottom: 5px;">THE PORTAL THRESHOLD</h1>
+    <p style="color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 20px;">
+      Trench Crusade Earth / Modern Earth Parallel Timeline Hub
+    </p>
+    
+    <div style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); padding: 30px; margin-top: 20px; line-height: 1.6; font-family: var(--font-body); font-size: 1.15rem;">
+      <h3 style="color: var(--accent); margin-bottom: 10px; font-family: var(--font-heading); font-size: 1.3rem;">Project Genesis Summary</h3>
+      <p style="margin-bottom: 15px;">
+        In 1099, the Heretic Legion breached the gates of Jerusalem, opening the Anomaly—a rift linking Earth directly to the depths of Hell. In the centuries of Trench Crusade that followed, history fractured. 
+      </p>
+      <p>
+        Now, in 2026, the Anomaly reconnects. Follow the dual timeline tracking Emily Cartwright, James Harlow, and Alistair Roth as they navigate the portal, where 1914 TC and 2026 Modern Earth collide.
+      </p>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px;">
+    <!-- Recent Chapters Panel -->
+    <div style="border: 1px solid var(--border-color); background-color: var(--bg-secondary); padding: 25px;">
+      <h3 style="color: var(--accent); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-size: 1.1rem; text-transform: uppercase;">Recent Installments</h3>
+      
+      {recentChapters.length === 0 ? (
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 15px;">No chapters published yet.</p>
+      ) : (
+        <ul style="list-style: none; margin-top: 15px;">
+          {recentChapters.map(chapter => (
+            <li style="margin-bottom: 20px; border-bottom: 1px dashed var(--border-color); padding-bottom: 15px;">
+              <span class="badge">CH {chapter.data.chapterNumber ?? '??'}</span>
+              <a href={`/chapters/${chapter.id}`} style="font-family: var(--font-heading); font-size: 1.05rem; display: block; margin-top: 8px; font-weight: bold; text-decoration: none;">
+                {chapter.data.title}
+              </a>
+              <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 5px; font-family: var(--font-mono);">
+                {chapter.data.releaseDate || 'Undated'}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+      <a href="/chapters" style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent); text-decoration: none; font-weight: bold; display: inline-block; margin-top: 10px;">
+        Browse All Chapters →
+      </a>
+    </div>
+
+    <!-- Stats & Quick Actions Panel -->
+    <div style="border: 1px solid var(--border-color); background-color: var(--bg-secondary); padding: 25px;">
+      <h3 style="color: var(--accent); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-size: 1.1rem; text-transform: uppercase;">Almanac Database</h3>
+      
+      <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; margin-top: 15px; margin-bottom: 20px;">
+        Browse the encyclopedia of the setting. Discover historical records, character biographies, and tactical details of the alternate timeline.
+      </p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+        {categories.map(cat => (
+          <div style="border: 1px solid var(--border-color); background-color: var(--bg-primary); padding: 12px; display: flex; flex-direction: column; justify-content: center;">
+            <span style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">{cat}</span>
+            <span style="font-size: 1.5rem; font-weight: bold; color: var(--accent); font-family: var(--font-heading);">
+              {categoryCounts[cat] || 0}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <a href="/almanac" style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent); text-decoration: none; font-weight: bold;">
+        Open Almanac Directory →
+      </a>
+    </div>
+  </div>
+
+  <!-- Almanac Category Grid (Nous Cards Look) -->
+  <h2 style="margin-top: 50px; font-size: 1.3rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-transform: uppercase; color: var(--accent);">
+    Explore Categories
+  </h2>
+  
+  <div class="cards-grid">
+    <!-- Characters Card (Teal) -->
+    <div class="nous-card card-teal">
+      <div class="card-canvas"></div>
+      <div class="card-content">
+        <div class="card-meta">
+          <span>ALMANAC</span>
+          <span>{categoryCounts['Characters'] || 0} Entries</span>
+        </div>
+        <div>
+          <h3 class="card-title">Characters</h3>
+          <p class="card-description">
+            Biographies and tactical profiles of historical and modern figures connected by the portal, including the crew of the Royal Navy and local defenders.
+          </p>
+        </div>
+        <div class="card-footer">
+          <a href="/almanac/characters" class="card-action">View Characters</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Factions Card (Red) -->
+    <div class="nous-card card-red">
+      <div class="card-canvas"></div>
+      <div class="card-content">
+        <div class="card-meta">
+          <span>ALMANAC</span>
+          <span>{categoryCounts['Factions'] || 0} Entries</span>
+        </div>
+        <div>
+          <h3 class="card-title">Factions</h3>
+          <p class="card-description">
+            The military coalitions and religious orders battling in the Trench Crusade, alongside modern organizations confronting the anomaly.
+          </p>
+        </div>
+        <div class="card-footer">
+          <a href="/almanac/factions" class="card-action">View Factions</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Locations Card (Green) -->
+    <div class="nous-card card-green">
+      <div class="card-canvas"></div>
+      <div class="card-content">
+        <div class="card-meta">
+          <span>ALMANAC</span>
+          <span>{categoryCounts['Locations'] || 0} Entries</span>
+        </div>
+        <div>
+          <h3 class="card-title">Locations</h3>
+          <p class="card-description">
+            Geographic profiles of strategic positions, parallel landmarks, and the anomaly thresholds separating the timelines.
+          </p>
+        </div>
+        <div class="card-footer">
+          <a href="/almanac/locations" class="card-action">View Locations</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Concepts Card (Blue) -->
+    <div class="nous-card card-blue">
+      <div class="card-canvas"></div>
+      <div class="card-content">
+        <div class="card-meta">
+          <span>ALMANAC</span>
+          <span>{(categoryCounts['Concepts'] || 0) + (categoryCounts['Items'] || 0)} Entries</span>
+        </div>
+        <div>
+          <h3 class="card-title">Lore & Items</h3>
+          <p class="card-description">
+            Cosmology records, details on the anomaly, historical timelines, and relic equipment utilized by both timelines.
+          </p>
+        </div>
+        <div class="card-footer">
+          <a href="/almanac/concepts" class="card-action">View Lore</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>
