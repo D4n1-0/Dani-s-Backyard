@@ -13,3 +13,6 @@ web-app/.env*
 
 # OS files
 .DS_Store
+._*
+**/._*
+
