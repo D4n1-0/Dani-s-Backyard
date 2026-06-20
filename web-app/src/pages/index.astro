@@ -6,6 +6,8 @@ import { getCollection } from 'astro:content';
 const chapters = await getCollection('chapters');
 const almanac = await getCollection('almanac');
 
+const base = import.meta.env.BASE_URL;
+
 // Sort chapters by chapter number
 const sortedChapters = chapters.sort((a, b) => {
   const aNum = a.data.chapterNumber ?? 0;
@@ -53,7 +55,7 @@ const categoryCounts = categories.reduce((acc, cat) => {
           {recentChapters.map(chapter => (
             <li style="margin-bottom: 20px; border-bottom: 1px dashed var(--border-color); padding-bottom: 15px;">
               <span class="badge">CH {chapter.data.chapterNumber ?? '??'}</span>
-              <a href={`/chapters/${chapter.id}`} style="font-family: var(--font-heading); font-size: 1.05rem; display: block; margin-top: 8px; font-weight: bold; text-decoration: none;">
+              <a href={`${base}/chapters/${chapter.id}`} style="font-family: var(--font-heading); font-size: 1.05rem; display: block; margin-top: 8px; font-weight: bold; text-decoration: none;">
                 {chapter.data.title}
               </a>
               <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 5px; font-family: var(--font-mono);">
@@ -63,7 +65,7 @@ const categoryCounts = categories.reduce((acc, cat) => {
           ))}
         </ul>
       )}
-      <a href="/chapters" style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent); text-decoration: none; font-weight: bold; display: inline-block; margin-top: 10px;">
+      <a href={`${base}/chapters`} style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent); text-decoration: none; font-weight: bold; display: inline-block; margin-top: 10px;">
         Browse All Chapters →
       </a>
     </div>
@@ -87,7 +89,7 @@ const categoryCounts = categories.reduce((acc, cat) => {
         ))}
       </div>
 
-      <a href="/almanac" style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent); text-decoration: none; font-weight: bold;">
+      <a href={`${base}/almanac`} style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent); text-decoration: none; font-weight: bold;">
         Open Almanac Directory →
       </a>
     </div>
@@ -114,7 +116,7 @@ const categoryCounts = categories.reduce((acc, cat) => {
           </p>
         </div>
         <div class="card-footer">
-          <a href="/almanac/characters" class="card-action">View Characters</a>
+          <a href={`${base}/almanac/characters`} class="card-action">View Characters</a>
         </div>
       </div>
     </div>
@@ -134,7 +136,7 @@ const categoryCounts = categories.reduce((acc, cat) => {
           </p>
         </div>
         <div class="card-footer">
-          <a href="/almanac/factions" class="card-action">View Factions</a>
+          <a href={`${base}/almanac/factions`} class="card-action">View Factions</a>
         </div>
       </div>
     </div>
@@ -154,7 +156,7 @@ const categoryCounts = categories.reduce((acc, cat) => {
           </p>
         </div>
         <div class="card-footer">
-          <a href="/almanac/locations" class="card-action">View Locations</a>
+          <a href={`${base}/almanac/locations`} class="card-action">View Locations</a>
         </div>
       </div>
     </div>
@@ -174,7 +176,7 @@ const categoryCounts = categories.reduce((acc, cat) => {
           </p>
         </div>
         <div class="card-footer">
-          <a href="/almanac/concepts" class="card-action">View Lore</a>
+          <a href={`${base}/almanac/concepts`} class="card-action">View Lore</a>
         </div>
       </div>
     </div>

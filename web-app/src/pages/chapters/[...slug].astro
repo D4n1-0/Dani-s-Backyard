@@ -30,6 +30,8 @@ export async function getStaticPaths() {
 const { chapter } = Astro.props;
 const { Content } = await render(chapter);
 
+const base = import.meta.env.BASE_URL;
+
 // Fetch all chapters to generate the sidebar index and navigation
 const allChapters = await getCollection('chapters');
 const sortedChapters = allChapters.sort((a, b) => {
@@ -44,7 +46,7 @@ const sidebarItems = sortedChapters.map(ch => {
   const flat = parts[parts.length - 1];
   return {
     label: `CH ${ch.data.chapterNumber ?? '??'}: ${ch.data.title}`,
-    href: `/chapters/${flat}`,
+    href: `${base}/chapters/${flat}`,
     active: ch.id === chapter.id
   };
 });
@@ -64,7 +66,7 @@ const nextFlat = nextChapter ? nextChapter.id.split('/').pop() : null;
   sidebarTitle="Chapters Index"
   sidebarItems={sidebarItems}
 >
-  <a href="/chapters" class="back-link">All Chapters</a>
+  <a href={`${base}/chapters`} class="back-link">All Chapters</a>
   
   <article>
     <header style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 30px; display: block;">
@@ -88,7 +90,7 @@ const nextFlat = nextChapter ? nextChapter.id.split('/').pop() : null;
     <!-- Chapter Navigation -->
     <nav style="display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); margin-top: 50px; padding-top: 25px;">
       {prevChapter && prevFlat ? (
-        <a href={`/chapters/${prevFlat}`} style="text-decoration: none; display: flex; flex-direction: column; align-items: flex-start;">
+        <a href={`${base}/chapters/${prevFlat}`} style="text-decoration: none; display: flex; flex-direction: column; align-items: flex-start;">
           <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">← Previous</span>
           <span style="font-family: var(--font-heading); font-size: 0.95rem; color: var(--accent); font-weight: bold;">{prevChapter.data.title}</span>
         </a>
@@ -97,7 +99,7 @@ const nextFlat = nextChapter ? nextChapter.id.split('/').pop() : null;
       )}
       
       {nextChapter && nextFlat ? (
-        <a href={`/chapters/${nextFlat}`} style="text-decoration: none; display: flex; flex-direction: column; align-items: flex-end;">
+        <a href={`${base}/chapters/${nextFlat}`} style="text-decoration: none; display: flex; flex-direction: column; align-items: flex-end;">
           <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Next →</span>
           <span style="font-family: var(--font-heading); font-size: 0.95rem; color: var(--accent); font-weight: bold;">{nextChapter.data.title}</span>
         </a>

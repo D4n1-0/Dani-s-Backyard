@@ -35,7 +35,8 @@ export function remarkWikiLink() {
                 .replace(/[\s_]+/g, '-')          // replace spaces with hyphens
                 .replace(/-+/g, '-');             // replace multiple hyphens with single
               
-              const pathPrefix = isChapter ? '/chapters' : '/almanac';
+              const base = '/Dani-s-Backyard';
+              const pathPrefix = isChapter ? `${base}/chapters` : `${base}/almanac`;
               
               newChildren.push({
                 type: 'link',

@@ -9,18 +9,20 @@ interface Props {
   sidebarItems?: Array<{ label: string; href: string; active?: boolean }>;
 }
 
+const base = import.meta.env.BASE_URL;
+
 const { 
   title, 
   activeTab = 'home', 
   showSidebar = true, 
   sidebarTitle = "Setting Almanac", 
   sidebarItems = [
-    { label: "Overview", href: "/almanac" },
-    { label: "Characters", href: "/almanac/characters" },
-    { label: "Factions", href: "/almanac/factions" },
-    { label: "Locations", href: "/almanac/locations" },
-    { label: "Concepts", href: "/almanac/concepts" },
-    { label: "Items", href: "/almanac/items" }
+    { label: "Overview", href: `${base}/almanac` },
+    { label: "Characters", href: `${base}/almanac/characters` },
+    { label: "Factions", href: `${base}/almanac/factions` },
+    { label: "Locations", href: `${base}/almanac/locations` },
+    { label: "Concepts", href: `${base}/almanac/concepts` },
+    { label: "Items", href: `${base}/almanac/items` }
   ]
 } = Astro.props;
 ---
@@ -30,7 +32,7 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <meta name="generator" content={Astro.generator} />
     
     <!-- SEO Meta Tags -->
@@ -42,12 +44,12 @@ const {
       <!-- HEADER -->
       <header>
         <div class="logo-section">
-          <a href="/">STORY COMPANION</a>
+          <a href={base}>STORY COMPANION</a>
         </div>
         <nav>
-          <a href="/" class={`nav-link ${activeTab === 'home' ? 'active' : ''}`}>Home</a>
-          <a href="/chapters" class={`nav-link ${activeTab === 'chapters' ? 'active' : ''}`}>Chapters</a>
-          <a href="/almanac" class={`nav-link ${activeTab === 'almanac' ? 'active' : ''}`}>Almanac</a>
+          <a href={base} class={`nav-link ${activeTab === 'home' ? 'active' : ''}`}>Home</a>
+          <a href={`${base}/chapters`} class={`nav-link ${activeTab === 'chapters' ? 'active' : ''}`}>Chapters</a>
+          <a href={`${base}/almanac`} class={`nav-link ${activeTab === 'almanac' ? 'active' : ''}`}>Almanac</a>
         </nav>
         <div class="theme-toggle">
           DARK MODE ONLY

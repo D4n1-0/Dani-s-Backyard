@@ -4,6 +4,8 @@ import { getCollection } from 'astro:content';
 
 const allChapters = await getCollection('chapters');
 
+const base = import.meta.env.BASE_URL;
+
 // Sort by chapter number
 const sortedChapters = allChapters.sort((a, b) => {
   const aNum = a.data.chapterNumber ?? 0;
@@ -60,7 +62,7 @@ const sidebarItems = Object.keys(chaptersByScenario).map(scen => ({
               </div>
               
               <div>
-                <a href={`/chapters/${chapter.id}`} style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: bold; color: var(--text-primary); text-decoration: none; transition: color 0.2s ease;">
+                <a href={`${base}/chapters/${chapter.id}`} style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: bold; color: var(--text-primary); text-decoration: none; transition: color 0.2s ease;">
                   {chapter.data.title}
                 </a>
                 {chapter.data.description && (
@@ -76,7 +78,7 @@ const sidebarItems = Object.keys(chaptersByScenario).map(scen => ({
               </div>
               
               <div>
-                <a href={`/chapters/${chapter.id}`} style="background-color: var(--bg-primary); border: 1px solid var(--border-color); color: var(--accent); text-decoration: none; padding: 8px 16px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: bold; transition: all 0.2s ease;">
+                <a href={`${base}/chapters/${chapter.id}`} style="background-color: var(--bg-primary); border: 1px solid var(--border-color); color: var(--accent); text-decoration: none; padding: 8px 16px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: bold; transition: all 0.2s ease;">
                   Read
                 </a>
               </div>
