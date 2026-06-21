@@ -89,9 +89,11 @@ body {
 }
 .is-root-home .site-container {
   max-width: none;
+  width: 100%;
+  margin: 0;
   padding: 0;
-  min-height: 100vh;
-  height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
 }
 
 /* =================================
@@ -162,19 +164,20 @@ body {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
-/* Transparent float header for Root Homepage — glassmorphism disabled */
+/* Fully invisible header for Root Homepage — just floating logo text */
 .is-root-home .site-header {
   position: absolute;
   top: 16px;
   left: 32px;
   right: 32px;
   padding: 14px 24px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 14px;
-  background: transparent;
+  border: none;
+  border-radius: 0;
+  background: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   box-shadow: none;
+  outline: none;
   margin: 0;
 }
 .is-root-home .desktop-nav {
@@ -503,7 +506,9 @@ a:hover {
 .splitscreen-container {
   display: flex;
   width: 100%;
+  width: 100vw;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   z-index: 5;
 }
@@ -644,11 +649,13 @@ a:hover {
   .splitscreen-container {
     flex-direction: column;
     height: 100vh;
+    height: 100dvh;
   }
   .split-side {
     flex: 1;
     width: 100%;
     padding: 40px 32px;
+    padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
     justify-content: flex-end;
   }
   .split-side::after {
