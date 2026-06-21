@@ -32,23 +32,12 @@ const { Content } = await render(chapter);
 
 const base = import.meta.env.BASE_URL;
 
-// Fetch all chapters to generate the sidebar index and navigation
+// Fetch all chapters for navigation
 const allChapters = await getCollection('chapters');
 const sortedChapters = allChapters.sort((a, b) => {
   const aNum = a.data.chapterNumber ?? 0;
   const bNum = b.data.chapterNumber ?? 0;
-  return aNum - bNum; // Ascending order
-});
-
-// Generate sidebar items
-const sidebarItems = sortedChapters.map(ch => {
-  const parts = ch.id.split('/');
-  const flat = parts[parts.length - 1];
-  return {
-    label: `CH ${ch.data.chapterNumber ?? '??'}: ${ch.data.title}`,
-    href: `${base}/chapters/${flat}`,
-    active: ch.id === chapter.id
-  };
+  return aNum - bNum;
 });
 
 // Find next and previous chapters
@@ -63,22 +52,21 @@ const nextFlat = nextChapter ? nextChapter.id.split('/').pop() : null;
 <MainLayout 
   title={chapter.data.title} 
   activeTab="chapters"
-  sidebarTitle="Chapters Index"
-  sidebarItems={sidebarItems}
+  showSidebar={false}
 >
   <a href={`${base}/chapters`} class="back-link">All Chapters</a>
   
   <article>
-    <header style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 30px; display: block;">
-      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
-        Scenario: {chapter.data.scenario} {chapter.data.chapterNumber && `• Chapter ${chapter.data.chapterNumber}`}
+    <header class="page-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 32px;">
+      <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">
+        {chapter.data.scenario} {chapter.data.chapterNumber && `· Chapter ${chapter.data.chapterNumber}`}
       </div>
-      <h1 style="border-bottom: none; padding-bottom: 0; margin: 0; font-size: 2.2rem; font-family: var(--font-heading); color: var(--accent);">
+      <h1 style="margin: 0; color: var(--accent);">
         {chapter.data.title}
       </h1>
       {chapter.data.releaseDate && (
-        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">
-          DATE IN WORLD: {chapter.data.releaseDate}
+        <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 6px;">
+          {chapter.data.releaseDate}
         </div>
       )}
     </header>
@@ -88,20 +76,20 @@ const nextFlat = nextChapter ? nextChapter.id.split('/').pop() : null;
     </div>
 
     <!-- Chapter Navigation -->
-    <nav style="display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); margin-top: 50px; padding-top: 25px;">
+    <nav class="chapter-nav">
       {prevChapter && prevFlat ? (
-        <a href={`${base}/chapters/${prevFlat}`} style="text-decoration: none; display: flex; flex-direction: column; align-items: flex-start;">
-          <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">← Previous</span>
-          <span style="font-family: var(--font-heading); font-size: 0.95rem; color: var(--accent); font-weight: bold;">{prevChapter.data.title}</span>
+        <a href={`${base}/chapters/${prevFlat}`} style="align-items: flex-start;">
+          <span class="chapter-nav-label">← Previous</span>
+          <span class="chapter-nav-title">{prevChapter.data.title}</span>
         </a>
       ) : (
         <div></div>
       )}
       
       {nextChapter && nextFlat ? (
-        <a href={`${base}/chapters/${nextFlat}`} style="text-decoration: none; display: flex; flex-direction: column; align-items: flex-end;">
-          <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Next →</span>
-          <span style="font-family: var(--font-heading); font-size: 0.95rem; color: var(--accent); font-weight: bold;">{nextChapter.data.title}</span>
+        <a href={`${base}/chapters/${nextFlat}`} style="align-items: flex-end;">
+          <span class="chapter-nav-label">Next →</span>
+          <span class="chapter-nav-title">{nextChapter.data.title}</span>
         </a>
       ) : (
         <div></div>

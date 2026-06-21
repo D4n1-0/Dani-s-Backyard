@@ -71,7 +71,6 @@ Then the voice of the TACCO cut in, flat and controlled, the way one reads the l
 No aircraft carrier, no frigate, no submarine in His Majesty's current fleet bore that name. And no ship of her world had ever worn a thirty-foot crucifix welded to its bridge with the unmistakable gloss of fresh human blood.
 
 ---
-
 ### Scene 2: *[[HMS Resolute]]* — The Faithful Response
 
 **[TIME]: T+0 hours — the same instant, Year of Our Lord 1914, Feast of the Exaltation of the Holy Cross**  
@@ -96,7 +95,6 @@ The priest began to pray in the old Latin, sprinkling salt and blessed water int
 He had no faith they would understand. But he had even less faith that the silence would hold.
 
 ---
-
 ### Scene 3: [[Northwood Headquarters]] — The Command Post
 
 **[TIME]: T+1 hour 48 minutes — 18 June 2026, 10:20 Zulu**  
@@ -119,7 +117,6 @@ She watched the feed as the three sleek destroyers, grey ghosts beneath a low ov
 She didn't yet know the half of it.
 
 ---
-
 ### Scene 4: *[[HMS Dragon]]* — The Exchange
 
 **[TIME]: T+6 hours 14 minutes — 18 June 2026, 14:46 Zulu**  
@@ -144,7 +141,6 @@ As the lamp blinked its message across the division of worlds, [[James Hawthorne
 [[James Hawthorne|Hawthorne]] exhaled. Twelve hours of standoff were about to be cracked open by a rowing boat.
 
 ---
-
 ### Scene 5: *[[HMS Resolute]]* — The Priest's Crossing
 
 **[TIME]: T+8 hours 02 minutes — 18 June 2026 / 17 June 1914, mid-morning on the far side**  
@@ -161,7 +157,6 @@ The priest was ready. [[Father Beauchamp]] had donned the armoured vestments res
 The launch pulled away, oars dipping into the grey sea. On the other side, the rubber boat nudged toward the shimmering boundary, a woman in the bow holding a bright lamp and a portable radio. The two boats halted ten yards from the curtain, face to face through the undulating light, so close they could have seen the colour of each other's eyes.
 
 ---
-
 ### Scene 6: [[The Portal Threshold]] — First Contact
 
 **[TIME]: T+12 hours — 18 June 2026, 20:32 Zulu**  
@@ -184,7 +179,6 @@ He drew a heavy service revolver from his belt, its cylinder glinting in the gre
 The portal hummed between two worlds. And in that hum, she heard the first notes of a history that neither Earth had ever imagined.
 
 ---
-
 ## Key Decisions
 
 - Both sides exercise restraint despite the unprecedented nature of the contact. Neither fires a shot.

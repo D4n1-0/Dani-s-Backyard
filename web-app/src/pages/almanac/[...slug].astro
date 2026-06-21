@@ -46,13 +46,13 @@ const allEntries = await getCollection('almanac');
 const base = import.meta.env.BASE_URL;
 
 // Define sidebar items based on what we are viewing
-let sidebarTitle = "Almanac Directory";
-let sidebarItems = [
-  { label: "Overview", href: `${base}/almanac` },
+let sidebarTitle = "Almanac";
+let sidebarItems: Array<{ label: string; href: string; active?: boolean }> = [
+  { label: "All Entries", href: `${base}/almanac` },
   { label: "Characters", href: `${base}/almanac/characters`, active: categoryName === 'characters' },
   { label: "Factions", href: `${base}/almanac/factions`, active: categoryName === 'factions' },
   { label: "Locations", href: `${base}/almanac/locations`, active: categoryName === 'locations' },
-  { label: "Concepts & Lore", href: `${base}/almanac/concepts`, active: categoryName === 'concepts' },
+  { label: "Concepts", href: `${base}/almanac/concepts`, active: categoryName === 'concepts' },
   { label: "Items", href: `${base}/almanac/items`, active: categoryName === 'items' }
 ];
 
@@ -66,7 +66,7 @@ if (type === 'entry' && entry) {
     e => e.data.category.toLowerCase() === currentCategory.toLowerCase() && e.data.scenario === entry.data.scenario
   );
   
-  sidebarTitle = `${currentCategory} Index`;
+  sidebarTitle = currentCategory;
   sidebarItems = sameCategoryEntries.map(e => {
     const parts = e.id.split('/');
     const flat = parts[parts.length - 1];
@@ -88,33 +88,24 @@ if (type === 'category' && categoryName) {
     e => e.data.category.toLowerCase() === categoryName.toLowerCase()
   );
 }
-
-// Set visual cards colors
-const getCardColorClass = (cat: string) => {
-  switch (cat.toLowerCase()) {
-    case 'characters': return 'card-teal';
-    case 'factions': return 'card-red';
-    case 'locations': return 'card-green';
-    default: return 'card-blue';
-  }
-};
 ---
 
 <MainLayout 
-  title={type === 'entry' && entry ? entry.data.title : (categoryName ? categoryName.toUpperCase() : "Almanac")} 
+  title={type === 'entry' && entry ? entry.data.title : (categoryName ? categoryName.charAt(0).toUpperCase() + categoryName.slice(1) : "Almanac")} 
   activeTab="almanac"
+  showSidebar={true}
   sidebarTitle={sidebarTitle}
   sidebarItems={sidebarItems}
 >
-  <a href={`${base}/almanac`} class="back-link">Almanac Directory</a>
+  <a href={`${base}/almanac`} class="back-link">Almanac</a>
 
   {type === 'entry' && entry && RenderedContent && (
     <article>
-      <header style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 30px;">
-        <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 8px;">
-          Almanac • {entry.data.category} • Scenario: {entry.data.scenario}
-        </span>
-        <h1 style="border-bottom: none; padding-bottom: 0; margin: 0; color: var(--accent); font-family: var(--font-heading); font-size: 2.2rem;">
+      <header class="page-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 28px;">
+        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">
+          {entry.data.category} · {entry.data.scenario}
+        </div>
+        <h1 style="margin: 0; color: var(--accent);">
           {entry.data.title}
         </h1>
       </header>
@@ -122,7 +113,7 @@ const getCardColorClass = (cat: string) => {
       <!-- Info Sheet (Metadata) -->
       <div class="info-sheet">
         <div class="info-row-label">Category</div>
-        <div class="info-row-value" style="text-transform: uppercase; font-family: var(--font-mono);">{entry.data.category}</div>
+        <div class="info-row-value">{entry.data.category}</div>
         
         <div class="info-row-label">Scenario</div>
         <div class="info-row-value">{entry.data.scenario}</div>
@@ -155,44 +146,32 @@ const getCardColorClass = (cat: string) => {
 
   {type === 'category' && categoryName && (
     <div>
-      <header style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 30px;">
-        <h1 style="border-bottom: none; padding-bottom: 0; margin: 0; text-transform: uppercase; color: var(--accent);">
-          Category: {categoryName}
-        </h1>
-        <p style="color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 5px;">
-          Records associated with the {categoryName} of the story universe.
+      <div class="page-header">
+        <h1>{categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}</h1>
+        <p class="page-subtitle">
+          {categoryEntries.length} {categoryEntries.length === 1 ? 'entry' : 'entries'} in this category.
         </p>
-      </header>
+      </div>
 
       {categoryEntries.length === 0 ? (
-        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 20px;">No entries found in this category.</p>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">No entries found in this category.</p>
       ) : (
-        <div class="cards-grid">
+        <ul class="content-list">
           {categoryEntries.map(e => {
             const parts = e.id.split('/');
             const flat = parts[parts.length - 1];
             return (
-              <div class={`nous-card ${getCardColorClass(e.data.category)}`}>
-                <div class="card-canvas"></div>
-                <div class="card-content">
-                  <div class="card-meta">
-                    <span>{e.data.scenario.toUpperCase()}</span>
-                    <span>{e.data.category.toUpperCase()}</span>
-                  </div>
-                  <div>
-                    <h3 class="card-title">{e.data.title}</h3>
-                    {e.data.description && (
-                      <p class="card-description">{e.data.description}</p>
-                    )}
-                  </div>
-                  <div class="card-footer">
-                    <a href={`${base}/almanac/${flat}`} class="card-action">Read Entry</a>
-                  </div>
-                </div>
-              </div>
+              <li class="content-list-item">
+                <a href={`${base}/almanac/${flat}`}>
+                  {e.data.title}
+                </a>
+                {e.data.description && (
+                  <div class="list-meta">{e.data.description}</div>
+                )}
+              </li>
             );
           })}
-        </div>
+        </ul>
       )}
     </div>
   )}

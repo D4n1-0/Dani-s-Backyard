@@ -74,7 +74,6 @@ He sanded the ink, folded the despatch, and sealed it with the wax of the Faithf
 "Relay to Land's End Station by lamp. Then by telegraph to Dover. No cipher — this one goes in the clear. Let the Heretics listen. They won't believe it either."
 
 ---
-
 ### Scene 2: [[Fortress of the White Cliffs]] — The Inquisitor-Admiral's Tower
 
 **[TIME]: Day 1 — 1914-09-14 TC, 21:15 hours**
@@ -107,7 +106,6 @@ He did not ask that question aloud. He was an Inquisitor-Admiral. His duty was n
 But the question sat in the room with him, silent and patient, waiting for its hour.
 
 ---
-
 ### Scene 3: [[Fortress of the White Cliffs]] — The War Council
 
 **[TIME]: Day 1 — 1914-09-14 TC, 22:45 hours**
@@ -148,7 +146,6 @@ He was not certain the Crown was ready for that. He was not certain he was ready
 But duty did not wait for certainty.
 
 ---
-
 ### Scene 4: *[[HMS Resolute]]* — Beauchamp's Testimony
 
 **[TIME]: Day 2 — 1914-09-15 TC, 03:10 hours / 2026-06-19, 09:10 Zulu**
@@ -187,7 +184,6 @@ He paused. The lamp flickered. "I did not know that was possible. I do not think
 [[Father Beauchamp|Beauchamp]] met his captain's eyes. "If God was never here, and the Devil was never here — who has been answering our prayers for eight hundred years?"
 
 ---
-
 ### Scene 5: *[[HMS Dragon]]* — The Waiting Game
 
 **[TIME]: Day 2 — 1914-09-15 TC, 05:45 hours / 2026-06-19, 11:45 Zulu**
@@ -218,7 +214,6 @@ He thought of [[Rebecca Osei|Osei]], who had done the same from his side. Differ
 "Reply: 'Request granted. Welcome to our world. We will receive your delegation with honour.' And, Calloway — add 'God save the King.' It seemed to work last time."
 
 ---
-
 ### Scene 6: [[The Portal Threshold]] — The Crossing
 
 **[TIME]: Day 2 — 1914-09-15 TC, 08:00 hours / 2026-06-19, 14:00 Zulu**
@@ -259,7 +254,6 @@ Behind him, the scientists of the [[Holy Science Academy]] were already setting 
 On both sides of the curtain, the world was about to get much larger.
 
 ---
-
 ## Key Decisions
 
 - [[Alistair Pembroke|Pembroke]] sends his after-action despatch via signal relay to the [[Fortress of the White Cliffs]], setting the Faithful chain of command in motion.

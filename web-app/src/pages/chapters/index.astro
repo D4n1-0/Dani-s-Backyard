@@ -20,72 +20,45 @@ const chaptersByScenario = sortedChapters.reduce((acc, ch) => {
   acc[scenario].push(ch);
   return acc;
 }, {} as Record<string, typeof allChapters>);
-
-// Generate sidebar items for chapters index (can list scenarios or chapters)
-const sidebarItems = Object.keys(chaptersByScenario).map(scen => ({
-  label: scen,
-  href: `#${scen.toLowerCase().replace(/\s+/g, '-')}`,
-  active: false
-}));
 ---
 
 <MainLayout 
-  title="Chapters Index" 
+  title="Chapters" 
   activeTab="chapters"
-  sidebarTitle="Scenarios"
-  sidebarItems={sidebarItems}
 >
-  <header style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 30px;">
-    <h1 style="border-bottom: none; padding-bottom: 0; margin: 0; color: var(--accent);">SERIALIZED NARRATIVE</h1>
-    <p style="color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 5px;">
-      Read through the chronological logs of each scenario.
-    </p>
-  </header>
+  <a href={base} class="back-link">Home</a>
+  
+  <div class="page-header">
+    <h1>Chapters</h1>
+    <p class="page-subtitle">Read through the chronological logs of each scenario.</p>
+  </div>
 
   {Object.keys(chaptersByScenario).length === 0 ? (
-    <p style="color: var(--text-secondary); font-size: 0.9rem;">No chapters published yet. Check back soon!</p>
+    <p style="color: var(--text-secondary); font-size: 0.9rem;">No chapters published yet.</p>
   ) : (
     Object.entries(chaptersByScenario).map(([scenario, list]) => (
-      <section id={scenario.toLowerCase().replace(/\s+/g, '-')} style="margin-bottom: 50px;">
-        <h2 style="border-bottom: 1px solid var(--border-color); padding-bottom: 8px; text-transform: uppercase; font-size: 1.3rem; color: var(--accent); margin-bottom: 25px;">
-          Scenario: {scenario}
-        </h2>
-        
-        <div style="display: flex; flex-direction: column; gap: 20px;">
-          {list.map(chapter => (
-            <div style="border: 1px solid var(--border-color); background-color: var(--bg-secondary); padding: 25px; display: grid; grid-template-columns: 80px 1fr auto; align-items: center; gap: 20px;">
-              <div style="text-align: center; border-right: 1px solid var(--border-color); padding-right: 20px; height: 100%; display: flex; flex-direction: column; justify-content: center;">
-                <span style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: bold; color: var(--accent);">
-                  {chapter.data.chapterNumber || '??'}
-                </span>
-                <span style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;">Chapter</span>
-              </div>
-              
-              <div>
-                <a href={`${base}/chapters/${chapter.id}`} style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: bold; color: var(--text-primary); text-decoration: none; transition: color 0.2s ease;">
-                  {chapter.data.title}
-                </a>
-                {chapter.data.description && (
-                  <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-                    {chapter.data.description}
-                  </p>
-                )}
+      <div>
+        <h2 class="section-heading">{scenario}</h2>
+        <ul class="content-list">
+          {list.map(chapter => {
+            const parts = chapter.id.split('/');
+            const flat = parts[parts.length - 1];
+            return (
+              <li class="content-list-item">
+                <div>
+                  <span class="list-number">CH {chapter.data.chapterNumber ?? '??'}</span>
+                  <a href={`${base}/chapters/${flat}`}>
+                    {chapter.data.title}
+                  </a>
+                </div>
                 {chapter.data.releaseDate && (
-                  <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-top: 8px;">
-                    DATE IN WORLD: {chapter.data.releaseDate}
-                  </div>
+                  <div class="list-meta">{chapter.data.releaseDate}</div>
                 )}
-              </div>
-              
-              <div>
-                <a href={`${base}/chapters/${chapter.id}`} style="background-color: var(--bg-primary); border: 1px solid var(--border-color); color: var(--accent); text-decoration: none; padding: 8px 16px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: bold; transition: all 0.2s ease;">
-                  Read
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     ))
   )}
 </MainLayout>

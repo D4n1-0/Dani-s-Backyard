@@ -14,83 +14,53 @@ const entriesByCategory = categories.reduce((acc, cat) => {
 }, {} as Record<string, typeof allEntries>);
 
 // Sidebar items
-const sidebarItems = categories.map(cat => ({
-  label: cat,
-  href: `${base}/almanac/${cat.toLowerCase()}`,
-  active: false
-}));
-
-// Set visual cards colors
-const getCardColorClass = (cat: string) => {
-  switch (cat.toLowerCase()) {
-    case 'characters': return 'card-teal';
-    case 'factions': return 'card-red';
-    case 'locations': return 'card-green';
-    default: return 'card-blue';
-  }
-};
+const sidebarItems = categories
+  .filter(cat => (entriesByCategory[cat] || []).length > 0)
+  .map(cat => ({
+    label: `${cat} (${entriesByCategory[cat].length})`,
+    href: `#${cat.toLowerCase()}`,
+    active: false
+  }));
 ---
 
 <MainLayout 
-  title="Almanac Directory" 
+  title="Almanac" 
   activeTab="almanac"
+  showSidebar={true}
   sidebarTitle="Categories"
   sidebarItems={sidebarItems}
 >
-  <header style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 30px;">
-    <h1 style="border-bottom: none; padding-bottom: 0; margin: 0; color: var(--accent);">SETTING ALMANAC</h1>
-    <p style="color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 5px;">
-      Explore the encyclopedia codex of factions, characters, locations, and settings lore.
+  <div class="page-header">
+    <h1>Almanac</h1>
+    <p class="page-subtitle">
+      Encyclopedia of characters, factions, locations, and lore.
     </p>
-  </header>
+  </div>
 
-  <section style="margin-bottom: 40px;">
-    <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
-      The Almanac is a collaborative compilation of details mapping both the alternate Trench Crusade timeline and modern observations. Click a card to read full records and trace links across the narrative.
-    </p>
-  </section>
-
-  <!-- Categories section with full lists -->
   {categories.map(cat => {
     const list = entriesByCategory[cat] || [];
     if (list.length === 0) return null;
     
     return (
-      <section style="margin-bottom: 50px;">
-        <h2 style="border-bottom: 1px solid var(--border-color); padding-bottom: 8px; text-transform: uppercase; font-size: 1.3rem; color: var(--accent); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
-          <span>{cat}</span>
-          <a href={`${base}/almanac/${cat.toLowerCase()}`} style="font-size: 0.75rem; text-transform: uppercase; font-family: var(--font-mono); color: var(--text-secondary); text-decoration: none;">
-            View Category ({list.length}) →
-          </a>
-        </h2>
-        
-        <div class="cards-grid">
-          {list.slice(0, 3).map(e => {
+      <div id={cat.toLowerCase()}>
+        <h2 class="section-heading">{cat} <span style="color: var(--text-muted); font-weight: 400;">({list.length})</span></h2>
+        <ul class="content-list">
+          {list.map(e => {
             const parts = e.id.split('/');
             const flat = parts[parts.length - 1];
             return (
-              <div class={`nous-card ${getCardColorClass(e.data.category)}`}>
-                <div class="card-canvas"></div>
-                <div class="card-content">
-                  <div class="card-meta">
-                    <span>{e.data.scenario.toUpperCase()}</span>
-                    <span>{e.data.category.toUpperCase()}</span>
-                  </div>
-                  <div>
-                    <h3 class="card-title">{e.data.title}</h3>
-                    {e.data.description && (
-                      <p class="card-description">{e.data.description}</p>
-                    )}
-                  </div>
-                  <div class="card-footer">
-                    <a href={`${base}/almanac/${flat}`} class="card-action">Read Entry</a>
-                  </div>
-                </div>
-              </div>
+              <li class="content-list-item">
+                <a href={`${base}/almanac/${flat}`}>
+                  {e.data.title}
+                </a>
+                {e.data.description && (
+                  <div class="list-meta">{e.data.description}</div>
+                )}
+              </li>
             );
           })}
-        </div>
-      </section>
+        </ul>
+      </div>
     );
   })}
 </MainLayout>
