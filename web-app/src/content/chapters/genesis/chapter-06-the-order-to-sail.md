@@ -533,7 +533,4 @@ The next move belonged to the other side.
 - [[Bretagne (D655)]] — Aquitaine-class multi-mission frigate, Marine Nationale
 - [[HNLMS Tromp (F803)]] — De Zeven Provinciën-class air defence frigate, Royal Netherlands Navy
 
-## Links
 
-- Previous: [[Chapter 05 – Gathering Storm]]
-- Next: [[Chapter 07 – The Pilgrims]]

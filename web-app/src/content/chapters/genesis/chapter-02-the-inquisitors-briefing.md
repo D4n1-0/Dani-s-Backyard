@@ -278,7 +278,4 @@ On both sides of the curtain, the world was about to get much larger.
 - [[Morgan Pell]] — Chaplain-Lieutenant of the Sacred Order of the Dragon, stationed at the Fortress
 - [[HMS Herald]] — Faithful fast cruiser that carries the investigation delegation to the threshold
 
-## Links
 
-- Previous: [[Chapter 01 – Adam and Eve]]
-- Next: [[Chapter 03 – Silence of Heaven]]

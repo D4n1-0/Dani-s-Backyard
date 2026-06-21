@@ -178,5 +178,4 @@ The world had just become larger, and smaller, in the same breath.
 - [[The Gate]] — first direct observation
 - [[Inverted Earth]] — implicitly demonstrated by the unfamiliar stars on the far side
 
-## Links
-- Next: [[Chapter 02 – The Long Morning]]
+

@@ -509,7 +509,4 @@ Park did not envy them. He had the easier job. He only had to stand here and wat
 - [[Joint Scientific Committee]] — in formation; KIOST and SOA as co-chairs; responsible for coordinating all scientific investigation of the Gate
 - [[Seoul-Beijing Hotline]] — the direct communication channel used by Lee and Zheng; elevated from presidential to operational level during this crisis
 
-## Links
 
-- Previous: [[Chapter 01 – The Gate]]
-- Next: [[Chapter 03 – First Light]]

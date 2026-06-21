@@ -288,7 +288,4 @@ And on the far side, the sky was the colour of old blood.
 - [[Deus Absconditus]] — the modern theological concept of the hidden God, whose silence is an act of grace rather than abandonment
 - [[King Robert the Longsword]] — sovereign of the Faithful Crown of England, who issues the decree of hospitality
 
-## Links
 
-- Previous: [[Chapter 02 – The Inquisitor's Briefing]]
-- Next: [[Chapter 04 – Unsettling Question]]
