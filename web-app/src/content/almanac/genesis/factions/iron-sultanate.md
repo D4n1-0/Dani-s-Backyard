@@ -15,8 +15,7 @@ alignment: "Faithful (Independent)"
 created: 2026-06-19
 modified: 2026-06-19
 ---
-
-![Image](/Dani-s-Backyard/_attachments/Pasted%20image%2020260619094851.png)
+![[_attachments/Pasted image 20260619094851.png]]
 # Iron Sultanate
 
 ## Overview

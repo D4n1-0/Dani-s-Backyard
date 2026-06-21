@@ -15,8 +15,7 @@ alignment: "Heretic"
 created: 2026-06-18
 modified: 2026-06-18
 ---
-
-![Image](/Dani-s-Backyard/_attachments/Pasted%20image%2020260619094827.png)
+![[_attachments/Pasted image 20260619094827.png]]
 # Heretic Legion
 
 ## Overview

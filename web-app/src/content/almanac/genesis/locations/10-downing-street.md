@@ -16,8 +16,7 @@ danger_level: safe
 created: 2026-06-19
 modified: 2026-06-19
 ---
-
-![Image](/Dani-s-Backyard/_attachments/Pasted%20image%2020260619094154.png)
+![[_attachments/Pasted image 20260619094154.png]]
 # 10 Downing Street
 
 ## Overview

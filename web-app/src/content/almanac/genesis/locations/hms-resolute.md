@@ -16,8 +16,7 @@ danger_level: extreme
 created: 2026-06-18
 modified: 2026-06-19
 ---
-
-![Image](/Dani-s-Backyard/_attachments/Pasted%20image%2020260619215635.png)
+![[_attachments/Pasted image 20260619215635.png]]
 <small>The Royal Navy's revolutionary HMS Dreadnought, launched in 1906, gave its name to the type.</small>
 # HMS Resolute
 

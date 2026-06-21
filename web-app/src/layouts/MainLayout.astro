@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import LinkPreview from '../components/LinkPreview.astro';
+import ImageLightbox from '../components/ImageLightbox.astro';
 
 interface Props {
   title: string;
@@ -8,6 +9,7 @@ interface Props {
   showSidebar?: boolean;
   sidebarTitle?: string;
   sidebarItems?: Array<{ label: string; href: string; active?: boolean }>;
+  scenario?: string;
 }
 
 const base = import.meta.env.BASE_URL;
@@ -17,12 +19,31 @@ const {
   activeTab = 'home', 
   showSidebar = false, 
   sidebarTitle = "Navigation", 
-  sidebarItems = []
+  sidebarItems = [],
+  scenario: scenarioProp
 } = Astro.props;
+
+// Detect scenario from path or props
+let currentScenario = scenarioProp ? scenarioProp.toLowerCase() : '';
+if (!currentScenario) {
+  const path = Astro.url.pathname.toLowerCase();
+  if (path.includes('/genesis')) {
+    currentScenario = 'genesis';
+  } else if (path.includes('/titan')) {
+    currentScenario = 'titan';
+  }
+}
+
+// Retheming based on current scenario
+const themeStyles = currentScenario === 'genesis'
+  ? '--accent: #ff4d4d; --accent-rgb: 255, 77, 77;'
+  : (currentScenario === 'titan'
+    ? '--accent: #50b3e6; --accent-rgb: 80, 179, 230;'
+    : '');
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" style={themeStyles || undefined}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -33,13 +54,20 @@ const {
     <title>{title} | The Portal Threshold</title>
     <meta name="description" content="A serialized story narrative and worldbuilding companion." />
   </head>
-  <body>
+  <body class={activeTab === 'home' && !currentScenario ? 'is-root-home' : ''}>
     <div class="site-container">
       <!-- HEADER -->
       <header class="site-header">
         <div class="site-logo">
-          <a href={base}>The Portal Threshold</a>
+          <a href={base}>Dani's Backyard</a>
         </div>
+        
+        <nav class="desktop-nav" aria-label="Main navigation">
+          <a href={base} class={activeTab === 'home' ? 'active' : ''}>Home</a>
+          <a href={currentScenario ? `${base}/${currentScenario}/chapters` : `${base}/chapters`} class={activeTab === 'chapters' ? 'active' : ''}>Chapters</a>
+          <a href={currentScenario ? `${base}/${currentScenario}/almanac` : `${base}/almanac`} class={activeTab === 'almanac' ? 'active' : ''}>Almanac</a>
+        </nav>
+
         <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle navigation" aria-expanded="false">
           <span></span>
           <span></span>
@@ -47,12 +75,12 @@ const {
         </button>
       </header>
 
-      <!-- NAV PANEL (slide-in) -->
+      <!-- NAV PANEL (slide-in mobile drawer) -->
       <div class="nav-backdrop" id="nav-backdrop"></div>
-      <nav class="nav-panel" id="nav-panel" aria-label="Main navigation">
+      <nav class="nav-panel" id="nav-panel" aria-label="Mobile navigation">
         <a href={base} class={activeTab === 'home' ? 'active' : ''}>Home</a>
-        <a href={`${base}/chapters`} class={activeTab === 'chapters' ? 'active' : ''}>Chapters</a>
-        <a href={`${base}/almanac`} class={activeTab === 'almanac' ? 'active' : ''}>Almanac</a>
+        <a href={currentScenario ? `${base}/${currentScenario}/chapters` : `${base}/chapters`} class={activeTab === 'chapters' ? 'active' : ''}>Chapters</a>
+        <a href={currentScenario ? `${base}/${currentScenario}/almanac` : `${base}/almanac`} class={activeTab === 'almanac' ? 'active' : ''}>Almanac</a>
       </nav>
 
       <!-- MAIN CONTENT WRAPPER -->
@@ -79,6 +107,7 @@ const {
     </div>
 
     <LinkPreview />
+    <ImageLightbox />
 
     <script>
       // Hamburger menu toggle
@@ -116,6 +145,31 @@ const {
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeNav();
       });
+
+      // Mermaid diagram renderer integration
+      const mermaidBlocks = document.querySelectorAll('pre.language-mermaid, pre:has(code.language-mermaid)');
+      mermaidBlocks.forEach(block => {
+        const codeElement = block.querySelector('code');
+        const rawCode = codeElement ? codeElement.innerText : (block as HTMLElement).innerText;
+        
+        const div = document.createElement('div');
+        div.className = 'mermaid';
+        div.textContent = rawCode;
+        block.parentNode?.replaceChild(div, block);
+      });
+    </script>
+
+    <!-- Load and Initialize Mermaid -->
+    <script is:inline src="https://cdn.jsdelivr.net/npm/mermaid@10.2.4/dist/mermaid.min.js"></script>
+    <script is:inline>
+      if (typeof mermaid !== 'undefined') {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'dark',
+          securityLevel: 'loose',
+          flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+      }
     </script>
   </body>
 </html>

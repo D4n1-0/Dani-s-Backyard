@@ -14,8 +14,7 @@ first_referenced: "[[Chapter 06 – The Order to Sail]]"
 created: 2026-06-20
 modified: 2026-06-20
 ---
-
-![Image](/Dani-s-Backyard/_attachments/Pasted%20image%2020260619095236.png)
+![[_attachments/Pasted image 20260619095236.png]]
 # US Fleet Forces Command (FFC)
 
 ## Summary

@@ -1,0 +1,433 @@
+<!-- ImageLightbox.astro — Fullscreen image viewer with zoom + pan -->
+<dialog id="image-lightbox" class="image-lightbox" aria-label="Image preview">
+  <div class="lightbox-controls">
+    <button class="lightbox-zoom-btn" id="lightbox-zoom-out" aria-label="Zoom out" title="Zoom out">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+    </button>
+    <span class="lightbox-zoom-level" id="lightbox-zoom-level">100%</span>
+    <button class="lightbox-zoom-btn" id="lightbox-zoom-in" aria-label="Zoom in" title="Zoom in">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+    </button>
+    <button class="lightbox-zoom-btn" id="lightbox-reset" aria-label="Reset zoom" title="Reset zoom">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+    </button>
+    <div class="lightbox-controls-spacer"></div>
+    <button class="lightbox-close-btn" id="lightbox-close" aria-label="Close preview" title="Close (Esc)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="lightbox-viewport" id="lightbox-viewport">
+    <img id="lightbox-img" class="lightbox-img" src="" alt="" draggable="false" />
+  </div>
+</dialog>
+
+<style>
+  /* =============================================
+     IMAGE LIGHTBOX — DIALOG-BASED OVERLAY
+     ============================================= */
+  .image-lightbox {
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    background: transparent;
+    overflow: hidden;
+    position: fixed;
+    inset: 0;
+    /* Entry/exit animation */
+    opacity: 0;
+    transition-property: opacity, display, overlay;
+    transition-duration: 0.3s;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    transition-behavior: allow-discrete;
+  }
+
+  .image-lightbox[open] {
+    opacity: 1;
+  }
+  @starting-style {
+    .image-lightbox[open] {
+      opacity: 0;
+    }
+  }
+
+  .image-lightbox::backdrop {
+    background: rgba(0, 0, 0, 0);
+    transition:
+      background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      display 0.3s allow-discrete,
+      overlay 0.3s allow-discrete;
+  }
+  .image-lightbox[open]::backdrop {
+    background: rgba(0, 0, 0, 0.92);
+  }
+  @starting-style {
+    .image-lightbox[open]::backdrop {
+      background: rgba(0, 0, 0, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .image-lightbox {
+      transition-duration: 0.05s;
+    }
+    .image-lightbox::backdrop {
+      transition-duration: 0.05s;
+    }
+  }
+
+  /* Lightbox Control Bar */
+  .lightbox-controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 16px;
+    z-index: 10;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .lightbox-controls > * {
+    pointer-events: auto;
+  }
+
+  .lightbox-controls-spacer {
+    flex: 1;
+  }
+
+  .lightbox-zoom-btn,
+  .lightbox-close-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    transition: all 0.15s ease;
+    backdrop-filter: blur(8px);
+  }
+  .lightbox-zoom-btn:hover,
+  .lightbox-close-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .lightbox-zoom-level {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    min-width: 42px;
+    text-align: center;
+    user-select: none;
+    letter-spacing: 0.02em;
+  }
+
+  /* Viewport — the pannable/zoomable area */
+  .lightbox-viewport {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: grab;
+    touch-action: none; /* We handle touch manually for pinch-zoom */
+  }
+  .lightbox-viewport.is-dragging {
+    cursor: grabbing;
+  }
+  .lightbox-viewport.is-zoomed-out {
+    cursor: zoom-in;
+  }
+
+  .lightbox-img {
+    max-width: 90%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 4px;
+    transform-origin: 0 0;
+    transition: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+</style>
+
+<script>
+  // =============================================
+  // IMAGE LIGHTBOX — ZOOM + PAN CONTROLLER
+  // =============================================
+  const dialog = document.getElementById('image-lightbox') as HTMLDialogElement | null;
+  const viewport = document.getElementById('lightbox-viewport') as HTMLDivElement | null;
+  const img = document.getElementById('lightbox-img') as HTMLImageElement | null;
+  const zoomLevelEl = document.getElementById('lightbox-zoom-level');
+  const btnClose = document.getElementById('lightbox-close');
+  const btnZoomIn = document.getElementById('lightbox-zoom-in');
+  const btnZoomOut = document.getElementById('lightbox-zoom-out');
+  const btnReset = document.getElementById('lightbox-reset');
+
+  if (dialog && viewport && img) {
+    // State
+    let scale = 1;
+    let tx = 0;
+    let ty = 0;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let dragStartTx = 0;
+    let dragStartTy = 0;
+
+    const MIN_SCALE = 0.25;
+    const MAX_SCALE = 8;
+    const ZOOM_STEP = 0.25;
+
+    // ------- Helpers -------
+    function applyTransform() {
+      if (!img) return;
+      img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+      if (zoomLevelEl) {
+        zoomLevelEl.textContent = Math.round(scale * 100) + '%';
+      }
+      viewport?.classList.toggle('is-zoomed-out', scale <= 1);
+    }
+
+    function resetView() {
+      scale = 1;
+      tx = 0;
+      ty = 0;
+      applyTransform();
+    }
+
+    function clampPan() {
+      if (!img || !viewport) return;
+      // Allow free panning when zoomed in; snap back when zoomed out
+      if (scale <= 1) {
+        tx = 0;
+        ty = 0;
+      }
+    }
+
+    function zoomAtPoint(newScale: number, cx: number, cy: number) {
+      if (!viewport || !img) return;
+      newScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, newScale));
+
+      // Zoom towards the point (cx, cy) in viewport coordinates
+      const rect = viewport.getBoundingClientRect();
+      const imgRect = img.getBoundingClientRect();
+
+      // Point relative to the image's current top-left
+      const imgX = cx - imgRect.left;
+      const imgY = cy - imgRect.top;
+
+      // Point in image's original space (before current scale)
+      const origX = imgX / scale;
+      const origY = imgY / scale;
+
+      const ratio = newScale / scale;
+      // Adjust translation so the point under cursor stays fixed
+      tx = cx - rect.width / 2 - (cx - rect.width / 2 - tx) * ratio;
+      ty = cy - rect.height / 2 - (cy - rect.height / 2 - ty) * ratio;
+
+      scale = newScale;
+      clampPan();
+      applyTransform();
+    }
+
+    // ------- Open lightbox -------
+    function openLightbox(src: string, alt: string) {
+      if (!dialog || !img) return;
+      img.src = src;
+      img.alt = alt || 'Image preview';
+      resetView();
+      dialog.showModal();
+    }
+
+    // ------- Close lightbox -------
+    function closeLightbox() {
+      dialog?.close();
+    }
+
+    // ------- Click-to-open on .story-reader images -------
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'IMG' && target.closest('.story-reader')) {
+        e.preventDefault();
+        const imgEl = target as HTMLImageElement;
+        openLightbox(imgEl.src, imgEl.alt);
+      }
+    });
+
+    // ------- Make story-reader images show pointer cursor -------
+    document.querySelectorAll('.story-reader img').forEach((imgEl) => {
+      (imgEl as HTMLElement).style.cursor = 'zoom-in';
+    });
+
+    // ------- Close button -------
+    btnClose?.addEventListener('click', closeLightbox);
+
+    // ------- Light dismiss (click on backdrop) -------
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) {
+        closeLightbox();
+      }
+    });
+
+    // Also close when clicking the viewport background (not the image)
+    viewport.addEventListener('click', (e) => {
+      if (e.target === viewport && !isDragging && scale <= 1) {
+        closeLightbox();
+      }
+    });
+
+    // ------- Zoom buttons -------
+    btnZoomIn?.addEventListener('click', () => {
+      if (!viewport) return;
+      const rect = viewport.getBoundingClientRect();
+      zoomAtPoint(scale + ZOOM_STEP, rect.left + rect.width / 2, rect.top + rect.height / 2);
+    });
+    btnZoomOut?.addEventListener('click', () => {
+      if (!viewport) return;
+      const rect = viewport.getBoundingClientRect();
+      zoomAtPoint(scale - ZOOM_STEP, rect.left + rect.width / 2, rect.top + rect.height / 2);
+    });
+    btnReset?.addEventListener('click', resetView);
+
+    // ------- Scroll wheel zoom -------
+    viewport.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const delta = -e.deltaY * 0.002;
+      const newScale = scale * (1 + delta * 2);
+      zoomAtPoint(newScale, e.clientX, e.clientY);
+    }, { passive: false });
+
+    // ------- Mouse drag to pan -------
+    let didMove = false;
+    viewport.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      isDragging = true;
+      didMove = false;
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      dragStartTx = tx;
+      dragStartTy = ty;
+      viewport.classList.add('is-dragging');
+      e.preventDefault();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - dragStartX;
+      const dy = e.clientY - dragStartY;
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) didMove = true;
+      tx = dragStartTx + dx;
+      ty = dragStartTy + dy;
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        viewport?.classList.remove('is-dragging');
+      }
+    });
+
+    // Prevent close on viewport click after a drag
+    viewport.addEventListener('click', (e) => {
+      if (didMove) {
+        e.stopPropagation();
+        didMove = false;
+      }
+    }, true);
+
+    // ------- Touch: pinch-to-zoom + drag -------
+    let lastTouchDist = 0;
+    let lastTouchMid = { x: 0, y: 0 };
+    let touchDragStart = { x: 0, y: 0 };
+    let touchDragTxStart = 0;
+    let touchDragTyStart = 0;
+    let isTouchDragging = false;
+
+    function getTouchDist(touches: TouchList): number {
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      return Math.hypot(dx, dy);
+    }
+
+    function getTouchMid(touches: TouchList) {
+      return {
+        x: (touches[0].clientX + touches[1].clientX) / 2,
+        y: (touches[0].clientY + touches[1].clientY) / 2,
+      };
+    }
+
+    viewport.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+        lastTouchDist = getTouchDist(e.touches);
+        lastTouchMid = getTouchMid(e.touches);
+      } else if (e.touches.length === 1) {
+        isTouchDragging = true;
+        touchDragStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        touchDragTxStart = tx;
+        touchDragTyStart = ty;
+      }
+    }, { passive: true });
+
+    viewport.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const newDist = getTouchDist(e.touches);
+        const mid = getTouchMid(e.touches);
+        const ratio = newDist / lastTouchDist;
+        zoomAtPoint(scale * ratio, mid.x, mid.y);
+        lastTouchDist = newDist;
+        lastTouchMid = mid;
+      } else if (e.touches.length === 1 && isTouchDragging && scale > 1) {
+        e.preventDefault();
+        tx = touchDragTxStart + (e.touches[0].clientX - touchDragStart.x);
+        ty = touchDragTyStart + (e.touches[0].clientY - touchDragStart.y);
+        applyTransform();
+      }
+    }, { passive: false });
+
+    viewport.addEventListener('touchend', () => {
+      isTouchDragging = false;
+    });
+
+    // ------- Double-click to toggle zoom -------
+    viewport.addEventListener('dblclick', (e) => {
+      if (scale > 1.1) {
+        resetView();
+      } else {
+        zoomAtPoint(2.5, e.clientX, e.clientY);
+      }
+    });
+
+    // ------- Keyboard -------
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === '+' || e.key === '=') {
+        e.preventDefault();
+        const rect = viewport!.getBoundingClientRect();
+        zoomAtPoint(scale + ZOOM_STEP, rect.left + rect.width / 2, rect.top + rect.height / 2);
+      } else if (e.key === '-' || e.key === '_') {
+        e.preventDefault();
+        const rect = viewport!.getBoundingClientRect();
+        zoomAtPoint(scale - ZOOM_STEP, rect.left + rect.width / 2, rect.top + rect.height / 2);
+      } else if (e.key === '0') {
+        e.preventDefault();
+        resetView();
+      }
+    });
+  }
+</script>

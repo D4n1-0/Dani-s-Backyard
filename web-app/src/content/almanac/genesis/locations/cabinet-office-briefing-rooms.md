@@ -17,8 +17,7 @@ danger_level: safe
 created: 2026-06-18
 modified: 2026-06-18
 ---
-
-![Image](/Dani-s-Backyard/_attachments/Pasted%20image%2020260619094241.png)
+![[_attachments/Pasted image 20260619094241.png]]
 # Cabinet Office Briefing Rooms
 
 ## Overview

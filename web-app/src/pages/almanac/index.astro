@@ -37,22 +37,38 @@ const sidebarItems = categories
     </p>
   </div>
 
+  <!-- Category Quick Links Grid -->
+  <div class="category-grid">
+    {categories.map(cat => {
+      const list = entriesByCategory[cat] || [];
+      if (list.length === 0) return null;
+      return (
+        <a href={`#${cat.toLowerCase()}`} class="category-card">
+          <span class="category-card-name">{cat}</span>
+          <span class="category-card-count">{list.length} {list.length === 1 ? 'Entry' : 'Entries'}</span>
+        </a>
+      );
+    })}
+  </div>
+
   {categories.map(cat => {
     const list = entriesByCategory[cat] || [];
     if (list.length === 0) return null;
     
     return (
-      <div id={cat.toLowerCase()}>
-        <h2 class="section-heading">{cat} <span style="color: var(--text-muted); font-weight: 400;">({list.length})</span></h2>
+      <div id={cat.toLowerCase()} style="scroll-margin-top: 24px;">
+        <h2 class="section-heading">{cat}</h2>
         <ul class="content-list">
           {list.map(e => {
             const parts = e.id.split('/');
             const flat = parts[parts.length - 1];
             return (
               <li class="content-list-item">
-                <a href={`${base}/almanac/${flat}`}>
-                  {e.data.title}
-                </a>
+                <div>
+                  <a href={`${base}/almanac/${flat}`}>
+                    {e.data.title}
+                  </a>
+                </div>
                 {e.data.description && (
                   <div class="list-meta">{e.data.description}</div>
                 )}

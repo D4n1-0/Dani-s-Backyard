@@ -5,39 +5,29 @@ const base = import.meta.env.BASE_URL;
 ---
 
 <MainLayout title="Home" activeTab="home">
-  <div style="padding-top: 20px;">
-    <!-- Genesis Hero Card -->
-    <a href={`${base}/chapters`} class="hero-card" id="hero-genesis">
-      <div class="hero-card-content">
-        <span class="hero-card-label">Story Arc</span>
-        <h1 class="hero-card-title">Genesis</h1>
-        <p class="hero-card-subtitle">
+  <div class="splitscreen-container">
+    <!-- Genesis Split Side -->
+    <a href={`${base}/genesis`} class="split-side" id="card-genesis">
+      <div class="split-content">
+        <span class="split-label">Scenario Arc</span>
+        <h1 class="split-title">Genesis</h1>
+        <p class="split-description">
           The Anomaly reconnects. Follow the dual timeline where 1914 Trench Crusade and 2026 Modern Earth collide.
         </p>
+        <span class="split-cta">Enter Genesis</span>
       </div>
     </a>
 
-    <!-- Navigation Blocks -->
-    <div class="nav-blocks">
-      <a href={`${base}/chapters`} class="nav-block" id="nav-story">
-        <div>
-          <div class="nav-block-title">Story</div>
-          <p class="nav-block-description">
-            Read through the serialized narrative, chapter by chapter.
-          </p>
-        </div>
-        <span class="nav-block-cta">Browse Chapters</span>
-      </a>
-
-      <a href={`${base}/almanac`} class="nav-block" id="nav-almanac">
-        <div>
-          <div class="nav-block-title">Almanac</div>
-          <p class="nav-block-description">
-            Explore the encyclopedia of characters, factions, locations, and lore.
-          </p>
-        </div>
-        <span class="nav-block-cta">Open Almanac</span>
-      </a>
-    </div>
+    <!-- Titan Split Side -->
+    <a href={`${base}/titan`} class="split-side" id="card-titan">
+      <div class="split-content">
+        <span class="split-label">Scenario Arc</span>
+        <h1 class="split-title">Titan</h1>
+        <p class="split-description">
+          The Gate opens in the Yellow Sea. Follow the clash of modern East Asian geopolitics and the dark fantasy of the Attack on Titan world.
+        </p>
+        <span class="split-cta">Enter Titan</span>
+      </div>
+    </a>
   </div>
 </MainLayout>

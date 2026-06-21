@@ -15,8 +15,7 @@ alignment: "Secular Republic (Modern)"
 created: 2026-06-19
 modified: 2026-06-19
 ---
-
-![Image](/Dani-s-Backyard/_attachments/Pasted%20image%2020260619094807.png)
+![[_attachments/Pasted image 20260619094807.png]]
 # France
 
 ## Overview

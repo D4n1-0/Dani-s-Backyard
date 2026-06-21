@@ -17,8 +17,7 @@ danger_level: moderate
 created: 2026-06-19
 modified: 2026-06-19
 ---
-
-![Image](/Dani-s-Backyard/_attachments/Pasted%20image%2020260619094114.png)
+![[_attachments/Pasted image 20260619094114.png]]
 # USS Gerald R. Ford (CVN-78)
 
 ## Overview

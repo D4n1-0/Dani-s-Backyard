@@ -1,0 +1,67 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  return [
+    { params: { scenario: 'genesis' } },
+    { params: { scenario: 'titan' } },
+  ];
+}
+
+const { scenario } = Astro.params;
+const base = import.meta.env.BASE_URL;
+
+const allChapters = await getCollection('chapters');
+
+// Filter and sort chapters for this scenario
+const sortedChapters = allChapters
+  .filter(ch => ch.data.scenario.toLowerCase() === scenario)
+  .sort((a, b) => {
+    const aNum = a.data.chapterNumber ?? 0;
+    const bNum = b.data.chapterNumber ?? 0;
+    return aNum - bNum;
+  });
+
+const scenarioName = scenario === 'genesis' ? 'Genesis' : 'Titan';
+---
+
+<MainLayout 
+  title={`${scenarioName} - Chapters`} 
+  activeTab="chapters"
+  scenario={scenario}
+>
+  <a href={`${base}/${scenario}`} class="back-link">Back to Hub</a>
+  
+  <div class="page-header">
+    <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">
+      {scenarioName} Story Arc
+    </div>
+    <h1>Chapters</h1>
+    <p class="page-subtitle">Read through the chronological chapters of the {scenarioName} scenario.</p>
+  </div>
+
+  {sortedChapters.length === 0 ? (
+    <p style="color: var(--text-secondary); font-size: 0.9rem;">No chapters published yet for this scenario.</p>
+  ) : (
+    <ul class="content-list">
+      {sortedChapters.map(chapter => {
+        const parts = chapter.id.split('/');
+        const flat = parts[parts.length - 1];
+        return (
+          <li class="content-list-item">
+            <div>
+              <span class="list-number">CH {chapter.data.chapterNumber ?? '??'}</span>
+              <a href={`${base}/chapters/${flat}`}>
+                {chapter.data.title}
+              </a>
+            </div>
+            {chapter.data.releaseDate && (
+              <div class="list-meta">{chapter.data.releaseDate}</div>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  )}
+</MainLayout>

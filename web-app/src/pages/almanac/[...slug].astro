@@ -96,52 +96,68 @@ if (type === 'category' && categoryName) {
   showSidebar={true}
   sidebarTitle={sidebarTitle}
   sidebarItems={sidebarItems}
+  scenario={type === 'entry' && entry ? entry.data.scenario : undefined}
 >
-  <a href={`${base}/almanac`} class="back-link">Almanac</a>
+  <a href={type === 'entry' && entry ? `${base}/${entry.data.scenario.toLowerCase()}/almanac` : `${base}/almanac`} class="back-link">Back to Almanac</a>
 
   {type === 'entry' && entry && RenderedContent && (
-    <article>
-      <header class="page-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 28px;">
-        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">
-          {entry.data.category} · {entry.data.scenario}
-        </div>
-        <h1 style="margin: 0; color: var(--accent);">
-          {entry.data.title}
-        </h1>
-      </header>
-      
-      <!-- Info Sheet (Metadata) -->
-      <div class="info-sheet">
-        <div class="info-row-label">Category</div>
-        <div class="info-row-value">{entry.data.category}</div>
-        
-        <div class="info-row-label">Scenario</div>
-        <div class="info-row-value">{entry.data.scenario}</div>
-        
-        {entry.data.aliases && entry.data.aliases.length > 0 && (
-          <div class="info-row-label">Aliases</div>
-          <div class="info-row-value">
-            {entry.data.aliases.map(alias => (
-              <span class="badge">{alias}</span>
-            ))}
+    <div class="almanac-layout">
+      <!-- Main Content Pane -->
+      <div class="almanac-content-pane">
+        <article>
+          <header class="page-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 28px;">
+            <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">
+              {entry.data.category} · {entry.data.scenario}
+            </div>
+            <h1 style="margin: 0; color: var(--accent);">
+              {entry.data.title}
+            </h1>
+          </header>
+          
+          <!-- Core Entry Body -->
+          <div class="story-reader">
+            <RenderedContent />
           </div>
-        )}
-        
-        {entry.data.tags && entry.data.tags.length > 0 && (
-          <div class="info-row-label">Tags</div>
-          <div class="info-row-value">
-            {entry.data.tags.map(tag => (
-              <span class="badge" style="color: var(--text-secondary);">#{tag}</span>
-            ))}
-          </div>
-        )}
+        </article>
       </div>
 
-      <!-- Core Entry Body -->
-      <div class="story-reader">
-        <RenderedContent />
+      <!-- Asymmetrical Right Floating Meta Pane -->
+      <div class="almanac-info-pane">
+        <div class="info-sheet">
+          <div class="info-row">
+            <div class="info-row-label">Category</div>
+            <div class="info-row-value">{entry.data.category}</div>
+          </div>
+          
+          <div class="info-row">
+            <div class="info-row-label">Scenario</div>
+            <div class="info-row-value">{entry.data.scenario}</div>
+          </div>
+          
+          {entry.data.aliases && entry.data.aliases.length > 0 && (
+            <div class="info-row">
+              <div class="info-row-label">Aliases</div>
+              <div class="info-row-value">
+                {entry.data.aliases.map(alias => (
+                  <span class="badge">{alias}</span>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {entry.data.tags && entry.data.tags.length > 0 && (
+            <div class="info-row">
+              <div class="info-row-label">Tags</div>
+              <div class="info-row-value">
+                {entry.data.tags.map(tag => (
+                  <span class="badge" style="color: var(--text-secondary);">#{tag}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </article>
+    </div>
   )}
 
   {type === 'category' && categoryName && (

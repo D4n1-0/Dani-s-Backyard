@@ -18,8 +18,7 @@ first_appearance: "[[Chapter 02 – The Inquisitor's Briefing]]"
 created: 2026-06-18
 modified: 2026-06-18
 ---
-
-![Image](/Dani-s-Backyard/_attachments/Pasted%20image%2020260619094344.png%7C)<small>Although not in trench crusade, its roughly still in the same location.</small>
+![[_attachments/Pasted image 20260619094344.png|]]<small>Although not in trench crusade, its roughly still in the same location.</small>
 # Fortress of the White Cliffs
 
 ## Overview

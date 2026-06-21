@@ -1,0 +1,105 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  return [
+    { params: { scenario: 'genesis' } },
+    { params: { scenario: 'titan' } },
+  ];
+}
+
+const { scenario } = Astro.params;
+const base = import.meta.env.BASE_URL;
+
+const allEntries = await getCollection('almanac');
+
+// Filter entries for this scenario
+const scenarioEntries = allEntries.filter(
+  entry => entry.data.scenario.toLowerCase() === scenario
+);
+
+// Group entries by category
+const categories = ['Characters', 'Factions', 'Locations', 'Concepts', 'Items', 'Base', 'Timeline'];
+const entriesByCategory = categories.reduce((acc, cat) => {
+  acc[cat] = scenarioEntries.filter(
+    entry => entry.data.category.toLowerCase() === cat.toLowerCase()
+  );
+  return acc;
+}, {} as Record<string, typeof allEntries>);
+
+const scenarioName = scenario === 'genesis' ? 'Genesis' : 'Titan';
+
+// Sidebar items
+const sidebarItems = categories
+  .filter(cat => (entriesByCategory[cat] || []).length > 0)
+  .map(cat => ({
+    label: `${cat} (${entriesByCategory[cat].length})`,
+    href: `#${cat.toLowerCase()}`,
+    active: false
+  }));
+---
+
+<MainLayout 
+  title={`${scenarioName} - Almanac`} 
+  activeTab="almanac"
+  showSidebar={true}
+  sidebarTitle="Categories"
+  sidebarItems={sidebarItems}
+  scenario={scenario}
+>
+  <a href={`${base}/${scenario}`} class="back-link">Back to Hub</a>
+
+  <div class="page-header">
+    <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">
+      {scenarioName} World Details
+    </div>
+    <h1>Almanac</h1>
+    <p class="page-subtitle">
+      Encyclopedia of characters, factions, locations, concepts, and lore for {scenarioName}.
+    </p>
+  </div>
+
+  <!-- Category Quick Links Grid -->
+  <div class="category-grid">
+    {categories.map(cat => {
+      const list = entriesByCategory[cat] || [];
+      if (list.length === 0) return null;
+      return (
+        <a href={`#${cat.toLowerCase()}`} class="category-card">
+          <span class="category-card-name">{cat}</span>
+          <span class="category-card-count">{list.length} {list.length === 1 ? 'Entry' : 'Entries'}</span>
+        </a>
+      );
+    })}
+  </div>
+
+  {categories.map(cat => {
+    const list = entriesByCategory[cat] || [];
+    if (list.length === 0) return null;
+    
+    return (
+      <div id={cat.toLowerCase()} style="margin-bottom: 40px; scroll-margin-top: 24px;">
+        <h2 class="section-heading">{cat}</h2>
+        <ul class="content-list">
+          {list.map(e => {
+            const parts = e.id.split('/');
+            const flat = parts[parts.length - 1];
+            return (
+              <li class="content-list-item">
+                <div>
+                  <a href={`${base}/almanac/${flat}`}>
+                    {e.data.title}
+                  </a>
+                </div>
+                {e.data.description && (
+                  <div class="list-meta">{e.data.description}</div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  })}
+</MainLayout>

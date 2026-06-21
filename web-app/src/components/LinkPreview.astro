@@ -28,12 +28,12 @@
     width: 365px;
     height: 380px;
     max-height: 80vh; /* Limit height on small viewports */
-    background-color: rgba(28, 26, 23, 0.96);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(214, 197, 160, 0.2);
-    border-radius: 6px;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 0 20px rgba(214, 197, 160, 0.04);
+    background-color: rgba(10, 10, 12, 0.85);
+    backdrop-filter: blur(var(--glass-blur)) saturate(120%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
     z-index: 9999;
     opacity: 0;
     transform: scale(0.96);
@@ -67,7 +67,7 @@
     background: transparent;
   }
   .popover-body::-webkit-scrollbar-thumb {
-    background: var(--border-color-light);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 2px;
   }
   .popover-body::-webkit-scrollbar-thumb:hover {
@@ -77,25 +77,25 @@
   /* Popover Expand / Open button */
   .popover-expand-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(20, 18, 16, 0.85);
-    border: 1px solid var(--border-color-light);
-    border-radius: 4px;
+    top: 12px;
+    right: 12px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
     color: var(--text-secondary);
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     z-index: 100;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast);
   }
 
   .popover-expand-button:hover {
-    background-color: var(--bg-hover);
+    background-color: rgba(255, 255, 255, 0.1);
     color: var(--accent);
     border-color: var(--accent);
     transform: scale(1.05);
@@ -116,10 +116,11 @@
     grid-template-columns: none !important;
   }
 
-  .popover-body :global(header span) {
-    font-family: var(--font-body) !important;
+  .popover-body :global(header span),
+  .popover-body :global(header div) {
+    font-family: var(--font-ui) !important;
     font-size: 0.65rem !important;
-    color: var(--text-secondary) !important;
+    color: var(--text-muted) !important;
     text-transform: uppercase !important;
     letter-spacing: 0.05em !important;
     display: block !important;
@@ -133,42 +134,57 @@
     padding-bottom: 0 !important;
     margin: 0 !important;
     color: var(--accent) !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 700 !important;
   }
 
   /* Mini Property Sheet (Info Sheet) */
   .popover-body :global(.info-sheet) {
-    display: grid !important;
-    grid-template-columns: 110px 1fr !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
     border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    padding: 16px !important;
     margin-bottom: 18px !important;
     background-color: var(--bg-secondary) !important;
     font-size: 0.75rem !important;
   }
 
+  .popover-body :global(.info-row) {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+    padding-bottom: 8px !important;
+  }
+  .popover-body :global(.info-row:last-child) {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+  }
+
   .popover-body :global(.info-row-label) {
-    padding: 6px 12px !important;
-    border-right: 1px solid var(--border-color) !important;
-    border-bottom: 1px solid var(--border-color) !important;
-    color: var(--text-secondary) !important;
+    color: var(--text-muted) !important;
     text-transform: uppercase !important;
     font-size: 0.65rem !important;
-    background-color: var(--bg-primary) !important;
+    font-weight: 700 !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    background-color: transparent !important;
+    padding: 0 !important;
   }
 
   .popover-body :global(.info-row-value) {
-    padding: 6px 12px !important;
-    border-bottom: 1px solid var(--border-color) !important;
-    font-size: 0.75rem !important;
-  }
-
-  .popover-body :global(.info-sheet > :nth-last-child(2)),
-  .popover-body :global(.info-sheet > :last-child) {
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+    color: var(--text-primary) !important;
     border-bottom: none !important;
+    padding: 0 !important;
   }
 
   /* Badges inside property sheet */
   .popover-body :global(.badge) {
-    padding: 1px 6px !important;
+    padding: 2px 6px !important;
     font-size: 0.6rem !important;
     margin-right: 4px !important;
     margin-bottom: 4px !important;
@@ -188,10 +204,14 @@
 
   /* Text elements inside story reader */
   .popover-body :global(.story-reader) {
-    font-family: var(--font-body) !important;
+    font-family: var(--font-reading) !important;
     font-size: 0.95rem !important;
-    line-height: 1.5 !important;
+    line-height: 1.6 !important;
     color: var(--text-primary) !important;
+  }
+
+  .popover-body :global(.story-reader h1:first-of-type) {
+    display: none !important;
   }
 
   .popover-body :global(.story-reader p) {
@@ -210,12 +230,14 @@
     font-size: 1.15rem !important;
     margin-top: 1.5rem !important;
     margin-bottom: 0.6rem !important;
+    font-family: var(--font-ui) !important;
   }
 
   .popover-body :global(.story-reader h3) {
     font-size: 1.05rem !important;
     margin-top: 1.2rem !important;
     margin-bottom: 0.5rem !important;
+    font-family: var(--font-ui) !important;
   }
 
   /* loading indicators */
@@ -382,7 +404,7 @@
 
     // Set up hover event listeners on interactive links
     const setupListeners = () => {
-      const links = document.querySelectorAll('a') as NodeListOf<HTMLAnchorElement>;
+      const links = document.querySelectorAll('.story-reader a') as NodeListOf<HTMLAnchorElement>;
       
       links.forEach(link => {
         if (!isEntryLink(link)) return;

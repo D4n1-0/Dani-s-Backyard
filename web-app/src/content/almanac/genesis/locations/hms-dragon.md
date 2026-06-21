@@ -16,8 +16,7 @@ danger_level: moderate
 created: 2026-06-18
 modified: 2026-06-18
 ---
-
-![Image](/Dani-s-Backyard/_attachments/Pasted%20image%2020260619093806.png)
+![[_attachments/Pasted image 20260619093806.png]]
 # *[[HMS Dragon|HMS Dragon]]*
 
 ## Overview

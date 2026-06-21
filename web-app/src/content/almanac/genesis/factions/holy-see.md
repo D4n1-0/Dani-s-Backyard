@@ -16,8 +16,7 @@ alignment: Modern Catholic Church
 created: 2026-06-19
 modified: 2026-06-19
 ---
-
-![Image](/Dani-s-Backyard/_attachments/Pasted%20image%2020260619094837.png)
+![[_attachments/Pasted image 20260619094837.png]]
 # Holy See
 
 ## Overview

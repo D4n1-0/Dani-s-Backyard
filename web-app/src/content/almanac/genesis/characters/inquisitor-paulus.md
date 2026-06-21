@@ -18,8 +18,8 @@ status: alive
 created: 2026-06-19
 modified: 2026-06-19
 ---
-
 ---
+
 # Inquisitor Paulus
 
 ## Description
