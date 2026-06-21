@@ -147,7 +147,7 @@ const themeStyles = currentScenario === 'genesis'
       });
 
       // Mermaid diagram renderer integration
-      const mermaidBlocks = document.querySelectorAll('pre.language-mermaid, pre:has(code.language-mermaid)');
+      const mermaidBlocks = document.querySelectorAll('pre.language-mermaid, pre:has(code.language-mermaid), pre[data-language="mermaid"]');
       mermaidBlocks.forEach(block => {
         const codeElement = block.querySelector('code');
         const rawCode = codeElement ? codeElement.innerText : (block as HTMLElement).innerText;

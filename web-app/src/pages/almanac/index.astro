@@ -7,7 +7,7 @@ const allEntries = await getCollection('almanac');
 const base = import.meta.env.BASE_URL;
 
 // Group entries by category
-const categories = ['Characters', 'Factions', 'Locations', 'Concepts', 'Items'];
+const categories = ['Characters', 'Factions', 'Locations', 'Concepts', 'Items', 'Base', 'Timeline'];
 const entriesByCategory = categories.reduce((acc, cat) => {
   acc[cat] = allEntries.filter(entry => entry.data.category.toLowerCase() === cat.toLowerCase());
   return acc;

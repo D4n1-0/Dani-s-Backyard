@@ -354,8 +354,8 @@
         `;
       }
       
-      // Position initially
-      positionPopover(trigger);
+      // Position initially (deferred to avoid synchronous layout thrash)
+      requestAnimationFrame(() => positionPopover(trigger));
 
       const targetUrl = trigger.href;
       if (expandLink) expandLink.href = targetUrl;
@@ -364,7 +364,7 @@
       if (cache.has(targetUrl)) {
         if (bodyEl && activeTrigger === trigger) {
           bodyEl.innerHTML = cache.get(targetUrl);
-          positionPopover(trigger);
+          requestAnimationFrame(() => positionPopover(trigger));
         }
         return;
       }
@@ -387,7 +387,7 @@
         
         if (activeTrigger === trigger && bodyEl) {
           bodyEl.innerHTML = contentHTML;
-          positionPopover(trigger);
+          requestAnimationFrame(() => positionPopover(trigger));
         }
       } catch (err: any) {
         if (err.name !== 'AbortError' && activeTrigger === trigger && bodyEl) {
@@ -397,7 +397,7 @@
               <p>Failed to retrieve content for this record. The link may be broken or the server is offline.</p>
             </div>
           `;
-          positionPopover(trigger);
+          requestAnimationFrame(() => positionPopover(trigger));
         }
       }
     };

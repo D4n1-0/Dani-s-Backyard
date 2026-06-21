@@ -26,6 +26,7 @@ const almanacCollection = defineCollection({
   loader: glob({ pattern: '**/[^._]*.{md,mdx}', base: './src/content/almanac' }),
   schema: z.preprocess((val: any) => {
     if (val && !val.category) {
+      const subtypeVal = val.subtype || '';
       const typeVal = val.type || '';
       const typeMap: Record<string, string> = {
         'character': 'Characters',
@@ -36,7 +37,7 @@ const almanacCollection = defineCollection({
         'timeline': 'Timeline',
         'base': 'Base'
       };
-      val.category = typeMap[typeVal.toLowerCase()] || 'Other';
+      val.category = typeMap[subtypeVal.toLowerCase()] || typeMap[typeVal.toLowerCase()] || 'Other';
     }
     return val;
   }, z.object({
