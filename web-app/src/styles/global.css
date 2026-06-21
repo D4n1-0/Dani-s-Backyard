@@ -95,6 +95,18 @@ body {
   min-height: 100dvh;
   height: 100dvh;
 }
+.is-root-home .main-wrapper {
+  display: block;
+  width: 100%;
+  padding: 0;
+  gap: 0;
+}
+.is-root-home main {
+  max-width: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
 
 /* =================================
    HEADER & NAVIGATION (Desktop Header + Mobile Menu)
