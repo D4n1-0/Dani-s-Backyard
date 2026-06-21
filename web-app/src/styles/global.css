@@ -550,11 +550,18 @@ a:hover {
 .story-reader tr:hover td {
   background-color: var(--bg-hover);
 }
+.story-reader th:first-child,
+.story-reader td:first-child {
+  min-width: 100px;
+  white-space: nowrap;
+}
 .story-reader td:first-child {
   font-weight: 700;
   color: var(--accent);
-  min-width: 140px;
-  white-space: nowrap;
+}
+.story-reader th:not(:first-child),
+.story-reader td:not(:first-child) {
+  min-width: 180px;
 }
 @media (max-width: 768px) {
   .story-reader table {
@@ -569,9 +576,9 @@ a:hover {
     padding: 10px 14px;
     font-size: 0.88rem;
   }
-  .story-reader td:first-child {
-    min-width: 110px;
-    white-space: normal;
+  .story-reader th:not(:first-child),
+  .story-reader td:not(:first-child) {
+    min-width: 150px;
   }
 }
 
