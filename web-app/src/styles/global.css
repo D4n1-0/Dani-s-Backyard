@@ -516,17 +516,23 @@ a:hover {
 }
 
 /* Table Styles inside Story/Almanac reader */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 2.5rem 0;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--glass-shadow);
+  background-color: var(--bg-secondary);
+}
 .story-reader table {
   width: 100%;
   border-collapse: collapse;
-  margin: 2.5rem 0;
+  margin: 0;
   font-family: var(--font-ui);
   font-size: 0.95rem;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: var(--glass-shadow);
+  background-color: transparent;
 }
 .story-reader th,
 .story-reader td {
@@ -564,11 +570,8 @@ a:hover {
   min-width: 180px;
 }
 @media (max-width: 768px) {
-  .story-reader table {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  .table-container {
+    margin: 1.5rem 0;
     border-radius: 6px;
   }
   .story-reader th,

@@ -157,6 +157,22 @@ const themeStyles = currentScenario === 'genesis'
         div.textContent = rawCode;
         block.parentNode?.replaceChild(div, block);
       });
+
+      // Wrap tables in responsive container
+      function wrapTables() {
+        const tables = document.querySelectorAll('.story-reader table');
+        tables.forEach(table => {
+          if (table.parentNode && (table.parentNode as HTMLElement).classList.contains('table-container')) return;
+          
+          const wrapper = document.createElement('div');
+          wrapper.className = 'table-container';
+          table.parentNode?.insertBefore(wrapper, table);
+          wrapper.appendChild(table);
+        });
+      }
+
+      wrapTables();
+      document.addEventListener('astro:after-swap', wrapTables);
     </script>
 
     <!-- Load and Initialize Mermaid -->
