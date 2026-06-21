@@ -594,20 +594,6 @@ a:hover {
   gap: 12px;
 }
 
-.split-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-#card-genesis .split-label {
-  color: rgba(225, 29, 72, 0.85);
-}
-#card-titan .split-label {
-  color: rgba(2, 132, 199, 0.85);
-}
-
 .split-title {
   font-size: 3rem;
   font-weight: 800;
@@ -689,16 +675,6 @@ a:hover {
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 32px;
   margin-bottom: 40px;
-}
-
-.scenario-tag {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-  display: block;
 }
 
 .scenario-header h1 {
