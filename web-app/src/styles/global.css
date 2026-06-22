@@ -1015,6 +1015,7 @@ a:hover {
   justify-content: space-between;
   align-items: center;
   transition: background-color var(--transition-fast);
+  position: relative;
 }
 .content-list-item:hover {
   background-color: var(--bg-tertiary);
@@ -1032,6 +1033,11 @@ a:hover {
   font-size: 0.95rem;
   font-weight: 600;
   transition: color var(--transition-fast);
+}
+.content-list-item a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
 }
 .content-list-item:hover a {
   color: var(--accent);
