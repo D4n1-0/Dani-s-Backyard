@@ -2,7 +2,7 @@
 
 A serialized crossover-fiction narrative and worldbuilding companion, built as a static site with [Astro](https://astro.build).
 
-**[→ dani-s-backyard.pages.dev](https://dani-s-backyard.pages.dev)** (or wherever it's deployed)
+**[→ d4n1-0.github.io/Dani-s-Backyard](https://d4n1-0.github.io/Dani-s-Backyard/)**
 
 ---
 
