@@ -17,3 +17,5 @@ web-app/.env*
 ._*
 **/._*
 
+# AI rules
+AGENTS.md
