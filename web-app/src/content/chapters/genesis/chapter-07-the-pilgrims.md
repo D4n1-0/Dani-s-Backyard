@@ -539,4 +539,7 @@ Outside, the city hummed. The machines kept running. The people kept sleeping. T
 - [[London (Trench Crusade)]] — the Faithful Crown's capital in the TC timeline
 - [[London (Modern)]] — the modern United Kingdom's capital
 
+## Links
 
+- Previous: [[Chapter 06 – The Order to Sail]]
+- Next: [[Chapter 08 – An Instrument of Providence]]

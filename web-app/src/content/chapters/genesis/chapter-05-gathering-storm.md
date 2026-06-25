@@ -387,4 +387,7 @@ The thought stayed with him as the night deepened, as the city outside carried o
 - [[Office of the Propagation of Virtue]] — New Antioch's doctrinal and intelligence authority, now asserting independence from the Crown
 - [[Iron Sultanate]] — the third major TC-world power, now hinted as an observer
 
+## Links
 
+- Previous: [[Chapter 04 – Unsettling Question]]
+- Next: none

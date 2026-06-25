@@ -462,4 +462,7 @@ He did not know the answer. He did not know if there was an answer. He knew only
 - [[The Sifting]] — a deeper Inquisition protocol, more invasive than the Rite of Discernment, involving chrism, the Orichalcum staff, and intimate verbal interrogation. First performed on modern soil — on [[Rebecca Osei|Osei]].
 - [[King Robert's Letter]] — a formal letter from [[King Robert the Longsword]] to [[Stephen Davenport|Davenport]], framing the modern world as divine instrument and offering alliance. The letter creates Davenport's central dilemma.
 
+## Links
 
+- Previous: [[Chapter 07 – The Pilgrims]]
+- Next: [[Chapter 09 – Instruments and Witnesses]]

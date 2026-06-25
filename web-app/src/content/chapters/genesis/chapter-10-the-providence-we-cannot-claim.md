@@ -304,4 +304,7 @@ He did not pray. He had never prayed. But he sat in the silence — the same sil
 - [[The Summit of London]] — the planned trilateral summit between the Earth coalition, the [[Crown of England]], and the [[Iron Sultanate]] in modern London. Framed by the Crown as divine summons; by the modern coalition as strategic leverage.
 - [[Marcus Webb]] — CIA analyst assigned to Carrier Strike Group Two. Proposed the Ark Strategy during the post-collision council. A pattern-reader who named the play before the room was ready to hear it.
 
+## Links
 
+- Previous: [[Chapter 09 – Instruments and Witnesses]]
+- Next: none

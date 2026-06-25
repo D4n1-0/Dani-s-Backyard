@@ -200,4 +200,7 @@ The portal hummed between two worlds. And in that hum, she heard the first notes
 - [[Orichalcum]] — the blessed metal carried by [[Father Beauchamp|Father Beauchamp]]'s crucifix
 - [[Sacred Order of the Dragon]] — the military-religious order to which [[Father Beauchamp|Beauchamp]] belongs
 
+## Links
 
+- Previous: none
+- Next: [[Chapter 02 – The Inquisitor's Briefing]]

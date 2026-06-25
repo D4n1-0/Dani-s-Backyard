@@ -53,27 +53,11 @@ function cleanDir(dir) {
 async function main() {
   console.log('--- Starting Vault Sync ---');
   
-  // 1. Copy attachments
-  console.log('Copying attachments...');
-  const srcAttachments = path.join(VAULT_ROOT, '_attachments');
-  if (fs.existsSync(srcAttachments)) {
-    if (!fs.existsSync(DEST_PUBLIC_ATTACHMENTS)) {
-      fs.mkdirSync(DEST_PUBLIC_ATTACHMENTS, { recursive: true });
-    }
-    const files = fs.readdirSync(srcAttachments);
-    let copyCount = 0;
-    files.forEach(file => {
-      const srcFile = path.join(srcAttachments, file);
-      const destFile = path.join(DEST_PUBLIC_ATTACHMENTS, file);
-      // Only copy files
-      if (fs.statSync(srcFile).isFile()) {
-        fs.copyFileSync(srcFile, destFile);
-        copyCount++;
-      }
-    });
-    console.log(`Copied ${copyCount} attachments.`);
-  } else {
-    console.warn(`No attachments folder found at ${srcAttachments}`);
+  // 1. Clean up old attachments directory if it exists
+  console.log('Cleaning up old attachments folder...');
+  if (fs.existsSync(DEST_PUBLIC_ATTACHMENTS)) {
+    fs.rmSync(DEST_PUBLIC_ATTACHMENTS, { recursive: true, force: true });
+    console.log('Removed old attachments folder from web-app.');
   }
 
   // 2. Clear content folders

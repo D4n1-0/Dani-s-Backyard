@@ -329,4 +329,7 @@ But Park had.
 - [[USS Milius (DDG-69)]] — US Navy destroyer observing the exclusion zone
 - [[Inverted Alfred Faure Islands]] — nearest landmass on the AOT side; barren, uninhabited, topographically identical to the terrestrial Crozet Archipelago
 
+## Links
 
+- Previous: [[Chapter 02 – The Long Morning]]
+- Next: N/A

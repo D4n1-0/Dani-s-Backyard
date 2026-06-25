@@ -315,4 +315,7 @@ The ark was open. The flood was waiting. And no one — not in Whitehall, not in
 - [[Cabinet Office Briefing Rooms]] — COBR, the UK's crisis management centre beneath Whitehall
 - [[Cautious Secular Engagement]] — the policy doctrine established in this chapter, destined for collision with Faithful expectations
 
+## Links
 
+- Previous: [[Chapter 03 – Silence of Heaven]]
+- Next: [[Chapter 05 – Gathering Storm]]

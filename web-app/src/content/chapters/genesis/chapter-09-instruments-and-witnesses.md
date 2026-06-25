@@ -346,4 +346,7 @@ The door closed behind him. The ship hummed. The sea waited. And on the grey hor
 - [[The Theology of Waiting]] — [[Bishop Aldric|Aldric]]'s new theological framework, born from his pilgrimage in the modern world and his conversation with [[Peter Chisholm|Archbishop Chisholm]]. The moderns are neither an ark nor a test; they are a people who have survived the hiddenness of God, and their meaning is not yet revealed. The Faithful must wait, watch, and learn rather than rushing to embrace or reject.
 - [[The Heretic Submarine]] — a Heretic Legion submarine, constructed sometime after 1866, conducting systematic intelligence surveillance on the portal cordon — intercepting and relaying all fleet transmissions to an unknown Heretic command post. First confirmed Heretic presence at the portal. Destroyed by *[[USS Stout (DDG-55)|USS Stout]]* after the collision with *[[HMS Resolute|HMS Resolute]]*.
 
+## Links
 
+- Previous: [[Chapter 08 – An Instrument of Providence]]
+- Next: none
