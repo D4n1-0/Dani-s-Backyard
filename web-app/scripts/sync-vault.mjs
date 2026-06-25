@@ -11,6 +11,7 @@ const WEB_APP_ROOT = path.resolve(__dirname, '../');
 const DEST_CONTENT_CHAPTERS = path.join(WEB_APP_ROOT, 'src/content/chapters');
 const DEST_CONTENT_ALMANAC = path.join(WEB_APP_ROOT, 'src/content/almanac');
 const DEST_PUBLIC_ATTACHMENTS = path.join(WEB_APP_ROOT, 'public/_attachments');
+const DEST_ROOT_ATTACHMENTS = path.join(__dirname, '../../synced-attachments');
 
 const SCENARIOS = ['genesis', 'titan'];
 
@@ -58,6 +59,28 @@ async function main() {
   if (fs.existsSync(DEST_PUBLIC_ATTACHMENTS)) {
     fs.rmSync(DEST_PUBLIC_ATTACHMENTS, { recursive: true, force: true });
     console.log('Removed old attachments folder from web-app.');
+  }
+
+  // 1.5 Sync attachments to root repo folder
+  console.log('Syncing attachments to root repository...');
+  const srcAttachments = path.join(VAULT_ROOT, '_attachments');
+  if (fs.existsSync(srcAttachments)) {
+    if (!fs.existsSync(DEST_ROOT_ATTACHMENTS)) {
+      fs.mkdirSync(DEST_ROOT_ATTACHMENTS, { recursive: true });
+    }
+    const files = fs.readdirSync(srcAttachments);
+    let copyCount = 0;
+    files.forEach(file => {
+      const srcFile = path.join(srcAttachments, file);
+      const destFile = path.join(DEST_ROOT_ATTACHMENTS, file);
+      if (fs.statSync(srcFile).isFile()) {
+        fs.copyFileSync(srcFile, destFile);
+        copyCount++;
+      }
+    });
+    console.log(`Copied ${copyCount} attachments to root synced-attachments/`);
+  } else {
+    console.warn(`No attachments folder found at ${srcAttachments}`);
   }
 
   // 2. Clear content folders

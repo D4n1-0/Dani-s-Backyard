@@ -1,6 +1,5 @@
 # Raw Obsidian vault
-The Stories/*
-!The Stories/_attachments/
+The Stories/
 
 # Web App build/dependency files
 web-app/node_modules/

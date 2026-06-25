@@ -21,7 +21,11 @@ function vaultAttachmentsIntegration() {
                     if (req.url && req.url.startsWith(basePath)) {
                       const urlPath = req.url.split('?')[0]; 
                       const fileName = decodeURIComponent(urlPath.replace(basePath, ''));
-                      const filePath = path.resolve(process.cwd(), '../The Stories/_attachments', fileName);
+                      
+                      let filePath = path.resolve(process.cwd(), '../synced-attachments', fileName);
+                      if (!fs.existsSync(filePath)) {
+                        filePath = path.resolve(process.cwd(), '../The Stories/_attachments', fileName);
+                      }
                       
                       if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
                         const ext = path.extname(filePath).toLowerCase();
@@ -43,10 +47,15 @@ function vaultAttachmentsIntegration() {
       },
       'astro:build:done': async ({ dir }) => {
         const outDir = fileURLToPath(dir);
-        const src = path.resolve(process.cwd(), '../The Stories/_attachments');
         const dest = path.join(outDir, '_attachments');
-        if (fs.existsSync(src)) {
-          fs.cpSync(src, dest, { recursive: true });
+        
+        const srcSynced = path.resolve(process.cwd(), '../synced-attachments');
+        const srcVault = path.resolve(process.cwd(), '../The Stories/_attachments');
+        
+        if (fs.existsSync(srcSynced)) {
+          fs.cpSync(srcSynced, dest, { recursive: true });
+        } else if (fs.existsSync(srcVault)) {
+          fs.cpSync(srcVault, dest, { recursive: true });
         }
       }
     }
