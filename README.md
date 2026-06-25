@@ -36,10 +36,11 @@ Each scenario has a full **Almanac** — characters, factions, locations, items,
 │   │   ├── lib/          ← Custom remark wikilink plugin
 │   │   └── styles/       ← global.css (dark glassmorphism theme)
 │   ├── scripts/          ← sync-vault.mjs (vault → web-app pipeline)
-│   └── public/           ← Static assets, favicon, synced attachments
+│   └── public/           ← Static assets, favicon
 │
 ├── AGENTS.md             ← AI agent instructions for working in this repo
-└── README.md             ← You are here
+├── README.md             ← You are here
+└── docs/                 ← AI Agent persistent memory, architecture plans, and context
 ```
 
 ---
@@ -92,15 +93,16 @@ The canonical content lives in the Obsidian vault (`The Stories/`), which is **n
 ```
 The Stories/Story/{Scenario}/Story/*.md     → web-app/src/content/chapters/{scenario}/*.md
 The Stories/Story/{Scenario}/Almanac/*/*.md → web-app/src/content/almanac/{scenario}/{category}/*.md
-The Stories/_attachments/*                   → web-app/public/_attachments/*
+The Stories/_attachments/*                   → web-app/dist/_attachments/* (Served dynamically in dev, copied at build)
 ```
 
 **Sync command:** `npm run sync` (runs `scripts/sync-vault.mjs`)
 
 The sync script:
-1. Copies attachments to `public/_attachments/`
-2. Clears and repopulates `src/content/chapters/` and `src/content/almanac/`
-3. Slugifies filenames during copy (e.g., `Chapter 01 — Adam and Eve.md` → `chapter-01-adam-and-eve.md`)
+1. Clears and repopulates `src/content/chapters/` and `src/content/almanac/`
+2. Slugifies filenames during copy (e.g., `Chapter 01 — Adam and Eve.md` → `chapter-01-adam-and-eve.md`)
+
+*(Note: Images from `_attachments` are no longer copied by the sync script to keep the codebase pure. They are loaded dynamically via Vite during development and compiled straight to `dist/` during a production build).*
 
 ### Wikilinks
 

@@ -10,6 +10,7 @@ The Stories/       ← Obsidian vault (gitignored at root, but .obsidian/ config
   Story/Titan/     ← Attack on Titan scenario
   General/         ← Vault guide, templates
 web-app/           ← Astro 6.4 static site (deployed to GitHub Pages)
+docs/              ← Persistent memory and AI plans (for AI agents across platforms)
 ```
 
 The vault is **not** tracked at the repo root level — only its `.obsidian/` config and `.gitignore` are committed. The web-app has its own `.gitignore`.
@@ -20,7 +21,7 @@ The vault is **not** tracked at the repo root level — only its `.obsidian/` co
 | :--------------- | :--------------------------------------------------- |
 | `npm run dev`    | Dev server at `localhost:4321`                        |
 | `npm run build`  | Build static site to `dist/`                          |
-| `npm run sync`   | Copy vault content → `src/content/` + `public/_attachments/` |
+| `npm run sync`   | Copy vault markdown content → `src/content/`          |
 | `npm run preview`| Preview the production build locally                  |
 
 **Critical order:** Run `npm run sync` before `npm run build` (or `dev`) if vault content has changed. The build reads from `src/content/`, not from the vault directly.
@@ -38,7 +39,7 @@ Node >= 22.12.0 is required (`package.json` engines field).
 ```
 The Stories/Story/{Scenario}/Story/*.md    → src/content/chapters/{scenario}/*.md
 The Stories/Story/{Scenario}/Almanac/*/*.md → src/content/almanac/{scenario}/{category}/*.md
-The Stories/_attachments/*                  → public/_attachments/*
+The Stories/_attachments/*                  → (Served dynamically in dev, copied to dist/ at build time)
 ```
 
 The sync script (`scripts/sync-vault.mjs`) hardcodes two scenarios: `genesis` and `titan`. It slugifies filenames during copy.
@@ -74,3 +75,9 @@ For editing narrative content (chapters, Almanac entries), read `The Stories/AGE
 - Broken-link scanning before finishing any edit session
 - Canon research workflow (check Trench Crusade / Attack on Titan wikis before writing lore)
 - Dual-timeline date format: `"Day N — YYYY-MM-DD TC / YYYY-MM-DD Modern"`
+
+## AI Agent Memory & Persistence
+
+For all AI coding assistants (Antigravity, Cursor, Cline, etc.):
+- **Persistent Memory**: Always store long-term context, implementation plans, architecture notes, and progress tracking in the `docs/` directory at the repo root.
+- **Rule**: Before starting a complex task, read the `docs/` folder to regain context. When finishing a significant task, document the outcome and any new design decisions in `docs/` to maintain cross-platform persistent memory.

@@ -1,0 +1,1 @@
+This directory is reserved for AI Agents (Antigravity, Cursor, Cline, etc.) to store long-term context, implementation plans, architecture notes, and progress tracking files to ensure memory persistence across platforms.
