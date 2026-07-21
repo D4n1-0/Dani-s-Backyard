@@ -63,14 +63,16 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
+  height: 100dvh;
   background-image: var(--bg-image-dark);
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  background-size: auto 100%;
+  background-position: center center;
   background-repeat: no-repeat;
   z-index: -1;
   filter: brightness(0.7);
   transition: background-image 0.3s ease;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 html[data-theme="light"] body::before {
