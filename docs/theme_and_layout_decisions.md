@@ -4,7 +4,7 @@
 - **Attribute:** Theme state is controlled via `data-theme="light"` or `data-theme="dark"` on `<html>`.
 - **Backgrounds:**
   - Backgrounds are rendered inside a `body::before` pseudo-element with `filter: brightness(0.7)`. This darkens the images to 70% brightness without affecting typography.
-  - Sizing & Fitting: `background-size: auto 100%` and `background-position: center center` prioritize vertical top-to-bottom fit without clipping the image height.
+  - Sizing & Fitting: `background-size: cover` and `background-position: center center` ensure the image covers the entire screen edge-to-edge on PC and mobile viewports with zero black side bars.
   - Mobile Scroll Stability: Rendered with `position: fixed; inset: 0; height: 100dvh; transform: translateZ(0)` without `background-attachment: fixed` to eliminate scroll jitter and moving background glitches on mobile WebKit/Blink browsers.
   - Dark Mode: `url('/Dani-s-Backyard/images/Darkmode.jpg')` (`--bg-image-dark`)
   - Light Mode: `url('/Dani-s-Backyard/images/Whitemode.jpg')` (`--bg-image-light`)
