@@ -30,12 +30,12 @@
     width: 365px;
     height: 380px;
     max-height: 80vh; /* Limit height on small viewports */
-    background-color: rgba(10, 10, 12, 0.85);
+    background-color: var(--bg-secondary);
     backdrop-filter: blur(var(--glass-blur)) saturate(120%);
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(120%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+    box-shadow: var(--glass-shadow);
     z-index: 9999;
     opacity: 0;
     transform: scale(0.96);
@@ -81,8 +81,8 @@
     position: absolute;
     top: 12px;
     right: 12px;
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     color: var(--text-secondary);
     width: 32px;
@@ -97,7 +97,7 @@
   }
 
   .popover-expand-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--bg-hover);
     color: var(--accent);
     border-color: var(--accent);
     transform: scale(1.05);
@@ -157,7 +157,7 @@
     display: flex !important;
     flex-direction: column !important;
     gap: 4px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+    border-bottom: 1px solid var(--border-color) !important;
     padding-bottom: 8px !important;
   }
   .popover-body :global(.info-row:last-child) {

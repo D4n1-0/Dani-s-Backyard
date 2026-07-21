@@ -2,7 +2,6 @@
 import '../styles/global.css';
 import LinkPreview from '../components/LinkPreview.astro';
 import ImageLightbox from '../components/ImageLightbox.astro';
-import SearchUI from '../components/SearchUI.astro';
 import { getScenarioFromPath, getScenario } from '../lib/scenarios';
 
 interface Props {
@@ -34,15 +33,26 @@ const currentScenario = scenarioProp
 const themeStyles = currentScenario
   ? `--accent: ${currentScenario.accent}; --accent-rgb: ${currentScenario.accentRgb};`
   : '';
+
+// Combine theme styles and background images with base path resolution
+const fullStyles = `--bg-image-dark: url(${base}/images/Darkmode.jpg); --bg-image-light: url(${base}/images/Whitemode.jpg); ${themeStyles}`;
 ---
 
 <!doctype html>
-<html lang="en" style={themeStyles} data-scenario={currentScenario ? currentScenario.slug : ''}>
+<html lang="en" style={fullStyles} data-scenario={currentScenario ? currentScenario.slug : ''}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Theme Initialization blocking script to prevent theme flash -->
+    <script is:inline>
+      (function() {
+        const storedTheme = localStorage.getItem('theme');
+        document.documentElement.setAttribute('data-theme', storedTheme || 'dark');
+      })();
+    </script>
 
     <!-- SEO Meta Tags -->
     <title>{title} | Dani's Backyard</title>
@@ -60,14 +70,34 @@ const themeStyles = currentScenario
           <a href={base} class={activeTab === 'home' ? 'active' : ''}>Home</a>
           <a href={currentScenario ? `${base}/${currentScenario.slug}/chapters` : `${base}/chapters`} class={activeTab === 'chapters' ? 'active' : ''}>Chapters</a>
           <a href={currentScenario ? `${base}/${currentScenario.slug}/almanac` : `${base}/almanac`} class={activeTab === 'almanac' ? 'active' : ''}>Almanac</a>
-          <SearchUI />
         </nav>
 
-        <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle navigation" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+        <div class="header-controls">
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle Light/Dark Mode">
+            <!-- Sun Icon (visible in dark mode) -->
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2"></path>
+              <path d="M12 20v2"></path>
+              <path d="M4.93 4.93l1.41 1.41"></path>
+              <path d="M17.66 17.66l1.41 1.41"></path>
+              <path d="M2 12h2"></path>
+              <path d="M20 12h2"></path>
+              <path d="M6.34 17.66l-1.41 1.41"></path>
+              <path d="M19.07 4.93l-1.41 1.41"></path>
+            </svg>
+            <!-- Moon Icon (visible in light mode) -->
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+          </button>
+
+          <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle navigation" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </header>
       <!-- NAV PANEL (slide-in mobile drawer) -->
       <div class="nav-backdrop" id="nav-backdrop"></div>
@@ -75,7 +105,6 @@ const themeStyles = currentScenario
         <a href={base} class={activeTab === 'home' ? 'active' : ''}>Home</a>
         <a href={currentScenario ? `${base}/${currentScenario.slug}/chapters` : `${base}/chapters`} class={activeTab === 'chapters' ? 'active' : ''}>Chapters</a>
         <a href={currentScenario ? `${base}/${currentScenario.slug}/almanac` : `${base}/almanac`} class={activeTab === 'almanac' ? 'active' : ''}>Almanac</a>
-        <a href="#" id="mobile-search-trigger">Search</a>
       </nav>
 
       <!-- MAIN CONTENT WRAPPER -->
@@ -141,12 +170,7 @@ const themeStyles = currentScenario
         if (e.key === 'Escape') closeNav();
       });
 
-      // Mobile search trigger: open search overlay and close nav
-      document.getElementById('mobile-search-trigger')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        closeNav();
-        setTimeout(() => document.getElementById('search-trigger')?.click(), 200);
-      });
+
 
       // Mermaid diagram renderer integration
       const mermaidBlocks = document.querySelectorAll('pre.language-mermaid, pre:has(code.language-mermaid), pre[data-language="mermaid"]');
@@ -175,6 +199,26 @@ const themeStyles = currentScenario
 
       wrapTables();
       document.addEventListener('astro:after-swap', wrapTables);
+
+      // Theme toggle click handler
+      function setupThemeToggle() {
+        const toggleBtn = document.getElementById('theme-toggle');
+        if (!toggleBtn) return;
+
+        // Clean up any existing listeners just in case
+        const newToggleBtn = toggleBtn.cloneNode(true);
+        toggleBtn.parentNode?.replaceChild(newToggleBtn, toggleBtn);
+
+        newToggleBtn.addEventListener('click', () => {
+          const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+          const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+        });
+      }
+
+      setupThemeToggle();
+      document.addEventListener('astro:after-swap', setupThemeToggle);
     </script>
 
     <!-- Load and Initialize Mermaid -->

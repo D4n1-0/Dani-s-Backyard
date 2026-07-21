@@ -57,7 +57,6 @@ jobs:
 
       - name: Build with Astro and Pagefind
         run: |
-          npm run sync
           npm run build
         working-directory: ${{ env.BUILD_PATH }}
 
