@@ -50,6 +50,12 @@
 
     if (!trigger || !overlay || !input || !closeBtn || !filtersEl || !resultsEl) return;
 
+    // Teleport overlay to body so fixed positioning is relative to viewport,
+    // not trapped inside header's backdrop-filter / sticky containing block
+    if (overlay.parentNode !== document.body) {
+      document.body.appendChild(overlay);
+    }
+
     // Build filter chips dynamically
     let activeFilter = 'all';
     const chips: HTMLButtonElement[] = [];
@@ -122,11 +128,13 @@
     async function ensurePagefind() {
       if (pagefind) return pagefind;
       try {
+        const hasBase = window.location.pathname.startsWith('/Dani-s-Backyard');
+        const basePath = hasBase ? '/Dani-s-Backyard' : '';
         // @ts-ignore — pagefind is served at /pagefind/pagefind.js after build
-        pagefind = await import(/* @vite-ignore */ `${window.location.pathname.startsWith('/Dani-s-Backyard') ? '/Dani-s-Backyard' : ''}/pagefind/pagefind.js`);
+        pagefind = await import(/* @vite-ignore */ `${basePath}/pagefind/pagefind.js`);
         return pagefind;
       } catch (e) {
-        resultsEl.innerHTML = '<div class="search-empty">Search is not available. Run <code>npm run build</code> to generate the index.</div>';
+        resultsEl.innerHTML = '<div class="search-empty">Search index could not be loaded. Please ensure site has been deployed.</div>';
         return null;
       }
     }

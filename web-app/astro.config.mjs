@@ -16,7 +16,32 @@ function vaultAttachmentsIntegration() {
               {
                 name: 'serve-vault-attachments',
                 configureServer(server) {
-                  server.middlewares.use((req, res, next) => {
+                    if (req.url && (req.url.startsWith('/pagefind/') || req.url.startsWith('/Dani-s-Backyard/pagefind/'))) {
+                      const urlPath = req.url.split('?')[0]; 
+                      const cleanPath = urlPath.startsWith('/Dani-s-Backyard/pagefind/')
+                        ? urlPath.replace('/Dani-s-Backyard/pagefind/', '')
+                        : urlPath.replace('/pagefind/', '');
+                      const fileName = decodeURIComponent(cleanPath);
+
+                      let filePath = path.resolve(process.cwd(), 'public/pagefind', fileName);
+                      if (!fs.existsSync(filePath)) {
+                        filePath = path.resolve(process.cwd(), 'dist/pagefind', fileName);
+                      }
+
+                      if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+                        const ext = path.extname(filePath).toLowerCase();
+                        const mimes = {
+                          '.js': 'application/javascript',
+                          '.json': 'application/json',
+                          '.css': 'text/css',
+                          '.pf_meta': 'application/octet-stream',
+                          '.pf_index': 'application/octet-stream',
+                          '.pf_fragment': 'application/octet-stream',
+                        };
+                        res.setHeader('Content-Type', mimes[ext] || 'application/octet-stream');
+                        return fs.createReadStream(filePath).pipe(res);
+                      }
+                    }
                     if (req.url && (req.url.startsWith('/_attachments/') || req.url.startsWith('/Dani-s-Backyard/_attachments/'))) {
                       const urlPath = req.url.split('?')[0]; 
                       const cleanPath = urlPath.startsWith('/Dani-s-Backyard/_attachments/')
