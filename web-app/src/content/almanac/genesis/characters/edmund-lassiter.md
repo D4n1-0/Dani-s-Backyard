@@ -8,7 +8,7 @@ tags:
   - type/character
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 species: Human
 role: support
 faction: "Crown of England"

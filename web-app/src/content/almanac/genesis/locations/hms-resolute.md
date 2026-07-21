@@ -8,13 +8,23 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "North Atlantic"
 parent_location: "Trench Crusade Earth"
 environment: aquatic
 danger_level: extreme
 created: 2026-06-18
 modified: 2026-06-19
+map_coords: [50.55, -9.45]
+moveable: true
+map_coords_by_chapter:
+  '1': [50.55, -9.45]
+  '2': [50.55, -9.45]
+  '6': [50.55, -9.45]
+  '7': [50.55, -9.45]
+  '9': [50.52, -9.42]
+map_color: "#6d28d9"
+
 ---
 ![[_attachments/Pasted image 20260619215635.png]]
 <small>The Royal Navy's revolutionary HMS Dreadnought, launched in 1906, gave its name to the type.</small>

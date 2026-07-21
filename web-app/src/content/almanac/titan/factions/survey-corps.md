@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "[[Hange Zoë]]"
 headquarters: "[[Paradis Island]]"
 alignment: "Paradis Military — exploratory, offensive wing"

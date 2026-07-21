@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 leader: "Various Arch-Devils and Heretic Priests"
 headquarters: "Jerusalem (Hell's earthly capital)"
 alignment: "Heretic"

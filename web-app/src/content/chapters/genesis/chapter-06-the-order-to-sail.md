@@ -10,7 +10,8 @@ tags:
   - type/chapter
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
+status: draft
 date_in_world: "Day 7-10 — 1914-09-20 to 1914-09-23 TC / 2026-06-24 to 2026-06-27 Modern"
 participants:
   - Daniel Brennan
@@ -275,16 +276,16 @@ By the end of the first day, his whiteboard contained the assembled fleet:
 | Vessel                         | Nation            | Fuel State          | Days on Station       |                   |
 | ------------------------------ | ----------------- | ------------------- | --------------------- | ----------------- |
 | *[[USS Harry S. Truman (CVN-75)|USS Harry S. Truman]]*          | US                | Unlimited (nuclear) | Limited only by food  |                   |
-| USS *[[USS Gravely (DDG-107)   | Gravely]]*        | US                  | 42% → 11% at arrival  | 2-3 (needs UNREP) |
-| USS *[[USS Stout (DDG-55)      | Stout]]*          | US                  | 44% → 9% at arrival   | 2-3 (needs UNREP) |
-| USS *[[USS Bainbridge (DDG-96) | Bainbridge]]*     | US                  | 58% → 16% at arrival  | 3-4 (needs UNREP) |
+| USS *[[USS Gravely (DDG-107)|Gravely]]*        | US                  | 42% → 11% at arrival  | 2-3 (needs UNREP) |
+| USS *[[USS Stout (DDG-55)|Stout]]*          | US                  | 44% → 9% at arrival   | 2-3 (needs UNREP) |
+| USS *[[USS Bainbridge (DDG-96)|Bainbridge]]*     | US                  | 58% → 16% at arrival  | 3-4 (needs UNREP) |
 | *[[HMS Queen Elizabeth (R08)|HMS Queen Elizabeth]]*          | UK                | Adequate (transit)  | 14 (with RFA support) |                   |
 | *[[HMS Dragon|HMS Dragon]]*                   | UK                | Adequate            | 14                    |                   |
 | *[[HMS Defender|HMS Defender]]*                 | UK                | Adequate            | 14                    |                   |
 | *[[HMS Duncan|HMS Duncan]]*                   | UK                | Adequate            | 14                    |                   |
-| *[[Chevalier Paul (D621)       | Chevalier Paul]]* | FR                  | Adequate              | TBD               |
-| *[[Bretagne (D655)             | Bretagne]]*       | FR                  | Adequate              | TBD               |
-| HNLMS *[[HNLMS Tromp (F803)    | Tromp]]*          | NL                  | En route              | TBD               |
+| *[[Chevalier Paul (D621)|Chevalier Paul]]* | FR                  | Adequate              | TBD               |
+| *[[Bretagne (D655)|Bretagne]]*       | FR                  | Adequate              | TBD               |
+| HNLMS *[[HNLMS Tromp (F803)|Tromp]]*          | NL                  | En route              | TBD               |
 | *Thor Heyerdahl*               | NO                | En route            | TBD                   |                   |
 | *Infanta Cristina*             | ES                | En route            | TBD                   |                   |
 

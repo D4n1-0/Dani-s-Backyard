@@ -9,7 +9,7 @@ tags:
   - type/character
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 species: Human
 role: Support (Faithful)
 faction: Crown of England

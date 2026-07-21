@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 leader: "Chancellor [[Anna Strauss]]"
 headquarters: "Berlin"
 alignment: "Secular Parliamentary Democracy (Modern)"

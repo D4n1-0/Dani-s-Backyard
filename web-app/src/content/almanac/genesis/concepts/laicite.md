@@ -8,7 +8,7 @@ tags:
   - type/concept
   - status/draft
   - scenario/genesis
-scenario: Genesis
+scenario: "genesis"
 parent_concept:
 first_referenced: "[[Chapter 05 – Gathering Storm]]"
 created: 2026-06-19

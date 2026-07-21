@@ -1,0 +1,192 @@
+---
+// SearchUI.astro — Pagefind-backed global search with scenario filters
+---
+
+<button id="search-trigger" class="search-trigger" aria-label="Open search" title="Search (Ctrl+K)">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="11" cy="11" r="8"></circle>
+    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</button>
+
+<div id="search-overlay" class="search-overlay" aria-hidden="true" role="dialog" aria-label="Search">
+  <div class="search-panel">
+    <div class="search-input-row">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input id="search-input" type="text" placeholder="Search chapters and almanac..." autocomplete="off" spellcheck="false" />
+      <button id="search-close-btn" class="search-close-btn" aria-label="Close search">✕</button>
+    </div>
+    <div id="search-filters" class="search-filters"></div>
+    <div id="search-results" class="search-results">
+      <div class="search-empty">Type to search across all scenarios.</div>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  /* Pagefind result overrides (Pagefind injects its own classes) */
+  .search-results mark {
+    background: rgba(var(--accent-rgb), 0.25);
+    color: var(--accent);
+    padding: 0 2px;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  import { scenarioList } from '../lib/scenarios';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const trigger = document.getElementById('search-trigger');
+    const overlay = document.getElementById('search-overlay');
+    const input = document.getElementById('search-input') as HTMLInputElement;
+    const closeBtn = document.getElementById('search-close-btn');
+    const filtersEl = document.getElementById('search-filters');
+    const resultsEl = document.getElementById('search-results');
+
+    if (!trigger || !overlay || !input || !closeBtn || !filtersEl || !resultsEl) return;
+
+    // Build filter chips dynamically
+    let activeFilter = 'all';
+    const chips: HTMLButtonElement[] = [];
+
+    const buildFilters = () => {
+      filtersEl.innerHTML = '';
+      const allBtn = document.createElement('button');
+      allBtn.className = 'search-filter-chip active';
+      allBtn.dataset.filter = 'all';
+      allBtn.textContent = 'All';
+      allBtn.addEventListener('click', () => setFilter('all'));
+      filtersEl.appendChild(allBtn);
+      chips.push(allBtn);
+
+      scenarioList.forEach(s => {
+        const btn = document.createElement('button');
+        btn.className = 'search-filter-chip';
+        btn.dataset.filter = s.slug;
+        btn.textContent = s.title;
+        btn.addEventListener('click', () => setFilter(s.slug));
+        filtersEl.appendChild(btn);
+        chips.push(btn);
+      });
+    };
+
+    const setFilter = (filter: string) => {
+      activeFilter = filter;
+      chips.forEach(c => {
+        c.classList.toggle('active', c.dataset.filter === filter);
+      });
+      // Re-run search if there's a query
+      if (input.value.trim()) runSearch();
+    };
+
+    // Open / close
+    const open = () => {
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      setTimeout(() => input.focus(), 50);
+      document.body.style.overflow = 'hidden';
+    };
+
+    const close = () => {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      input.value = '';
+      resultsEl.innerHTML = '<div class="search-empty">Type to search across all scenarios.</div>';
+    };
+
+    trigger.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('open')) {
+        close();
+      } else if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        if (overlay.classList.contains('open')) close();
+        else open();
+      }
+    });
+
+    // Search execution
+    let pagefind: any = null;
+    let searchTimer: any = null;
+
+    async function ensurePagefind() {
+      if (pagefind) return pagefind;
+      try {
+        // @ts-ignore — pagefind is served at /pagefind/pagefind.js after build
+        pagefind = await import(/* @vite-ignore */ `${window.location.pathname.startsWith('/Dani-s-Backyard') ? '/Dani-s-Backyard' : ''}/pagefind/pagefind.js`);
+        return pagefind;
+      } catch (e) {
+        resultsEl.innerHTML = '<div class="search-empty">Search is not available. Run <code>npm run build</code> to generate the index.</div>';
+        return null;
+      }
+    }
+
+    async function runSearch() {
+      const query = input.value.trim();
+      if (!query) {
+        resultsEl.innerHTML = '<div class="search-empty">Type to search across all scenarios.</div>';
+        return;
+      }
+
+      const pf = await ensurePagefind();
+      if (!pf) return;
+
+      const search = await pf.search(query);
+
+      // Apply scenario filter via Pagefind filter
+      let filtered: any[] = search.results;
+      if (activeFilter !== 'all') {
+        try {
+          const fSearch = await pf.filters({ scenario: activeFilter });
+          filtered = search.results.filter((r: any) =>
+            fSearch.results.some((fr: any) => fr.id === r.id)
+          );
+        } catch (e) {
+          // Fallback: filter by URL substring
+          filtered = search.results.filter((r: any) =>
+            r.url.toLowerCase().includes(`/${activeFilter}`)
+          );
+        }
+      }
+
+      if (filtered.length === 0) {
+        resultsEl.innerHTML = '<div class="search-empty">No results found.</div>';
+        return;
+      }
+
+      // Render top 20
+      const top = filtered.slice(0, 20);
+      const html = await Promise.all(
+        top.map(async (r: any) => {
+          const data = await r.data();
+          return `
+            <a class="search-result" href="${data.url}">
+              <div class="search-result-meta">${data.meta?.scenario || ''}${data.meta?.category ? ' · ' + data.meta.category : ''}</div>
+              <div class="search-result-title">${data.meta?.title || data.url}</div>
+              <div class="search-result-excerpt">${data.excerpt}</div>
+            </a>
+          `;
+        })
+      );
+      resultsEl.innerHTML = html.join('');
+    }
+
+    // Debounced input
+    input.addEventListener('input', () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(runSearch, 150);
+    });
+
+    buildFilters();
+  });
+</script>

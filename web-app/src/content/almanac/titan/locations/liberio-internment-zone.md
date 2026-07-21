@@ -8,13 +8,16 @@ tags:
   - type/location
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 region: "Marleyan capital — Eldian ghetto"
 parent_location: "[[Marley]]"
 environment: "Urban confinement zone"
 danger_level: "high"
 created: 2026-06-21
 modified: 2026-06-21
+map_coords: [7.0, 12.0]
+map_color: "#a3e635"
+
 ---
 ![[Pasted image 20260621081443.png]]
 # Liberio Internment Zone

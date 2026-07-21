@@ -1,101 +1,39 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import { scenarios, getScenario } from '../../lib/scenarios';
 
 export async function getStaticPaths() {
-  return [
-    { params: { scenario: 'genesis' } },
-    { params: { scenario: 'titan' } },
-  ];
+  return Object.keys(scenarios).map(slug => ({ params: { scenario: slug } }));
 }
 
 const { scenario } = Astro.params;
 const base = import.meta.env.BASE_URL;
+const currentMeta = getScenario(scenario);
 
-const metadata = {
-  genesis: {
-    title: 'Genesis',
-    subtitle: 'The Anomaly Reconnects',
-    description: 'Follow the dual timeline where 1914 Trench Crusade and 2026 Modern Earth collide.',
-    mermaid: `flowchart LR
-    subgraph MODERN["Modern Earth"]
-        RN["Royal Navy<br/>(Modern)"]
-        RAF["RAF Maritime<br/>Patrol"]
-    end
-
-    subgraph TC["Trench Crusade Earth"]
-        CoE["Crown of<br/>England"]
-        SOD["Sacred Order of<br/>the Dragon"]
-        HL["Heretic<br/>Legion"]
-        BG["Cult of the<br/>Black Grail"]
-    end
-
-    ANMLY["The<br/>Anomaly"]
-
-    RN <--> ANMLY
-    CoE <--> ANMLY
-    RAF --> RN
-
-    CoE --> SOD
-    SOD -->|"serves"| CoE
-    SOD -->|"enemy"| HL
-    CoE -->|"enemy"| HL
-    HL -->|"enemy"| SOD
-    HL -->|"enemy"| CoE
-    BG -->|"serves"| HL
-    BG -.->|"Grail-spore"| CoE`
-  },
-  titan: {
-    title: 'Titan',
-    subtitle: 'The Gate of the Yellow Sea',
-    description: 'Follow the clash of modern East Asian geopolitics and the dark fantasy of the Attack on Titan world.',
-    mermaid: `flowchart LR
-    subgraph MODERN["Modern Earth"]
-        SK["Republic of Korea<br/>Coast Guard"]
-        PRC["People's Republic<br/>of China"]
-        JPN["Japan"]
-        USA["United States"]
-    end
-
-    subgraph AOT["AOT World (Inverted Earth)"]
-        ELDIA["Eldian Military<br/>(Paradis)"]
-        MARLEY["Marleyan<br/>Empire"]
-        MIDEAST["Mid-East<br/>Allied Forces"]
-        HIZURU["Nation of<br/>Hizuru"]
-        WARRIORS["Warrior<br/>Unit"]
-        VOLUNTEERS["Anti-Marleyan<br/>Volunteers"]
-    end
-
-    PORTAL["The<br/>Gate"]
-
-    SK --> PORTAL
-    PRC --> PORTAL
-    PORTAL --> MARLEY
-    PORTAL --> MIDEAST
-
-    MARLEY --> WARRIORS
-    WARRIORS -->|"infiltrate"| ELDIA
-    MARLEY -->|"enemy"| MIDEAST
-    MIDEAST -->|"enemy"| MARLEY
-    HIZURU -->|"alliance"| ELDIA
-    VOLUNTEERS -->|"serve"| ELDIA
-    MARLEY -->|"subjugates"| ELDIA`
-  }
-};
-
-const currentMeta = metadata[scenario as 'genesis' | 'titan'];
+if (!currentMeta) return Astro.redirect(`${base}/`);
 ---
 
 <MainLayout title={currentMeta.title} activeTab="home" scenario={scenario}>
   <a href={base} class="back-link">All Scenarios</a>
 
   <div class="scenario-hub">
-    <!-- Header -->
     <header class="scenario-header">
       <h1>{currentMeta.title}</h1>
       <p class="scenario-description">{currentMeta.description}</p>
     </header>
 
-    <!-- Navigation Buttons -->
+    <div
+      id="scenario-resume"
+      class="scenario-resume"
+      data-scenario={scenario}
+      hidden
+    >
+      <a id="scenario-resume-link" href="#" class="scenario-resume-btn">
+        <span class="scenario-resume-label">Continue reading</span>
+        <span id="scenario-resume-title" class="scenario-resume-title"></span>
+      </a>
+    </div>
+
     <div class="scenario-nav-grid">
       <a href={`${base}/${scenario}/chapters`} class="nav-block">
         <div>
@@ -119,3 +57,26 @@ const currentMeta = metadata[scenario as 'genesis' | 'titan'];
     </div>
   </div>
 </MainLayout>
+
+<script>
+  // Show "Continue Reading" resume button if user has a stored chapter for this scenario
+  try {
+    const resume = document.getElementById('scenario-resume');
+    if (resume) {
+      const scenario = (resume as HTMLElement).dataset.scenario;
+      const stored = JSON.parse(localStorage.getItem('danis-backyard-reading') || '{}');
+      if (scenario && stored[scenario]) {
+        const entry = stored[scenario];
+        const link = document.getElementById('scenario-resume-link') as HTMLAnchorElement | null;
+        const title = document.getElementById('scenario-resume-title');
+        if (link && title) {
+          link.href = entry.slug;
+          title.textContent = entry.title;
+          (resume as HTMLElement).hidden = false;
+        }
+      }
+    }
+  } catch (e) {
+    // localStorage unavailable — skip silently
+  }
+</script>

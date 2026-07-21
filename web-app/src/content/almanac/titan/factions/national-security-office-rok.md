@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Director of National Security (Presidential appointee)"
 headquarters: "Blue House, Seoul, Republic of Korea"
 alignment: "National security coordination — Office of the President"

@@ -9,7 +9,7 @@ tags:
   - type/concept
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 first_referenced: "Chapter 10 – The Providence We Cannot Claim"
 created: 2026-06-20
 modified: 2026-06-20

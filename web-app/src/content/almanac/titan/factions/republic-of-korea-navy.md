@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Admiral [[Yoon Seok-jin]] (Chief of Staff)"
 headquarters: "Gyeryongdae, Republic of Korea"
 alignment: "Naval warfare and maritime defence — Republic of Korea Armed Forces"

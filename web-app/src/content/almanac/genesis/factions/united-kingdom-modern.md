@@ -10,7 +10,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 leader: "PM [[Stephen Davenport]]"
 headquarters: "London"
 alignment: "Secular Democracy (Modern)"

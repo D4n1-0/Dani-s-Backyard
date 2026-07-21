@@ -8,13 +8,16 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "Britain"
 parent_location: "Trench Crusade Earth"
 environment: mobile-fortress
 danger_level: safe
 created: 2026-06-19
 modified: 2026-06-19
+map_coords: [52.0, -1.5]
+map_color: "#7f1d1d"
+
 ---
 ![[_attachments/Pasted image 20260619093706.png]]
 # Moving Fortress of Britannia

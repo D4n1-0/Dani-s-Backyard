@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 leader: "Unknown (UK chain of command)"
 headquarters: "Portsmouth, United Kingdom"
 alignment: "Secular (Modern Earth)"

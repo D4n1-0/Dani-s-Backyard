@@ -9,7 +9,7 @@ tags:
   - type/concept
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 parent_concept: "[[Deus Absconditus]]"
 first_referenced: "[[Chapter 09 – Instruments and Witnesses]]"
 created: 2026-06-19

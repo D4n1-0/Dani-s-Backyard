@@ -9,7 +9,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 leader: "President [[Robert Cole]]"
 headquarters: "Washington, D.C."
 alignment: "Secular Democracy (Modern)"

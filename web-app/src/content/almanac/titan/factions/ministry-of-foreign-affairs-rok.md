@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Minister of Foreign Affairs (President-appointed)"
 headquarters: "Jongno-gu, Seoul, Republic of Korea"
 alignment: "Diplomatic relations — Government of the Republic of Korea"

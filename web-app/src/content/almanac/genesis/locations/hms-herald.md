@@ -7,7 +7,7 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "Atlantic Ocean"
 parent_location: "Trench Crusade Earth"
 environment: "naval vessel"
@@ -15,6 +15,11 @@ danger_level: "moderate"
 first_appearance: "[[Chapter 02 – The Inquisitor's Briefing]]"
 created: 2026-06-18
 modified: 2026-06-18
+map_coords: [50.6, -9.35]
+moveable: true
+map_coords_by_chapter:
+  '10': [50.6, -9.35]
+
 ---
 
 # HMS Herald

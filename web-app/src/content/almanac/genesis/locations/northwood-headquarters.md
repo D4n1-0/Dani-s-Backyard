@@ -8,13 +8,17 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "England"
 parent_location: "United Kingdom"
 environment: urban
 danger_level: safe
 created: 2026-06-18
 modified: 2026-06-18
+map_coords: [51.606, -0.427]
+world: real
+map_color: "#1e3a8a"
+
 ---
 
 # Northwood Headquarters

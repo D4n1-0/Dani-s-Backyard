@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Mid-East Allied Command"
 headquarters: "Mid-East Peninsula"
 alignment: "Anti-Marley coalition — defensive, technologically advanced"

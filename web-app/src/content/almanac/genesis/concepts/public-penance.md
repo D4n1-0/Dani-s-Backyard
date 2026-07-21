@@ -8,7 +8,7 @@ tags:
   - type/concept
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 parent_concept:
 first_referenced: "[[Chapter 07 – The Pilgrims]]"
 created: 2026-06-19

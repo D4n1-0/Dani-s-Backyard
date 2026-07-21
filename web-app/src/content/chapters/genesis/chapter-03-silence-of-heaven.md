@@ -1,7 +1,7 @@
 ---
 type: chapter
 chapter_number: 3
-chapter_title: "The Silence of Heaven"
+chapter_title: "Silence of Heaven"
 aliases:
   - "The Silence of Heaven"
   - "The Ark"
@@ -10,7 +10,8 @@ tags:
   - type/chapter
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
+status: draft
 date_in_world: "Day 2–3 — 1914-09-15/16 TC / 2026-06-19/20 Modern"
 participants:
   - Father Beauchamp
@@ -30,7 +31,7 @@ created: 2026-06-18
 modified: 2026-06-18
 ---
 
-# Chapter 03 – The Silence of Heaven
+# Chapter 03 – Silence of Heaven
 
 ## Summary
 

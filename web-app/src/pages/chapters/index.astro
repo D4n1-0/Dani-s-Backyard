@@ -1,6 +1,7 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
+import { scenarioList, getScenario } from '../../lib/scenarios';
 
 const allChapters = await getCollection('chapters');
 
@@ -20,45 +21,94 @@ const chaptersByScenario = sortedChapters.reduce((acc, ch) => {
   acc[scenario].push(ch);
   return acc;
 }, {} as Record<string, typeof allChapters>);
+
+// Order scenario groups using the registry (fall back to raw slug for unknowns)
+const orderedScenarios = scenarioList
+  .map(s => s.slug)
+  .filter(slug => chaptersByScenario[slug]);
+// Include any scenarios not in the registry (safety net)
+Object.keys(chaptersByScenario).forEach(slug => {
+  if (!orderedScenarios.includes(slug)) orderedScenarios.push(slug);
+});
 ---
 
-<MainLayout 
-  title="Chapters" 
+<MainLayout
+  title="Chapters"
   activeTab="chapters"
 >
   <a href={base} class="back-link">Home</a>
-  
+
   <div class="page-header">
     <h1>Chapters</h1>
     <p class="page-subtitle">Read through the chronological logs of each scenario.</p>
   </div>
 
-  {Object.keys(chaptersByScenario).length === 0 ? (
+  {orderedScenarios.length === 0 ? (
     <p style="color: var(--text-secondary); font-size: 0.9rem;">No chapters published yet.</p>
   ) : (
-    Object.entries(chaptersByScenario).map(([scenario, list]) => (
-      <div>
-        <h2 class="section-heading">{scenario}</h2>
-        <ul class="content-list">
-          {list.map(chapter => {
-            const parts = chapter.id.split('/');
-            const flat = parts[parts.length - 1];
-            return (
-              <li class="content-list-item">
-                <div>
-                  <span class="list-number">CH {chapter.data.chapterNumber ?? '??'}</span>
-                  <a href={`${base}/chapters/${flat}`}>
-                    {chapter.data.title}
-                  </a>
-                </div>
-                {chapter.data.releaseDate && (
-                  <div class="list-meta">{chapter.data.releaseDate}</div>
-                )}
-              </li>
-            );
-          })}
-        </ul>
+    <>
+      <div class="filter-tabs" id="chapters-scenario-filters">
+        <button class="filter-tab active" data-filter="all">All Scenarios</button>
+        {orderedScenarios.map(slug => {
+          const meta = getScenario(slug);
+          return (
+            <button class="filter-tab" data-filter={slug}>
+              {meta?.title ?? slug}
+            </button>
+          );
+        })}
       </div>
-    ))
+
+      {orderedScenarios.map(slug => {
+        const list = chaptersByScenario[slug];
+        const meta = getScenario(slug);
+        return (
+          <div class="content-section" data-scenario={slug}>
+            <h2 class="section-heading">{meta?.title ?? slug}</h2>
+            <ul class="content-list">
+              {list.map(chapter => {
+                const parts = chapter.id.split('/');
+                const flat = parts[parts.length - 1];
+                return (
+                  <li class="content-list-item">
+                    <div>
+                      <span class="list-number">CH {chapter.data.chapterNumber ?? '??'}</span>
+                      <a href={`${base}/chapters/${flat}`}>
+                        {chapter.data.title}
+                      </a>
+                    </div>
+                    {chapter.data.releaseDate && (
+                      <div class="list-meta">{chapter.data.releaseDate}</div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        );
+      })}
+    </>
   )}
 </MainLayout>
+
+<script>
+  // Chapters page — scenario filter tabs
+  const tabs = document.querySelectorAll('#chapters-scenario-filters .filter-tab');
+  const sections = document.querySelectorAll('.content-section[data-scenario]');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const filter = (tab as HTMLElement).dataset.filter || 'all';
+      tabs.forEach(t => t.classList.toggle('active', t === tab));
+
+      sections.forEach(sec => {
+        const slug = (sec as HTMLElement).dataset.scenario;
+        if (filter === 'all' || slug === filter) {
+          sec.classList.remove('hidden');
+        } else {
+          sec.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>

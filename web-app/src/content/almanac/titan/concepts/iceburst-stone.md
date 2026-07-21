@@ -8,7 +8,7 @@ tags:
   - type/concept
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 parent_concept:
 first_referenced:
 created: 2026-06-21

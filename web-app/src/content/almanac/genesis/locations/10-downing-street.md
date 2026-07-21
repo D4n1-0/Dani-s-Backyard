@@ -8,13 +8,17 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "London"
 parent_location: "United Kingdom"
 environment: urban
 danger_level: safe
 created: 2026-06-19
 modified: 2026-06-19
+map_coords: [51.503, -0.127]
+world: real
+map_color: "#1d4ed8"
+
 ---
 ![[_attachments/Pasted image 20260619094154.png]]
 # 10 Downing Street

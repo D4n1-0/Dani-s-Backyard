@@ -7,13 +7,16 @@ tags:
   - type/location
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 region: "Continental empire"
 parent_location:
 environment: "Urban, industrial, militarised"
 danger_level: "moderate"
 created: 2026-06-21
 modified: 2026-06-21
+map_coords: [10.0, 15.0]
+map_color: "#84cc16"
+
 ---
 ![[Pasted image 20260621081529.png]] <small>This seems Obnoxious</small>
 # Marley

@@ -9,7 +9,7 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "England"
 parent_location: "Trench Crusade Earth"
 environment: "coastal fortress"
@@ -17,6 +17,9 @@ danger_level: "moderate"
 first_appearance: "[[Chapter 02 – The Inquisitor's Briefing]]"
 created: 2026-06-18
 modified: 2026-06-18
+map_coords: [51.13, 1.33]
+map_color: "#991b1b"
+
 ---
 ![[_attachments/Pasted image 20260619094344.png|]]<small>Although not in trench crusade, its roughly still in the same location.</small>
 # Fortress of the White Cliffs

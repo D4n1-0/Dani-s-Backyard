@@ -9,13 +9,16 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: England
 parent_location: Trench Crusade Earth
 environment: urban
 danger_level: moderate
 created: 2026-06-19
 modified: 2026-06-19
+map_coords: [51.507, -0.127]
+map_color: "#b91c1c"
+
 ---
 
 # London (Trench Crusade)

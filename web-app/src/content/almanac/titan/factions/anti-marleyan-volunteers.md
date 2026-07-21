@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "[[Yelena]]"
 headquarters: "Mobile — Marleyan naval defectors"
 alignment: "Anti-Marley — fanatical, fractured"
@@ -37,4 +37,4 @@ A clandestine network of conscripted soldiers from nations conquered by Marley, 
 - [[Eldian Military|Paradis]] — will eventually defect to Paradis; not yet in contact
 
 ## Current Status
-Not yet on Paradis. Still operating covertly within Marleyan naval forces. The Gate may accelerate their defection or render it irrelevant.
+Arrived on [[Paradis Island]] Day ~48 of the Gate era (observed by CATF drone surveillance). [[Yelena]] and [[Onyankopon]] met by [[Hange Zoë]] and [[Survey Corps]] personnel at the eastern port. Brought Marleyan military technology, naval vessels, and insider intelligence. Now embedded within Paradis's military-industrial apparatus. The Gate's presence remains unknown to them.

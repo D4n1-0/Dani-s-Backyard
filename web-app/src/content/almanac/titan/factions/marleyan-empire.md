@@ -7,7 +7,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Marleyan High Command"
 headquarters: "Marleyan mainland"
 alignment: "Imperial hegemon — expansionist, Eldian-supremacist ideology inverted"

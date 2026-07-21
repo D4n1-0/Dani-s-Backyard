@@ -8,13 +8,18 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "North Atlantic"
 parent_location: "The Portal Threshold"
 environment: aquatic
 danger_level: safe
 created: 2026-06-20
 modified: 2026-06-20
+map_coords: [50.58, -9.55]
+moveable: true
+map_coords_by_chapter:
+  '10': [50.58, -9.55]
+
 ---
 
 # HMS Beacon

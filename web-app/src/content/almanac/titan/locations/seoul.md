@@ -6,13 +6,16 @@ tags:
   - type/location
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 region: "Korean Peninsula"
 parent_location:
 environment: urban
 danger_level: safe
 created: 2026-06-21
 modified: 2026-06-21
+map_coords: [37.55, 127.0]
+world: real
+
 ---
 # Seoul
 

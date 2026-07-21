@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 leader: Beelzebub
 headquarters: Mobile (the Grail-fleet)
 alignment: Heretic

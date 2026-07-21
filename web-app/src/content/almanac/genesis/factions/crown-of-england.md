@@ -9,7 +9,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 leader: "King Robert 'the Longsword'"
 headquarters: "London"
 alignment: "Faithful"

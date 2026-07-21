@@ -8,7 +8,7 @@ tags:
   - type/character
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 species: Human
 role: Support (Modern)
 faction: United States

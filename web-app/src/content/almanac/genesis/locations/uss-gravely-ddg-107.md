@@ -9,13 +9,16 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "Atlantic Ocean"
 parent_location: "Atlantic Ocean"
 environment: aquatic
 danger_level: moderate
 created: 2026-06-19
 modified: 2026-06-19
+map_coords: [50.15, -10.3]
+moveable: true
+
 ---
 ![[_attachments/Pasted image 20260619094123.png]]
 # USS Gravely (DDG-107)

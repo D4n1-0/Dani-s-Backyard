@@ -7,13 +7,16 @@ tags:
   - type/location
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 region: "East Asia — between Korean Peninsula and China"
 parent_location:
 environment: "Oceanic — contested maritime zone"
 danger_level: "moderate"
 created: 2026-06-21
 modified: 2026-06-21
+map_coords: [35.0, 123.0]
+world: real
+
 ---
 ![[Pasted image 20260621081627.png]]
 # Yellow Sea

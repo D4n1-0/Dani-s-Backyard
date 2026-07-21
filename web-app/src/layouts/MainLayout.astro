@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import LinkPreview from '../components/LinkPreview.astro';
 import ImageLightbox from '../components/ImageLightbox.astro';
+import SearchUI from '../components/SearchUI.astro';
+import { getScenarioFromPath, getScenario } from '../lib/scenarios';
 
 interface Props {
   title: string;
@@ -14,36 +16,28 @@ interface Props {
 
 const base = import.meta.env.BASE_URL;
 
-const { 
-  title, 
-  activeTab = 'home', 
-  showSidebar = false, 
-  sidebarTitle = "Navigation", 
+const {
+  title,
+  activeTab = 'home',
+  showSidebar = false,
+  sidebarTitle = "Navigation",
   sidebarItems = [],
   scenario: scenarioProp
 } = Astro.props;
 
-// Detect scenario from path or props
-let currentScenario = scenarioProp ? scenarioProp.toLowerCase() : '';
-if (!currentScenario) {
-  const path = Astro.url.pathname.toLowerCase();
-  if (path.includes('/genesis')) {
-    currentScenario = 'genesis';
-  } else if (path.includes('/titan')) {
-    currentScenario = 'titan';
-  }
-}
+// Detect scenario from props or path
+const currentScenario = scenarioProp
+  ? getScenario(scenarioProp)
+  : getScenarioFromPath(Astro.url.pathname);
 
 // Retheming based on current scenario
-const themeStyles = currentScenario === 'genesis'
-  ? '--accent: #ff4d4d; --accent-rgb: 255, 77, 77;'
-  : (currentScenario === 'titan'
-    ? '--accent: #50b3e6; --accent-rgb: 80, 179, 230;'
-    : '');
+const themeStyles = currentScenario
+  ? `--accent: ${currentScenario.accent}; --accent-rgb: ${currentScenario.accentRgb};`
+  : '';
 ---
 
 <!doctype html>
-<html lang="en" style={themeStyles || undefined}>
+<html lang="en" style={themeStyles} data-scenario={currentScenario ? currentScenario.slug : ''}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -64,8 +58,9 @@ const themeStyles = currentScenario === 'genesis'
         
         <nav class="desktop-nav" aria-label="Main navigation">
           <a href={base} class={activeTab === 'home' ? 'active' : ''}>Home</a>
-          <a href={currentScenario ? `${base}/${currentScenario}/chapters` : `${base}/chapters`} class={activeTab === 'chapters' ? 'active' : ''}>Chapters</a>
-          <a href={currentScenario ? `${base}/${currentScenario}/almanac` : `${base}/almanac`} class={activeTab === 'almanac' ? 'active' : ''}>Almanac</a>
+          <a href={currentScenario ? `${base}/${currentScenario.slug}/chapters` : `${base}/chapters`} class={activeTab === 'chapters' ? 'active' : ''}>Chapters</a>
+          <a href={currentScenario ? `${base}/${currentScenario.slug}/almanac` : `${base}/almanac`} class={activeTab === 'almanac' ? 'active' : ''}>Almanac</a>
+          <SearchUI />
         </nav>
 
         <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle navigation" aria-expanded="false">
@@ -74,13 +69,13 @@ const themeStyles = currentScenario === 'genesis'
           <span></span>
         </button>
       </header>
-
       <!-- NAV PANEL (slide-in mobile drawer) -->
       <div class="nav-backdrop" id="nav-backdrop"></div>
       <nav class="nav-panel" id="nav-panel" aria-label="Mobile navigation">
         <a href={base} class={activeTab === 'home' ? 'active' : ''}>Home</a>
-        <a href={currentScenario ? `${base}/${currentScenario}/chapters` : `${base}/chapters`} class={activeTab === 'chapters' ? 'active' : ''}>Chapters</a>
-        <a href={currentScenario ? `${base}/${currentScenario}/almanac` : `${base}/almanac`} class={activeTab === 'almanac' ? 'active' : ''}>Almanac</a>
+        <a href={currentScenario ? `${base}/${currentScenario.slug}/chapters` : `${base}/chapters`} class={activeTab === 'chapters' ? 'active' : ''}>Chapters</a>
+        <a href={currentScenario ? `${base}/${currentScenario.slug}/almanac` : `${base}/almanac`} class={activeTab === 'almanac' ? 'active' : ''}>Almanac</a>
+        <a href="#" id="mobile-search-trigger">Search</a>
       </nav>
 
       <!-- MAIN CONTENT WRAPPER -->
@@ -144,6 +139,13 @@ const themeStyles = currentScenario === 'genesis'
 
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeNav();
+      });
+
+      // Mobile search trigger: open search overlay and close nav
+      document.getElementById('mobile-search-trigger')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeNav();
+        setTimeout(() => document.getElementById('search-trigger')?.click(), 200);
       });
 
       // Mermaid diagram renderer integration

@@ -277,92 +277,88 @@
 </style>
 
 <script>
-  // Runs entirely on the client side
-  document.addEventListener('DOMContentLoaded', () => {
-    const popover = document.getElementById('almanac-preview-popover');
-    if (!popover) return;
-
-    const expandLink = document.getElementById('popover-expand-link') as HTMLAnchorElement;
-    const bodyEl = document.getElementById('popover-body');
+  // LinkPreview — hover previews for almanac wiki-links
+  // Compatible with Astro ClientRouter (View Transitions)
+  (function () {
+    let popover: HTMLElement | null = null;
+    let expandLink: HTMLAnchorElement | null = null;
+    let bodyEl: HTMLElement | null = null;
 
     const cache = new Map();
     const categorySlugs = ['characters', 'factions', 'locations', 'concepts', 'items', 'base', 'timeline'];
-    
+
     let hoverTimeout: any = null;
     let hideTimeout: any = null;
     let activeTrigger: any = null;
     let abortController: AbortController | null = null;
 
+    function initElements() {
+      popover = document.getElementById('almanac-preview-popover');
+      expandLink = document.getElementById('popover-expand-link') as HTMLAnchorElement;
+      bodyEl = document.getElementById('popover-body');
+    }
+
     // Helper to determine if a link points to an individual Almanac entry
     const isEntryLink = (link: HTMLAnchorElement) => {
       try {
         const url = new URL(link.href, window.location.origin);
-        const pathname = url.pathname.replace(/\/$/, ''); // Normalize trailing slash
+        const pathname = url.pathname.replace(/\/$/, '');
         const parts = pathname.split('/');
         const lastPart = parts[parts.length - 1];
         const secondToLast = parts[parts.length - 2];
-        
-        // Must have Almanac in path and not be the root or a category page
+
         if (!pathname.includes('/almanac')) return false;
         if (!lastPart || lastPart === 'almanac') return false;
         if (categorySlugs.includes(lastPart) && secondToLast === 'almanac') return false;
-        
+
         return true;
       } catch (e) {
         return false;
       }
     };
 
-    // Position popover intelligently relative to trigger link
     const positionPopover = (trigger: HTMLAnchorElement) => {
+      if (!popover) return;
       const linkRect = trigger.getBoundingClientRect();
       const popoverWidth = popover.offsetWidth || 365;
       const popoverHeight = popover.offsetHeight || 380;
-      
-      // Calculate top/left based on window scroll offsets
+
       let left = linkRect.left + window.scrollX + (linkRect.width - popoverWidth) / 2;
-      let top = linkRect.top + window.scrollY - popoverHeight - 12; // 12px offset above link
-      
-      // Collision detection: if it overflows the top of the viewport, display below instead
+      let top = linkRect.top + window.scrollY - popoverHeight - 12;
+
       if (linkRect.top - popoverHeight - 12 < 10) {
-        top = linkRect.top + window.scrollY + linkRect.height + 12; // 12px offset below link
+        top = linkRect.top + window.scrollY + linkRect.height + 12;
       }
-      
-      // Keep within left/right bounds of the window
+
       const minLeft = 10 + window.scrollX;
       const maxLeft = window.innerWidth + window.scrollX - popoverWidth - 10;
       if (left < minLeft) left = minLeft;
       if (left > maxLeft) left = maxLeft;
-      
+
       popover.style.left = `${left}px`;
       popover.style.top = `${top}px`;
     };
 
-    // Show popover
     const showPopover = async (trigger: HTMLAnchorElement) => {
+      if (!popover || !bodyEl) return;
       if (abortController) abortController.abort();
-      
+
       activeTrigger = trigger;
       popover.setAttribute('aria-hidden', 'false');
       popover.classList.add('visible');
-      
-      // Reset scroll position and show loading spinner
-      if (bodyEl) {
-        bodyEl.scrollTop = 0;
-        bodyEl.innerHTML = `
-          <div class="popover-loading-wrapper">
-            <p class="popover-loading-spinner">Loading...</p>
-          </div>
-        `;
-      }
-      
-      // Position initially (deferred to avoid synchronous layout thrash)
+
+      bodyEl.scrollTop = 0;
+      bodyEl.innerHTML = `
+        <div class="popover-loading-wrapper">
+          <p class="popover-loading-spinner">Loading...</p>
+        </div>
+      `;
+
       requestAnimationFrame(() => positionPopover(trigger));
 
       const targetUrl = trigger.href;
       if (expandLink) expandLink.href = targetUrl;
-      
-      // Check Cache
+
       if (cache.has(targetUrl)) {
         if (bodyEl && activeTrigger === trigger) {
           bodyEl.innerHTML = cache.get(targetUrl);
@@ -371,22 +367,20 @@
         return;
       }
 
-      // Fetch dynamic content
       try {
         abortController = new AbortController();
         const response = await fetch(targetUrl, { signal: abortController.signal });
         if (!response.ok) throw new Error('Failed to load');
-        
+
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
-        
+
         const article = doc.querySelector('article');
         const contentHTML = article ? article.innerHTML : '<p>Error: Could not extract entry content.</p>';
-        
-        // Cache parsed details
+
         cache.set(targetUrl, contentHTML);
-        
+
         if (activeTrigger === trigger && bodyEl) {
           bodyEl.innerHTML = contentHTML;
           requestAnimationFrame(() => positionPopover(trigger));
@@ -404,50 +398,43 @@
       }
     };
 
-    // Hide popover
     const hidePopover = () => {
       if (abortController) {
         abortController.abort();
         abortController = null;
       }
       activeTrigger = null;
-      popover.classList.remove('visible');
-      popover.setAttribute('aria-hidden', 'true');
+      if (popover) {
+        popover.classList.remove('visible');
+        popover.setAttribute('aria-hidden', 'true');
+      }
     };
 
-    // Set up hover event listeners on interactive links
     const setupListeners = () => {
+      initElements();
+      if (!popover) return;
+
       const links = document.querySelectorAll('.story-reader a') as NodeListOf<HTMLAnchorElement>;
-      
+
       links.forEach(link => {
         if (!isEntryLink(link)) return;
 
-        // Desktop Mouse Interactions
         link.addEventListener('mouseenter', () => {
-          if (window.matchMedia('(hover: none)').matches) return; // Ignore on touch devices
-          
+          if (window.matchMedia('(hover: none)').matches) return;
           clearTimeout(hideTimeout);
           clearTimeout(hoverTimeout);
-          
-          hoverTimeout = setTimeout(() => {
-            showPopover(link);
-          }, 200); // 200ms trigger delay
+          hoverTimeout = setTimeout(() => showPopover(link), 200);
         });
 
         link.addEventListener('mouseleave', () => {
           if (window.matchMedia('(hover: none)').matches) return;
-          
           clearTimeout(hoverTimeout);
-          hideTimeout = setTimeout(() => {
-            hidePopover();
-          }, 300); // 300ms dismiss delay
+          hideTimeout = setTimeout(() => hidePopover(), 300);
         });
 
-        // Mobile Touch Interaction: Prevent default click on first tap
         link.addEventListener('click', (e) => {
-          if (!window.matchMedia('(hover: none)').matches) return; // Only apply to touch devices
-          
-          const isVisible = popover.classList.contains('visible') && activeTrigger === link;
+          if (!window.matchMedia('(hover: none)').matches) return;
+          const isVisible = popover?.classList.contains('visible') && activeTrigger === link;
           if (!isVisible) {
             e.preventDefault();
             e.stopPropagation();
@@ -455,41 +442,35 @@
           }
         });
       });
+
+      // Keep popover open while mouse is inside it
+      popover.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+      popover.addEventListener('mouseleave', () => {
+        if (window.matchMedia('(hover: none)').matches) return;
+        hideTimeout = setTimeout(() => hidePopover(), 300);
+      });
     };
 
-    // Keep popover open while mouse is inside it
-    popover.addEventListener('mouseenter', () => {
-      clearTimeout(hideTimeout);
-    });
-
-    popover.addEventListener('mouseleave', () => {
-      if (window.matchMedia('(hover: none)').matches) return;
-      hideTimeout = setTimeout(() => {
-        hidePopover();
-      }, 300);
-    });
-
-    // Dismiss on pressing escape key
+    // Global dismiss handlers (bound once)
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        hidePopover();
-      }
+      if (e.key === 'Escape') hidePopover();
     });
 
-    // Dismiss on clicking outside the popover/link (especially useful for mobile)
     document.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
-      if (popover.classList.contains('visible') && !popover.contains(target) && target !== activeTrigger) {
+      if (popover?.classList.contains('visible') && !popover.contains(target) && target !== activeTrigger) {
         hidePopover();
       }
     });
 
-    // Run setup
-    setupListeners();
-
-    // Re-run setup on astro view transition if present
-    document.addEventListener('astro:after-swap', () => {
+    // Initialize on first load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupListeners);
+    } else {
       setupListeners();
-    });
-  });
+    }
+
+    // Re-initialize after every View Transition swap
+    document.addEventListener('astro:after-swap', setupListeners);
+  })();
 </script>

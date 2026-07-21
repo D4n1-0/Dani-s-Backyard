@@ -7,7 +7,8 @@ tags:
   - type/chapter
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
+status: draft
 date_in_world: "Day 2 — Sunday, ~Year 850 TC / 2026-06-19 Modern, 06:00–12:00 KST"
 participants:
   - "[[Lee Jun-ho]]"

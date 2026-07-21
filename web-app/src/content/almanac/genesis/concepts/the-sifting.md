@@ -9,7 +9,7 @@ tags:
   - type/concept
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 parent_concept: "[[Rite of Discernment]]"
 first_referenced: "[[Chapter 08 – An Instrument of Providence]]"
 created: 2026-06-19

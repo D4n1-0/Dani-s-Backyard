@@ -8,12 +8,17 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
-    "sync": "node scripts/sync-vault.mjs"
+    "sync": "node scripts/sync-vault.mjs",
+    "zip-for-ai": "zip -r pure-code.zip . -x 'node_modules/*' 'dist/*' '.astro/*' '.git/*' 'pagefind/*'"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.3",
     "astro": "^6.4.7"
+  },
+  "devDependencies": {
+    "pagefind": "^1.5.2"
   }
 }

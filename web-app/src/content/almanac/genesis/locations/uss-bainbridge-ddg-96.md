@@ -9,13 +9,16 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "Atlantic Ocean"
 parent_location: "Atlantic Ocean"
 environment: aquatic
 danger_level: moderate
 created: 2026-06-19
 modified: 2026-06-19
+map_coords: [50.25, -10.6]
+moveable: true
+
 ---
 ![[_attachments/Pasted image 20260619215351.png]]
 # USS Bainbridge (DDG-96)

@@ -8,7 +8,7 @@ tags:
   - type/character
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 species: Human
 role: support
 faction: "[[Korea Coast Guard]]"

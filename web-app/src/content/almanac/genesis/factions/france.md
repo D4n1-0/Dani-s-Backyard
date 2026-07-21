@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 leader: "Foreign Minister [[Étienne Morel]]"
 headquarters: "Paris"
 alignment: "Secular Republic (Modern)"

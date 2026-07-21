@@ -1,7 +1,7 @@
 ---
 type: chapter
 chapter_number: 5
-chapter_title: "The Gathering Storm"
+chapter_title: "Gathering Storm"
 aliases:
   - "The Gathering Storm"
   - "The NATO Briefing"
@@ -10,7 +10,8 @@ tags:
   - type/chapter
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
+status: draft
 date_in_world: "Day 5-6 — 1914-09-18 to 1914-09-19 TC / 2026-06-22 to 2026-06-23 Modern"
 participants:
   - Stephen Davenport
@@ -37,7 +38,7 @@ created: 2026-06-19
 modified: 2026-06-19
 ---
 
-# Chapter 05 – The Gathering Storm
+# Chapter 05 – Gathering Storm
 
 ## Summary
 

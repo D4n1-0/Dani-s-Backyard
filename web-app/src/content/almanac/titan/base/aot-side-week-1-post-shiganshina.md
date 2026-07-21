@@ -8,7 +8,7 @@ tags:
   - type/base
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 order: 4
 created: 2026-06-22
 modified: 2026-06-22

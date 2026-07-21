@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Minister of Foreign Affairs (State Councilor)"
 headquarters: "Chaoyang District, Beijing, People's Republic of China"
 alignment: "Diplomatic relations and foreign policy implementation — State Council"

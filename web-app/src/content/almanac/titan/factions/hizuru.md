@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Ambassador [[Kiyomi Azumabito]]"
 headquarters: "Hizuru"
 alignment: "Opportunistic — merchant-diplomatic, isolationist"

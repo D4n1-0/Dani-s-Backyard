@@ -9,13 +9,20 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "Atlantic Ocean"
 parent_location: "Atlantic Ocean"
 environment: aquatic
 danger_level: moderate
 created: 2026-06-19
 modified: 2026-06-19
+map_coords: [50.1, -10.8]
+moveable: true
+map_coords_by_chapter:
+  '8': [50.1, -10.8]
+  '9': [50.1, -10.8]
+map_color: "#0369a1"
+
 ---
 ![[_attachments/Pasted image 20260619094114.png]]
 # USS Gerald R. Ford (CVN-78)

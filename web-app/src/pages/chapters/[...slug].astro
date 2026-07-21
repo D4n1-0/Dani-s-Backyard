@@ -51,14 +51,15 @@ const prevFlat = prevChapter ? prevChapter.id.split('/').pop() : null;
 const nextFlat = nextChapter ? nextChapter.id.split('/').pop() : null;
 ---
 
-<MainLayout 
-  title={chapter.data.title} 
+<MainLayout
+  title={chapter.data.title}
   activeTab="chapters"
   showSidebar={false}
   scenario={chapter.data.scenario}
 >
+  <div id="reading-progress" class="reading-progress"></div>
   <a href={`${base}/${chapter.data.scenario.toLowerCase()}/chapters`} class="back-link">Back to Chapters</a>
-  
+
   <article>
     <header class="page-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 32px;">
       <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">
@@ -100,3 +101,91 @@ const nextFlat = nextChapter ? nextChapter.id.split('/').pop() : null;
     </nav>
   </article>
 </MainLayout>
+
+<script define:vars={{ scenarioSlug: chapter.data.scenario.toLowerCase(), chapterTitle: chapter.data.title }}>
+  // ===== Reading Progress Bar =====
+  const progressBar = document.getElementById('reading-progress');
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    if (progressBar) progressBar.style.width = `${progress}%`;
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // ===== Continue Reading (localStorage write) =====
+  try {
+    const stored = JSON.parse(localStorage.getItem('danis-backyard-reading') || '{}');
+    stored[scenarioSlug] = {
+      slug: window.location.pathname,
+      title: chapterTitle,
+      timestamp: Date.now(),
+    };
+    localStorage.setItem('danis-backyard-reading', JSON.stringify(stored));
+  } catch (e) {
+    // localStorage unavailable (private mode, etc.) — silently skip
+  }
+
+  // ===== Sticky Scene TOC =====
+  function buildTOC() {
+    const headings = document.querySelectorAll('.story-reader h3');
+    if (headings.length < 2) return; // skip short chapters
+
+    const article = document.querySelector('article');
+    if (!article) return;
+
+    // Don't rebuild if already built
+    if (article.querySelector('.chapter-toc')) return;
+
+    const toc = document.createElement('nav');
+    toc.className = 'chapter-toc';
+    toc.setAttribute('aria-label', 'Scene navigation');
+    toc.innerHTML = '<div class="chapter-toc-title">Scenes</div><ul class="chapter-toc-list"></ul>';
+    const list = toc.querySelector('.chapter-toc-list');
+    if (!list) return;
+
+    headings.forEach((h, i) => {
+      const id = `scene-${i}`;
+      h.id = id;
+      h.style.scrollMarginTop = 'calc(var(--sticky-offset, 96px) + 16px)';
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${id}`;
+      a.textContent = h.textContent || `Scene ${i + 1}`;
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+
+    // Wrap article content in grid: content column + toc column
+    const wrapper = document.createElement('div');
+    wrapper.className = 'chapter-with-toc';
+    const contentDiv = document.createElement('div');
+    while (article.firstChild) contentDiv.appendChild(article.firstChild);
+    wrapper.appendChild(contentDiv);
+    wrapper.appendChild(toc);
+    article.appendChild(wrapper);
+
+    // IntersectionObserver for active scene highlighting
+    const links = list.querySelectorAll('a');
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.id;
+          const link = list.querySelector(`a[href="#${id}"]`);
+          if (link) {
+            links.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+          }
+        });
+      },
+      { rootMargin: '-96px 0px -60% 0px', threshold: 0 }
+    );
+
+    headings.forEach(h => observer.observe(h));
+  }
+
+  buildTOC();
+  document.addEventListener('astro:after-swap', buildTOC);
+</script>

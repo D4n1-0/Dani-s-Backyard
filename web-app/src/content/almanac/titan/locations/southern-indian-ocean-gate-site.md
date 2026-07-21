@@ -9,13 +9,15 @@ tags:
   - type/location
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 region: "Southern Indian Ocean — ~20km from Île de la Possession, Crozet Archipelago (AOT equivalent: northern hemisphere)"
 parent_location:
 environment: "Oceanic — subantarctic convergence zone"
 danger_level: "safe"
 created: 2026-06-21
 modified: 2026-06-22
+map_coords: [-46.5, 52.0]
+
 ---
 # Southern Indian Ocean Gate Site
 

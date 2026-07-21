@@ -8,13 +8,17 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "Brussels"
 parent_location: "Belgium"
 environment: urban
 danger_level: safe
 created: 2026-06-19
 modified: 2026-06-19
+map_coords: [50.876, 4.421]
+world: real
+map_color: "#4f46e5"
+
 ---
 ![[_attachments/Pasted image 20260619093943.png]]
 # NATO Headquarters

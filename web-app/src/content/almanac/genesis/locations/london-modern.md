@@ -8,13 +8,17 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: England
 parent_location: United Kingdom (Modern)
 environment: urban
 danger_level: safe
 created: 2026-06-19
 modified: 2026-06-19
+map_coords: [51.507, -0.127]
+world: real
+map_color: "#2563eb"
+
 ---
 ![[_attachments/Pasted image 20260619093721.png]]
 # London (Modern)

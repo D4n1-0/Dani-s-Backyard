@@ -10,7 +10,8 @@ tags:
   - type/chapter
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
+status: draft
 date_in_world: "Day 14-15 — 1914-09-27 to 1914-09-28 TC / 2026-07-01 to 2026-07-02 Modern"
 participants:
   - Stephen Davenport

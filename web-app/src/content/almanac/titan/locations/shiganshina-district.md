@@ -7,13 +7,15 @@ tags:
   - type/location
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 region: "Wall Maria — southern district"
 parent_location: "[[Paradis Island]]"
 environment: "Urban — partially rebuilt"
 danger_level: "moderate"
 created: 2026-06-21
 modified: 2026-06-21
+map_coords: [-23.5, 46.5]
+
 ---
 ![[Pasted image 20260621081614.png]]
 # Shiganshina District

@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Premier [[Darius Zachary]]"
 headquarters: "[[Paradis Island]]"
 alignment: "Military junta — survivalist, developing"

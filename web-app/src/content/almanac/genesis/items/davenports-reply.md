@@ -9,7 +9,7 @@ tags:
   - type/item
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 item_type: document
 rarity: unique
 owner: "King Robert the Longsword"

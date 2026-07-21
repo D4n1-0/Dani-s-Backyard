@@ -8,7 +8,7 @@ tags:
   - type/character
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 species: Human (Subject of Ymir)
 role: antagonist
 faction: "[[Warrior Unit]]"

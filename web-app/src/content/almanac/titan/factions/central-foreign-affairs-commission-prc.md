@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Chairman (General Secretary of the CPC)"
 headquarters: "Zhongnanhai, Beijing, People's Republic of China"
 alignment: "Foreign policy and national security coordination — Central Committee of the Chinese Communist Party"

@@ -7,7 +7,7 @@ tags:
   - type/concept
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 parent_concept:
 first_referenced: "[[Chapter 06 – The Order to Sail]]"
 created: 2026-06-19

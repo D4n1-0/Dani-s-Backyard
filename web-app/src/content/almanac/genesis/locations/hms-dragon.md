@@ -8,13 +8,21 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "North Atlantic"
 parent_location: "Atlantic Ocean"
 environment: aquatic
 danger_level: moderate
 created: 2026-06-18
 modified: 2026-06-18
+map_coords: [50.4, -9.3]
+moveable: true
+map_coords_by_chapter:
+  '1': [50.4, -9.3]
+  '2': [50.4, -9.3]
+  '3': [50.4, -9.3]
+  '7': [50.4, -9.3]
+
 ---
 ![[_attachments/Pasted image 20260619093806.png]]
 # *[[HMS Dragon|HMS Dragon]]*

@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Chief of Staff, JMSDF"
 headquarters: "Ichigaya, Tokyo, Japan"
 alignment: "Maritime defence — Japan Ministry of Defense"

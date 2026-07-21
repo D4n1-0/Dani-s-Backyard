@@ -17,12 +17,17 @@ function vaultAttachmentsIntegration() {
                 name: 'serve-vault-attachments',
                 configureServer(server) {
                   server.middlewares.use((req, res, next) => {
-                    const basePath = '/Dani-s-Backyard/_attachments/';
-                    if (req.url && req.url.startsWith(basePath)) {
+                    if (req.url && (req.url.startsWith('/_attachments/') || req.url.startsWith('/Dani-s-Backyard/_attachments/'))) {
                       const urlPath = req.url.split('?')[0]; 
-                      const fileName = decodeURIComponent(urlPath.replace(basePath, ''));
+                      const cleanPath = urlPath.startsWith('/Dani-s-Backyard/_attachments/')
+                        ? urlPath.replace('/Dani-s-Backyard/_attachments/', '')
+                        : urlPath.replace('/_attachments/', '');
+                      const fileName = decodeURIComponent(cleanPath);
                       
                       let filePath = path.resolve(process.cwd(), '../synced-attachments', fileName);
+                      if (!fs.existsSync(filePath)) {
+                        filePath = path.resolve(process.cwd(), 'public/_attachments', fileName);
+                      }
                       if (!fs.existsSync(filePath)) {
                         filePath = path.resolve(process.cwd(), '../The Stories/_attachments', fileName);
                       }

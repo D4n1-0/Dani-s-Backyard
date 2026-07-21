@@ -13,7 +13,39 @@ const DEST_CONTENT_ALMANAC = path.join(WEB_APP_ROOT, 'src/content/almanac');
 const DEST_PUBLIC_ATTACHMENTS = path.join(WEB_APP_ROOT, 'public/_attachments');
 const DEST_ROOT_ATTACHMENTS = path.join(__dirname, '../../synced-attachments');
 
-const SCENARIOS = ['genesis', 'titan'];
+const SCENARIOS = [
+  { slug: 'genesis', folder: 'Genesis' },
+  { slug: 'titan', folder: 'Titan' },
+  { slug: 'disco', folder: 'Disco' },
+  { slug: 'the-sundered-world', folder: 'The Sundered World' },
+];
+
+// Map display-name scenario values (as found in frontmatter) to URL slugs.
+const SCENARIO_SLUG_MAP = {
+  'Genesis': 'genesis',
+  'Titan': 'titan',
+  'Disco': 'disco',
+  'The Sundered World': 'the-sundered-world',
+};
+
+function normalizeScenarioField(content, scenarioName) {
+  // If the file already has a `scenario:` field, normalize the value to a slug.
+  if (/^scenario:/m.test(content)) {
+    return content.replace(
+      /^scenario:\s*["']?([^"'\n]+)["']?$/m,
+      (match, name) => {
+        const slug = SCENARIO_SLUG_MAP[name.trim()] || slugify(name);
+        return `scenario: "${slug}"`;
+      }
+    );
+  }
+  // Otherwise, inject the slug at the end of the frontmatter block.
+  const slug = SCENARIO_SLUG_MAP[scenarioName] || slugify(scenarioName);
+  return content.replace(
+    /^---\s*\n([\s\S]*?\n)---\s*\n/,
+    (match, body) => `---\n${body}scenario: "${slug}"\n---\n`
+  );
+}
 
 function slugify(text) {
   return text
@@ -53,18 +85,13 @@ function cleanDir(dir) {
 
 async function main() {
   console.log('--- Starting Vault Sync ---');
-  
-  // 1. Clean up old attachments directory if it exists
-  console.log('Cleaning up old attachments folder...');
-  if (fs.existsSync(DEST_PUBLIC_ATTACHMENTS)) {
-    fs.rmSync(DEST_PUBLIC_ATTACHMENTS, { recursive: true, force: true });
-    console.log('Removed old attachments folder from web-app.');
-  }
-
-  // 1.5 Sync attachments to root repo folder
-  console.log('Syncing attachments to root repository...');
+  // 1. Sync attachments to public/_attachments and root synced-attachments
+  console.log('Syncing attachments to web-app public/_attachments and root synced-attachments...');
   const srcAttachments = path.join(VAULT_ROOT, '_attachments');
   if (fs.existsSync(srcAttachments)) {
+    if (!fs.existsSync(DEST_PUBLIC_ATTACHMENTS)) {
+      fs.mkdirSync(DEST_PUBLIC_ATTACHMENTS, { recursive: true });
+    }
     if (!fs.existsSync(DEST_ROOT_ATTACHMENTS)) {
       fs.mkdirSync(DEST_ROOT_ATTACHMENTS, { recursive: true });
     }
@@ -72,13 +99,15 @@ async function main() {
     let copyCount = 0;
     files.forEach(file => {
       const srcFile = path.join(srcAttachments, file);
-      const destFile = path.join(DEST_ROOT_ATTACHMENTS, file);
+      const destFilePublic = path.join(DEST_PUBLIC_ATTACHMENTS, file);
+      const destFileRoot = path.join(DEST_ROOT_ATTACHMENTS, file);
       if (fs.statSync(srcFile).isFile()) {
-        fs.copyFileSync(srcFile, destFile);
+        fs.copyFileSync(srcFile, destFilePublic);
+        fs.copyFileSync(srcFile, destFileRoot);
         copyCount++;
       }
     });
-    console.log(`Copied ${copyCount} attachments to root synced-attachments/`);
+    console.log(`Copied ${copyCount} attachments to public/_attachments/ and synced-attachments/`);
   } else {
     console.warn(`No attachments folder found at ${srcAttachments}`);
   }
@@ -89,8 +118,7 @@ async function main() {
   cleanDir(DEST_CONTENT_ALMANAC);
 
   // 3. Process each scenario
-  for (const scenario of SCENARIOS) {
-    const scenarioUpper = scenario === 'genesis' ? 'Genesis' : 'Titan';
+  for (const { slug: scenario, folder: scenarioUpper } of SCENARIOS) {
     console.log(`Processing scenario: ${scenarioUpper}...`);
     
     // Find the scenario root folder in Obsidian (e.g. "The Stories/Story/Genesis")
@@ -111,10 +139,10 @@ async function main() {
     
     chapterFiles.forEach(filePath => {
       const destName = slugify(path.basename(filePath, '.md')) + '.md';
-      
+
       const destPath = path.join(chaptersDestDir, destName);
       const content = fs.readFileSync(filePath, 'utf8');
-      fs.writeFileSync(destPath, content, 'utf8');
+      fs.writeFileSync(destPath, normalizeScenarioField(content, scenarioUpper), 'utf8');
     });
     
     // Almanac
@@ -139,9 +167,9 @@ async function main() {
             const fileName = path.basename(filePath, '.md');
             const destName = slugify(fileName) + '.md';
             const destPath = path.join(catDestPath, destName);
-            
+
             const content = fs.readFileSync(filePath, 'utf8');
-            fs.writeFileSync(destPath, content, 'utf8');
+            fs.writeFileSync(destPath, normalizeScenarioField(content, scenarioUpper), 'utf8');
           });
         }
       });

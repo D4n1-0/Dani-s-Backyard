@@ -10,7 +10,7 @@ tags:
   - type/chapter
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 status: draft
 date_in_world: "Day 1–2 — 1914-09-14/15 TC / 2026-06-18/19 Modern"
 participants:

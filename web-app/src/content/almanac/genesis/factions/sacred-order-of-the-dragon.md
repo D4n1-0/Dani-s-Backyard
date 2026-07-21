@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 leader: "Unknown Grand Master"
 headquarters: "Unknown (Eastern Europe / Wallachia region)"
 alignment: "Faithful"

@@ -10,7 +10,8 @@ tags:
   - type/chapter
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
+status: draft
 date_in_world: "Day 11-12 — 1914-09-24 to 1914-09-25 TC / 2026-06-28 to 2026-06-29 Modern"
 participants:
   - James Hawthorne

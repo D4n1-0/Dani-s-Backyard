@@ -8,7 +8,7 @@ tags:
   - type/concept
   - status/draft
   - scenario/genesis
-scenario: Genesis
+scenario: "genesis"
 parent_concept:
 first_referenced: "[[Chapter 04 – Unsettling Question]]"
 created: 2026-06-18

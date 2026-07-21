@@ -7,7 +7,7 @@ tags:
   - type/base
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 order: 2
 created: 2026-06-18
 modified: 2026-06-18

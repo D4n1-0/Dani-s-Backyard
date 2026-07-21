@@ -8,13 +8,16 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "North Atlantic"
 parent_location: "Earth"
 environment: ocean
 danger_level: moderate
 created: 2026-06-19
 modified: 2026-06-19
+map_coords: [48.0, -12.0]
+map_color: "#3b82f6"
+
 ---
 ![[_attachments/Pasted image 20260619094214.png]]
 # Atlantic Ocean

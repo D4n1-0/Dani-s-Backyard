@@ -8,7 +8,7 @@ tags:
   - type/item
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 item_type: vehicle
 rarity: common
 owner: "[[United States Seventh Fleet]]"

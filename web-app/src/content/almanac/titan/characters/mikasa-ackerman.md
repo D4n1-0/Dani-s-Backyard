@@ -9,7 +9,7 @@ tags:
   - type/character
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 species: Human (Ackerman / Subject of Ymir)
 role: protagonist
 faction: "[[Survey Corps]]"

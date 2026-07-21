@@ -7,7 +7,8 @@ tags:
   - type/chapter
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
+status: draft
 date_in_world: "Day 2–8 — ~Year 850 TC / 2026-06-19–25 Modern"
 participants:
   - "[[Park Do-hyun]]"
@@ -332,4 +333,4 @@ But Park had.
 ## Links
 
 - Previous: [[Chapter 02 – The Long Morning]]
-- Next: N/A
+- Next: [[Chapter 04 – Across the Silver Line]]

@@ -10,7 +10,7 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "North Atlantic (Celtic Sea)"
 parent_location: "Atlantic Ocean"
 environment: "open ocean / dimensional boundary"
@@ -18,6 +18,9 @@ danger_level: "extreme"
 first_appearance: "[[Chapter 01 – Adam and Eve]]"
 created: 2026-06-18
 modified: 2026-06-18
+map_coords: [50.5, -9.5]
+map_color: "#7c3aed"
+
 ---
 
 # The Portal Threshold

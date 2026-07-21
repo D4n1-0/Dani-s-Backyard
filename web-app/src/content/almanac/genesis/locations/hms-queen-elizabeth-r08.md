@@ -9,13 +9,19 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "Atlantic Ocean"
 parent_location: "Atlantic Ocean"
 environment: aquatic
 danger_level: moderate
 created: 2026-06-19
 modified: 2026-06-19
+map_coords: [49.5, -7.0]
+moveable: true
+map_coords_by_chapter:
+  '6': [50.7, -5.7]
+map_color: "#0f766e"
+
 ---
 ![[_attachments/Pasted image 20260619093902.png]]
 # HMS Queen Elizabeth (R08)

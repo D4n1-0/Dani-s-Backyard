@@ -8,7 +8,7 @@ tags:
   - type/concept
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 parent_concept: "Principality of New Antioch"
 first_referenced: "[[Chapter 02 – The Inquisitor's Briefing]]"
 created: 2026-06-18

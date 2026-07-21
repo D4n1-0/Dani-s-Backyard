@@ -1,31 +1,88 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import { scenarioList } from '../lib/scenarios';
+import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL;
+const allChapters = await getCollection('chapters');
+const allEntries = await getCollection('almanac');
+
+// Compute per-scenario stats
+const scenarioStats = scenarioList.map(s => {
+  const chapters = allChapters.filter(
+    ch => ch.data.scenario.toLowerCase() === s.slug
+  );
+  const entries = allEntries.filter(
+    e => e.data.scenario.toLowerCase() === s.slug
+  );
+
+  // Find most recent date from chapters (releaseDate)
+  const dates = chapters
+    .map(ch => ch.data.releaseDate || '')
+    .filter(Boolean)
+    .sort()
+    .reverse();
+
+  return {
+    ...s,
+    chapterCount: chapters.length,
+    entryCount: entries.length,
+    lastUpdated: dates[0] || null,
+  };
+});
 ---
 
 <MainLayout title="Home" activeTab="home">
-  <div class="splitscreen-container">
-    <!-- Genesis Split Side -->
-    <a href={`${base}/genesis`} class="split-side" id="card-genesis">
-      <div class="split-content">
-        <h1 class="split-title">Genesis</h1>
-        <p class="split-description">
-          The Anomaly reconnects. Follow the dual timeline where 1914 Trench Crusade and 2026 Modern Earth collide.
-        </p>
-        <span class="split-cta">Enter Genesis</span>
-      </div>
-    </a>
+  <div class="scenario-grid-container">
+    <header class="home-header">
+      <h1 class="home-title">Dani's Backyard</h1>
+      <p class="home-subtitle">Serialized narratives and worldbuilding companions</p>
+    </header>
 
-    <!-- Titan Split Side -->
-    <a href={`${base}/titan`} class="split-side" id="card-titan">
-      <div class="split-content">
-        <h1 class="split-title">Titan</h1>
-        <p class="split-description">
-          The Gate opens in the Yellow Sea. Follow the clash of modern East Asian geopolitics and the dark fantasy of the Attack on Titan world.
-        </p>
-        <span class="split-cta">Enter Titan</span>
-      </div>
-    </a>
+    <div class="scenario-grid">
+      {scenarioStats.map(s => (
+        <a href={`${base}/${s.slug}`} class="scenario-card" id={`card-${s.slug}`}>
+          <div
+            class="scenario-card-bg"
+            style={s.cardImage ? `background-image: url(${base}${s.cardImage})` : undefined}
+          ></div>
+          <div class="scenario-card-overlay"></div>
+          <div class="scenario-card-content">
+            <div class="scenario-card-meta">
+              {s.chapterCount > 0 && (
+                <span class="scenario-card-stat">{s.chapterCount} chapter{s.chapterCount !== 1 ? 's' : ''}</span>
+              )}
+              {s.entryCount > 0 && (
+                <span class="scenario-card-stat">{s.entryCount} entrie{s.entryCount !== 1 ? 's' : ''}</span>
+              )}
+            </div>
+            <h2 class="scenario-card-title">{s.title}</h2>
+            <p class="scenario-card-subtitle">{s.subtitle}</p>
+            <p class="scenario-card-description">{s.description}</p>
+            <div class="scenario-card-footer">
+              <span class="scenario-card-cta">Enter {s.title}</span>
+              <span class="scenario-card-continue" data-scenario={s.slug}></span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
   </div>
 </MainLayout>
+
+<script>
+  // Populate Continue Reading slots from localStorage
+  try {
+    const stored = JSON.parse(localStorage.getItem('danis-backyard-reading') || '{}');
+    document.querySelectorAll('.scenario-card-continue').forEach(el => {
+      const scenario = (el as HTMLElement).dataset.scenario;
+      if (scenario && stored[scenario]) {
+        const entry = stored[scenario];
+        (el as HTMLElement).textContent = `Continue: ${entry.title}`;
+        (el as HTMLElement).classList.add('has-continue');
+      }
+    });
+  } catch (e) {
+    // localStorage unavailable — skip silently
+  }
+</script>

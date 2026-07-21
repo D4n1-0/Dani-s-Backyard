@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Minister [[Kim Dong-wook]]"
 headquarters: "Yongsan-gu, Seoul, Republic of Korea"
 alignment: "National defence policy and military administration — Government of the Republic of Korea"

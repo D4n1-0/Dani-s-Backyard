@@ -8,7 +8,7 @@ tags:
   - type/character
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 species: Human
 role: protagonist
 faction: "[[National Security Office (ROK)]]"

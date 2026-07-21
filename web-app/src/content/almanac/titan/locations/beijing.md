@@ -6,13 +6,16 @@ tags:
   - type/location
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 region: "North China Plain"
 parent_location:
 environment: urban
 danger_level: safe
 created: 2026-06-21
 modified: 2026-06-21
+map_coords: [39.9, 116.4]
+world: real
+
 ---
 # Beijing
 

@@ -7,13 +7,18 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "North Atlantic"
 parent_location: "Atlantic Ocean"
 environment: aquatic
 danger_level: moderate
 created: 2026-06-18
 modified: 2026-06-18
+map_coords: [50.3, -9.6]
+moveable: true
+map_coords_by_chapter:
+  '1': [50.3, -9.6]
+
 ---
 ![[_attachments/Pasted image 20260619093753.png]]
 # *[[HMS Defender|HMS Defender]]*

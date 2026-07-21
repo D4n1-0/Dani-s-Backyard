@@ -9,7 +9,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Commander of the Navy (CMC member)"
 headquarters: "Beijing, People's Republic of China"
 alignment: "Naval warfare and maritime sovereignty — Central Military Commission"

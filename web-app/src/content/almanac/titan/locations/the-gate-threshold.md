@@ -9,13 +9,16 @@ tags:
   - type/location
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 region: "Yellow Sea / Southern Indian Ocean"
 parent_location:
 environment: "Oceanic — interdimensional boundary"
 danger_level: "unknown"
 created: 2026-06-21
 modified: 2026-06-22
+map_coords: [-46.5, 52.0]
+map_color: "#06b6d4"
+
 ---
 # The Gate Threshold
 

@@ -9,13 +9,18 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "Atlantic Ocean"
 parent_location: "Atlantic Ocean"
 environment: aquatic
 danger_level: moderate
 created: 2026-06-19
 modified: 2026-06-19
+map_coords: [50.3, -10.0]
+moveable: true
+map_coords_by_chapter:
+  '9': [50.3, -10.0]
+
 ---
 ![[_attachments/Pasted image 20260619094141.png]]
 # USS Stout (DDG-55)

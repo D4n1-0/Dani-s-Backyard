@@ -8,13 +8,16 @@ tags:
   - type/location
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 region: "AOT world — northern hemisphere (inverted from terrestrial southern Indian Ocean)"
 parent_location:
 environment: "Subantarctic — volcanic, barren, wind-scoured"
 danger_level: "safe"
 created: 2026-06-22
 modified: 2026-06-22
+map_coords: [-46.4, 51.8]
+map_color: "#0891b2"
+
 ---
 # Inverted Alfred Faure Islands
 

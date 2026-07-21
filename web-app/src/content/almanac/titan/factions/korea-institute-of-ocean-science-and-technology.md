@@ -7,7 +7,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Dr. [[Ahn Jae-hyun]] (Director-General)"
 headquarters: "Busan, Republic of Korea"
 alignment: "Oceanographic research — Ministry of Oceans and Fisheries"

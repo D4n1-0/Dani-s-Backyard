@@ -9,7 +9,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 leader: Pope (Modern)
 headquarters: Vatican City
 alignment: Modern Catholic Church

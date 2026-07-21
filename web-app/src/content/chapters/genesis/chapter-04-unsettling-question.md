@@ -1,7 +1,7 @@
 ---
 type: chapter
 chapter_number: 4
-chapter_title: "The Unsettling Question"
+chapter_title: "Unsettling Question"
 aliases:
   - "The Unsettling Question"
   - "COBR"
@@ -10,7 +10,8 @@ tags:
   - type/chapter
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
+status: draft
 date_in_world: "Day 4 — 1914-09-17 TC / 2026-06-21 Modern"
 participants:
   - Stephen Davenport
@@ -30,7 +31,7 @@ created: 2026-06-18
 modified: 2026-06-18
 ---
 
-# Chapter 04 – The Unsettling Question
+# Chapter 04 – Unsettling Question
 
 ## Summary
 

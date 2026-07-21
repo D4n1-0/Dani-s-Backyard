@@ -8,7 +8,7 @@ tags:
   - type/character
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 species: Human
 role: major
 faction: "[[Korea Institute of Ocean Science and Technology]]"

@@ -8,13 +8,18 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: "Atlantic Ocean"
 parent_location: "Atlantic Ocean"
 environment: aquatic
 danger_level: moderate
 created: 2026-06-19
 modified: 2026-06-19
+map_coords: [50.45, -9.8]
+moveable: true
+map_coords_by_chapter:
+  '6': [48.4, -4.5]
+
 ---
 ![[_attachments/Pasted image 20260619094227.png]]
 # Bretagne (D655)

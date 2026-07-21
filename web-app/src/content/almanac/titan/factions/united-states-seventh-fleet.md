@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Commander, Seventh Fleet (Vice Admiral, USN)"
 headquarters: "Yokosuka, Japan"
 alignment: "Forward-deployed naval power — United States Navy, Pacific Command"

@@ -9,7 +9,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Commissioner General (Incheon HQ)"
 headquarters: "Incheon, Republic of Korea"
 alignment: "Maritime law enforcement — Republic of Korea Ministry of Oceans and Fisheries"

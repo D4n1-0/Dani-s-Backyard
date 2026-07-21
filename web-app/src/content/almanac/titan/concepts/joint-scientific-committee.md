@@ -8,7 +8,7 @@ tags:
   - type/concept
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 parent_concept: "[[The Gate]]"
 first_referenced: "[[Chapter 02 – The Long Morning]]"
 created: 2026-06-21

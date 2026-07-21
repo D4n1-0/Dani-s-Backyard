@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 leader: unknown
 headquarters: unknown
 alignment: "Faithful (Independent)"

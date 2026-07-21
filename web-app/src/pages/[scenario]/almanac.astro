@@ -1,25 +1,24 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
+import { scenarios, getScenario } from '../../lib/scenarios';
 
 export async function getStaticPaths() {
-  return [
-    { params: { scenario: 'genesis' } },
-    { params: { scenario: 'titan' } },
-  ];
+  return Object.keys(scenarios).map(slug => ({ params: { scenario: slug } }));
 }
 
 const { scenario } = Astro.params;
 const base = import.meta.env.BASE_URL;
+const currentMeta = getScenario(scenario);
+
+if (!currentMeta) return Astro.redirect(`${base}/`);
 
 const allEntries = await getCollection('almanac');
 
-// Filter entries for this scenario
 const scenarioEntries = allEntries.filter(
   entry => entry.data.scenario.toLowerCase() === scenario
 );
 
-// Group entries by category
 const categories = ['Characters', 'Factions', 'Locations', 'Concepts', 'Items', 'Base', 'Timeline'];
 const entriesByCategory = categories.reduce((acc, cat) => {
   acc[cat] = scenarioEntries.filter(
@@ -28,20 +27,17 @@ const entriesByCategory = categories.reduce((acc, cat) => {
   return acc;
 }, {} as Record<string, typeof allEntries>);
 
-const scenarioName = scenario === 'genesis' ? 'Genesis' : 'Titan';
-
-// Sidebar items
 const sidebarItems = categories
   .filter(cat => (entriesByCategory[cat] || []).length > 0)
   .map(cat => ({
     label: `${cat} (${entriesByCategory[cat].length})`,
     href: `#${cat.toLowerCase()}`,
-    active: false
+    active: false,
   }));
 ---
 
-<MainLayout 
-  title={`${scenarioName} - Almanac`} 
+<MainLayout
+  title={`${currentMeta.title} - Almanac`}
   activeTab="almanac"
   showSidebar={true}
   sidebarTitle="Categories"
@@ -52,15 +48,14 @@ const sidebarItems = categories
 
   <div class="page-header">
     <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">
-      {scenarioName} World Details
+      {currentMeta.title} World Details
     </div>
     <h1>Almanac</h1>
     <p class="page-subtitle">
-      Encyclopedia of characters, factions, locations, concepts, and lore for {scenarioName}.
+      Encyclopedia of characters, factions, locations, concepts, and lore for {currentMeta.title}.
     </p>
   </div>
 
-  <!-- Category Quick Links Grid -->
   <div class="category-grid">
     {categories.map(cat => {
       const list = entriesByCategory[cat] || [];
@@ -74,12 +69,28 @@ const sidebarItems = categories
     })}
   </div>
 
+  <div class="filter-tabs" id="almanac-filters">
+    <button class="filter-tab active" data-filter="all">All</button>
+    {categories
+      .filter(cat => (entriesByCategory[cat] || []).length > 0)
+      .map(cat => (
+        <button class="filter-tab" data-filter={cat.toLowerCase()}>
+          {cat} ({entriesByCategory[cat].length})
+        </button>
+      ))}
+  </div>
+
   {categories.map(cat => {
     const list = entriesByCategory[cat] || [];
     if (list.length === 0) return null;
-    
+
     return (
-      <div id={cat.toLowerCase()} style="margin-bottom: 40px; scroll-margin-top: 24px;">
+      <div
+        id={cat.toLowerCase()}
+        class="almanac-category"
+        data-category={cat.toLowerCase()}
+        style="margin-bottom: 40px; scroll-margin-top: 24px;"
+      >
         <h2 class="section-heading">{cat}</h2>
         <ul class="content-list">
           {list.map(e => {
@@ -103,3 +114,31 @@ const sidebarItems = categories
     );
   })}
 </MainLayout>
+
+<script>
+  // Almanac category filter tabs
+  const tabs = document.querySelectorAll('#almanac-filters .filter-tab');
+  const sections = document.querySelectorAll('.almanac-category');
+  const categoryGrid = document.querySelector('.category-grid');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const filter = (tab as HTMLElement).dataset.filter || 'all';
+      tabs.forEach(t => t.classList.toggle('active', t === tab));
+
+      sections.forEach(sec => {
+        const cat = (sec as HTMLElement).dataset.category;
+        if (filter === 'all' || cat === filter) {
+          sec.classList.remove('hidden');
+        } else {
+          sec.classList.add('hidden');
+        }
+      });
+
+      // Hide the quick-link grid when filtering to a single category
+      if (categoryGrid) {
+        (categoryGrid as HTMLElement).style.display = filter === 'all' ? '' : 'none';
+      }
+    });
+  });
+</script>

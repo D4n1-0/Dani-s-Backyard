@@ -10,7 +10,8 @@ tags:
   - type/chapter
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
+status: draft
 date_in_world: "Day 12-14 — 1914-09-25 to 1914-09-27 TC / 2026-06-29 to 2026-07-01 Modern"
 participants:
   - Terrence Kohler

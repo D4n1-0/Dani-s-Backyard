@@ -8,13 +8,16 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: Levant (TC)
 parent_location: Trench Crusade Earth
 environment: urban (fortress-city)
 danger_level: deadly
 created: 2026-06-18
 modified: 2026-06-18
+map_coords: [36.2, 36.16]
+map_color: "#854d0e"
+
 ---
 ![[_attachments/Pasted image 20260619094041.png]]
 # Principality of New Antioch

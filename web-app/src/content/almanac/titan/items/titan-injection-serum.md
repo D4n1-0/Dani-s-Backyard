@@ -8,7 +8,7 @@ tags:
   - type/item
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 item_type: weapon / biological agent
 rarity: rare
 owner: "[[Marleyan Empire]], [[Eldian Military]] (limited stock)"

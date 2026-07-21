@@ -1,6 +1,7 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
+import { scenarioList, getScenario } from '../../lib/scenarios';
 
 const allEntries = await getCollection('almanac');
 
@@ -13,6 +14,11 @@ const entriesByCategory = categories.reduce((acc, cat) => {
   return acc;
 }, {} as Record<string, typeof allEntries>);
 
+// Scenarios actually present in the data
+const presentScenarios = scenarioList.filter(s =>
+  allEntries.some(e => e.data.scenario.toLowerCase() === s.slug)
+);
+
 // Sidebar items
 const sidebarItems = categories
   .filter(cat => (entriesByCategory[cat] || []).length > 0)
@@ -23,8 +29,8 @@ const sidebarItems = categories
   }));
 ---
 
-<MainLayout 
-  title="Almanac" 
+<MainLayout
+  title="Almanac"
   activeTab="almanac"
   showSidebar={true}
   sidebarTitle="Categories"
@@ -35,6 +41,15 @@ const sidebarItems = categories
     <p class="page-subtitle">
       Encyclopedia of characters, factions, locations, and lore.
     </p>
+  </div>
+
+  <div class="filter-tabs" id="almanac-scenario-filters">
+    <button class="filter-tab active" data-filter="all">All Scenarios</button>
+    {presentScenarios.map(s => (
+      <button class="filter-tab" data-filter={s.slug}>
+        {s.title}
+      </button>
+    ))}
   </div>
 
   <!-- Category Quick Links Grid -->
@@ -54,20 +69,23 @@ const sidebarItems = categories
   {categories.map(cat => {
     const list = entriesByCategory[cat] || [];
     if (list.length === 0) return null;
-    
+
     return (
-      <div id={cat.toLowerCase()} style="scroll-margin-top: 24px;">
+      <div id={cat.toLowerCase()} class="almanac-category" data-category={cat.toLowerCase()} style="scroll-margin-top: 24px;">
         <h2 class="section-heading">{cat}</h2>
         <ul class="content-list">
           {list.map(e => {
             const parts = e.id.split('/');
             const flat = parts[parts.length - 1];
+            const scenarioSlug = e.data.scenario.toLowerCase();
+            const scenarioMeta = getScenario(scenarioSlug);
             return (
-              <li class="content-list-item">
+              <li class="content-list-item" data-scenario={scenarioSlug}>
                 <div>
                   <a href={`${base}/almanac/${flat}`}>
                     {e.data.title}
                   </a>
+                  <span class="list-scenario-tag">{scenarioMeta?.title ?? scenarioSlug}</span>
                 </div>
                 {e.data.description && (
                   <div class="list-meta">{e.data.description}</div>
@@ -80,3 +98,36 @@ const sidebarItems = categories
     );
   })}
 </MainLayout>
+
+<script>
+  // Combined Almanac — scenario filter tabs (per-entry filtering)
+  const tabs = document.querySelectorAll('#almanac-scenario-filters .filter-tab');
+  const items = document.querySelectorAll('.content-list-item[data-scenario]');
+  const categorySections = document.querySelectorAll('.almanac-category[data-category]');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const filter = (tab as HTMLElement).dataset.filter || 'all';
+      tabs.forEach(t => t.classList.toggle('active', t === tab));
+
+      items.forEach(item => {
+        const slug = (item as HTMLElement).dataset.scenario;
+        if (filter === 'all' || slug === filter) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+
+      // Hide whole category sections if all their items are filtered out
+      categorySections.forEach(sec => {
+        const visibleItems = sec.querySelectorAll('.content-list-item:not(.hidden)');
+        if (visibleItems.length === 0) {
+          sec.classList.add('hidden');
+        } else {
+          sec.classList.remove('hidden');
+        }
+      });
+    });
+  });
+</script>

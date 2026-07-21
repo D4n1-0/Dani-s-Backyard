@@ -9,7 +9,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "Director Wang Zhongcai (PAP Major General)"
 headquarters: "Beijing, People's Republic of China"
 alignment: "Maritime law enforcement and territorial sovereignty — People's Armed Police"

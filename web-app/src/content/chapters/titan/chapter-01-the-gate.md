@@ -7,7 +7,8 @@ tags:
   - type/chapter
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
+status: draft
 date_in_world: "Night before the Battle of Shiganshina — ~Year 850 TC / Saturday June evening — Modern"
 participants:
   - "[[Park Do-hyun]]"

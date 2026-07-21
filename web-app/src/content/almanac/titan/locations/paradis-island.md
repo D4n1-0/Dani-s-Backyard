@@ -9,13 +9,16 @@ tags:
   - type/location
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 region: "Island nation"
 parent_location:
 environment: "Temperate — forests, plains, mountains within concentric Walls"
 danger_level: "extreme"
 created: 2026-06-21
 modified: 2026-06-21
+map_coords: [-19.0, 47.0]
+map_color: "#15803d"
+
 ---
 ![[Pasted image 20260621081602.png]]
 # Paradis Island

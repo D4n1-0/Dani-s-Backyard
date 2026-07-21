@@ -7,7 +7,7 @@ tags:
   - type/item
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 item_type: armor
 rarity: rare
 owner: "Morgan Pell"

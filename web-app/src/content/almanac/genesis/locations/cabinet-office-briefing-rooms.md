@@ -9,13 +9,17 @@ tags:
   - type/location
   - status/draft
   - scenario/genesis
-scenario: "Genesis"
+scenario: "genesis"
 region: Whitehall, London
 parent_location: London
 environment: urban (underground bunker)
 danger_level: safe
 created: 2026-06-18
 modified: 2026-06-18
+map_coords: [51.503, -0.126]
+world: real
+map_color: "#1e40af"
+
 ---
 ![[_attachments/Pasted image 20260619094241.png]]
 # Cabinet Office Briefing Rooms

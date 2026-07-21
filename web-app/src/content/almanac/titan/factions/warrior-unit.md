@@ -8,7 +8,7 @@ tags:
   - type/faction
   - status/draft
   - scenario/titan
-scenario: "Titan"
+scenario: "titan"
 leader: "[[Zeke Yeager]] (Warchief)"
 headquarters: "[[Liberio Internment Zone]]"
 alignment: "Marleyan vassal — fanatical, fracturing"
