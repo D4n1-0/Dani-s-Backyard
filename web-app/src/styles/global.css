@@ -105,7 +105,7 @@ html[data-theme="light"] body::before {
 .site-container {
   min-height: 100vh;
   min-height: 100dvh;
-  max-width: 1400px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 0 32px;
   display: flex;
@@ -117,7 +117,7 @@ html[data-theme="light"] body::before {
   overflow-x: hidden;
 }
 .is-root-home .site-container {
-  max-width: 1400px;
+  max-width: 1360px;
   width: 100%;
   margin: 0 auto;
   padding: 0 32px;
@@ -404,27 +404,33 @@ html[data-theme="light"] .theme-toggle .moon-icon {
    ================================= */
 .main-wrapper {
   display: grid;
-  grid-template-columns: 240px minmax(0, 1fr);
-  gap: 48px;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 40px;
   flex-grow: 1;
+  width: 100%;
 }
 .main-wrapper.no-sidebar {
   grid-template-columns: minmax(0, 1fr);
 }
 
 main {
-  padding: 48px 0 96px;
-  max-width: 760px;
+  padding: 40px 0 80px;
   width: 100%;
-  margin: 0 auto;
   min-width: 0; /* Prevent grid item from stretching on mobile with large tables */
 }
+
+/* Standalone articles without sidebars or multi-pane layouts */
 .main-wrapper.no-sidebar main {
-  max-width: 760px;
+  max-width: 800px;
+  margin: 0 auto;
 }
+
+/* Full grid expansion when sidebars, TOCs, or almanac layouts are present */
+.main-wrapper main,
 .main-wrapper.no-sidebar main:has(.chapter-with-toc),
-main:has(.chapter-with-toc) {
-  max-width: 1320px;
+.main-wrapper.no-sidebar main:has(.almanac-layout) {
+  max-width: 100%;
+  margin: 0;
 }
 
 @media (max-width: 992px) {
@@ -723,8 +729,8 @@ a:hover {
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
   flex: 1;
-  max-width: 1400px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   width: 100%;
 }
 
@@ -1097,9 +1103,10 @@ a:hover {
 /* ASYMMETRICAL ALMANAC ENTRY LAYOUT */
 .almanac-layout {
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: minmax(0, 1fr) 280px;
   gap: 40px;
   align-items: start;
+  width: 100%;
 }
 
 .almanac-sidebar-pane {
@@ -1479,26 +1486,10 @@ a:hover {
    ================================= */
 .chapter-with-toc {
   display: grid;
-  grid-template-columns: minmax(0, 240px) minmax(0, 760px) 240px;
+  grid-template-columns: minmax(0, 1fr) 260px;
   gap: 40px;
   align-items: start;
   width: 100%;
-  max-width: 1320px;
-  margin: 0 auto;
-}
-
-.chapter-with-toc::before {
-  content: "";
-  display: block;
-}
-
-@media (max-width: 1279px) {
-  .chapter-with-toc {
-    grid-template-columns: minmax(0, 1fr) 240px;
-  }
-  .chapter-with-toc::before {
-    display: none;
-  }
 }
 
 .chapter-toc {

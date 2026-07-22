@@ -3,7 +3,8 @@ import MainLayout from '../layouts/MainLayout.astro';
 import { scenarioList } from '../lib/scenarios';
 import { getCollection } from 'astro:content';
 
-const base = import.meta.env.BASE_URL;
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase;
 const allChapters = await getCollection('chapters');
 const allEntries = await getCollection('almanac');
 
