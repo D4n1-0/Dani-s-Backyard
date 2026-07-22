@@ -50,7 +50,7 @@ html {
 }
 
 body {
-  background-color: var(--bg-primary);
+  background-color: transparent;
   color: var(--text-primary);
   font-family: var(--font-ui);
   font-size: 0.95rem;
