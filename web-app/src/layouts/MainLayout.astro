@@ -42,7 +42,8 @@ const fullStyles = `--bg-image-dark: url(${base}/images/Darkmode.jpg); --bg-imag
 <html lang="en" style={fullStyles} data-scenario={currentScenario ? currentScenario.slug : ''}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" id="theme-color-meta" content="#09090b" />
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <meta name="generator" content={Astro.generator} />
 
@@ -50,7 +51,12 @@ const fullStyles = `--bg-image-dark: url(${base}/images/Darkmode.jpg); --bg-imag
     <script is:inline>
       (function() {
         const storedTheme = localStorage.getItem('theme');
-        document.documentElement.setAttribute('data-theme', storedTheme || 'dark');
+        const theme = storedTheme || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+        const themeMeta = document.getElementById('theme-color-meta');
+        if (themeMeta) {
+          themeMeta.setAttribute('content', theme === 'light' ? '#f4f4f5' : '#09090b');
+        }
       })();
     </script>
 
@@ -214,6 +220,10 @@ const fullStyles = `--bg-image-dark: url(${base}/images/Darkmode.jpg); --bg-imag
           const newTheme = currentTheme === 'light' ? 'dark' : 'light';
           document.documentElement.setAttribute('data-theme', newTheme);
           localStorage.setItem('theme', newTheme);
+          const themeMeta = document.getElementById('theme-color-meta');
+          if (themeMeta) {
+            themeMeta.setAttribute('content', newTheme === 'light' ? '#f4f4f5' : '#09090b');
+          }
         });
       }
 
